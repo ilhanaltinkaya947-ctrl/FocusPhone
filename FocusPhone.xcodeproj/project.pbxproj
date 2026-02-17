@@ -373,6 +373,23 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					0034409725D123AED060BAFD = {
+						DevelopmentTeam = 2W3NRPZS9S;
+					};
+					05406DA91DDE38B7567CBC13 = {
+						DevelopmentTeam = 2W3NRPZS9S;
+					};
+					3B87F3B1EE7717621692D815 = {
+						DevelopmentTeam = 2W3NRPZS9S;
+					};
+					52F48AA1EDC0E57494388C57 = {
+						DevelopmentTeam = 2W3NRPZS9S;
+					};
+					B6F2E2B5DE289F40BA8E0798 = {
+						DevelopmentTeam = 2W3NRPZS9S;
+					};
+				};
 			};
 			buildConfigurationList = F50B4D25EEF5025DCC09A3B7 /* Build configuration list for PBXProject "FocusPhone" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -518,7 +535,7 @@
 			buildSettings = {
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ContentBlockerExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focusphone.app.ContentBlocker;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.contentblocker";
 				PRODUCT_NAME = ContentBlockerExtension;
 			};
 			name = Release;
@@ -530,7 +547,7 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhone/FocusPhone.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhone/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focusphone.app;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone";
 				PRODUCT_NAME = FocusPhone;
 			};
 			name = Debug;
@@ -541,7 +558,7 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhoneWidget/FocusPhoneWidget.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhoneWidget/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focusphone.app.Widget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.wgt";
 				PRODUCT_NAME = FocusPhoneWidget;
 			};
 			name = Debug;
@@ -550,6 +567,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEVELOPMENT_TEAM = 2W3NRPZS9S;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
@@ -563,7 +581,7 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhoneWidget/FocusPhoneWidget.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhoneWidget/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focusphone.app.Widget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.wgt";
 				PRODUCT_NAME = FocusPhoneWidget;
 			};
 			name = Release;
@@ -574,7 +592,7 @@
 				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focusphone.app.ShieldConfiguration;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.shield";
 				PRODUCT_NAME = ShieldConfigurationExtension;
 			};
 			name = Release;
@@ -583,6 +601,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEVELOPMENT_TEAM = 2W3NRPZS9S;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
@@ -597,7 +616,7 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhone/FocusPhone.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhone/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focusphone.app;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone";
 				PRODUCT_NAME = FocusPhone;
 			};
 			name = Release;
@@ -608,7 +627,7 @@
 				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focusphone.app.DeviceActivityMonitor;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.dam";
 				PRODUCT_NAME = DeviceActivityMonitorExtension;
 			};
 			name = Release;
@@ -619,7 +638,7 @@
 				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focusphone.app.ShieldConfiguration;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.shield";
 				PRODUCT_NAME = ShieldConfigurationExtension;
 			};
 			name = Debug;
@@ -630,7 +649,7 @@
 				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focusphone.app.DeviceActivityMonitor;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.dam";
 				PRODUCT_NAME = DeviceActivityMonitorExtension;
 			};
 			name = Debug;
@@ -640,7 +659,7 @@
 			buildSettings = {
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ContentBlockerExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.focusphone.app.ContentBlocker;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.contentblocker";
 				PRODUCT_NAME = ContentBlockerExtension;
 			};
 			name = Debug;

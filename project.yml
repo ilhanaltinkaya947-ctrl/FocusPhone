@@ -1,6 +1,6 @@
 name: FocusPhone
 options:
-  bundleIdPrefix: com.focusphone
+  bundleIdPrefix: com.axon
   deploymentTarget:
     iOS: "16.0"
   xcodeVersion: "16.2"
@@ -10,6 +10,7 @@ settings:
     SWIFT_VERSION: "5.9"
     TARGETED_DEVICE_FAMILY: "1"
     ALWAYS_SEARCH_USER_PATHS: NO
+    DEVELOPMENT_TEAM: 2W3NRPZS9S
 
 targets:
   FocusPhone:
@@ -20,7 +21,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.focusphone.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone
         PRODUCT_NAME: FocusPhone
         INFOPLIST_FILE: FocusPhone/Info.plist
         CODE_SIGN_ENTITLEMENTS: FocusPhone/FocusPhone.entitlements
@@ -40,7 +41,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.focusphone.app.DeviceActivityMonitor
+        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.dam
         PRODUCT_NAME: DeviceActivityMonitorExtension
         INFOPLIST_FILE: DeviceActivityMonitorExtension/Info.plist
         CODE_SIGN_ENTITLEMENTS: DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements
@@ -54,7 +55,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.focusphone.app.ShieldConfiguration
+        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.shield
         PRODUCT_NAME: ShieldConfigurationExtension
         INFOPLIST_FILE: ShieldConfigurationExtension/Info.plist
         CODE_SIGN_ENTITLEMENTS: ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements
@@ -67,7 +68,7 @@ targets:
       - path: ContentBlockerExtension
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.focusphone.app.ContentBlocker
+        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.contentblocker
         PRODUCT_NAME: ContentBlockerExtension
         INFOPLIST_FILE: ContentBlockerExtension/Info.plist
         GENERATE_INFOPLIST_FILE: false
@@ -80,7 +81,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.focusphone.app.Widget
+        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.wgt
         PRODUCT_NAME: FocusPhoneWidget
         INFOPLIST_FILE: FocusPhoneWidget/Info.plist
         CODE_SIGN_ENTITLEMENTS: FocusPhoneWidget/FocusPhoneWidget.entitlements

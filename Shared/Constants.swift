@@ -1,12 +1,12 @@
 import Foundation
 
 enum Constants {
-    static let appGroupID = "group.com.focusphone.shared"
-    static let mainAppBundleID = "com.focusphone.app"
-    static let deviceActivityMonitorBundleID = "com.focusphone.app.DeviceActivityMonitor"
-    static let shieldConfigurationBundleID = "com.focusphone.app.ShieldConfiguration"
-    static let contentBlockerBundleID = "com.focusphone.app.ContentBlocker"
-    static let widgetBundleID = "com.focusphone.app.Widget"
+    static let appGroupID = "group.com.axon.focusphone"
+    static let mainAppBundleID = "com.axon.focus-phone"
+    static let deviceActivityMonitorBundleID = "com.axon.focus-phone.dam"
+    static let shieldConfigurationBundleID = "com.axon.focus-phone.shield"
+    static let contentBlockerBundleID = "com.axon.focus-phone.contentblocker"
+    static let widgetBundleID = "com.axon.focus-phone.wgt"
 
     // UserDefaults keys (stored in App Group)
     static let selectedProfileKey = "selectedProfile"
