@@ -1,0 +1,87 @@
+name: FocusPhone
+options:
+  bundleIdPrefix: com.focusphone
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "16.2"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    TARGETED_DEVICE_FAMILY: "1"
+    ALWAYS_SEARCH_USER_PATHS: NO
+
+targets:
+  FocusPhone:
+    type: application
+    platform: iOS
+    sources:
+      - path: FocusPhone
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.focusphone.app
+        PRODUCT_NAME: FocusPhone
+        INFOPLIST_FILE: FocusPhone/Info.plist
+        CODE_SIGN_ENTITLEMENTS: FocusPhone/FocusPhone.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: false
+    dependencies:
+      - target: DeviceActivityMonitorExtension
+      - target: ShieldConfigurationExtension
+      - target: ContentBlockerExtension
+      - target: FocusPhoneWidget
+
+  DeviceActivityMonitorExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: DeviceActivityMonitorExtension
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.focusphone.app.DeviceActivityMonitor
+        PRODUCT_NAME: DeviceActivityMonitorExtension
+        INFOPLIST_FILE: DeviceActivityMonitorExtension/Info.plist
+        CODE_SIGN_ENTITLEMENTS: DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements
+        GENERATE_INFOPLIST_FILE: false
+
+  ShieldConfigurationExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: ShieldConfigurationExtension
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.focusphone.app.ShieldConfiguration
+        PRODUCT_NAME: ShieldConfigurationExtension
+        INFOPLIST_FILE: ShieldConfigurationExtension/Info.plist
+        CODE_SIGN_ENTITLEMENTS: ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements
+        GENERATE_INFOPLIST_FILE: false
+
+  ContentBlockerExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: ContentBlockerExtension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.focusphone.app.ContentBlocker
+        PRODUCT_NAME: ContentBlockerExtension
+        INFOPLIST_FILE: ContentBlockerExtension/Info.plist
+        GENERATE_INFOPLIST_FILE: false
+
+  FocusPhoneWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: FocusPhoneWidget
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.focusphone.app.Widget
+        PRODUCT_NAME: FocusPhoneWidget
+        INFOPLIST_FILE: FocusPhoneWidget/Info.plist
+        CODE_SIGN_ENTITLEMENTS: FocusPhoneWidget/FocusPhoneWidget.entitlements
+        GENERATE_INFOPLIST_FILE: false

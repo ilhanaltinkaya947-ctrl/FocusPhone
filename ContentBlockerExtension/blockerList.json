@@ -1,0 +1,10 @@
+[
+    {
+        "action": {
+            "type": "block"
+        },
+        "trigger": {
+            "url-filter": "fokusphone-placeholder-will-not-match-anything\\.example"
+        }
+    }
+]
