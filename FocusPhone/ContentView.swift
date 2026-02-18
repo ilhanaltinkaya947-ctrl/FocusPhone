@@ -1,12 +1,13 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Binding var selectedTab: Int
     @StateObject private var authVM = AuthViewModel()
 
     var body: some View {
         Group {
             if AppState.shared.isOnboardingCompleted {
-                MainTabView()
+                MainTabView(selectedTab: $selectedTab)
             } else {
                 OnboardingView(authVM: authVM)
             }
