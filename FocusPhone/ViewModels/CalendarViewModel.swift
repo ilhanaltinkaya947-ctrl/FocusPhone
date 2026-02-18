@@ -1,4 +1,5 @@
 import SwiftUI
+import WidgetKit
 
 @MainActor
 class CalendarViewModel: ObservableObject {
@@ -50,5 +51,6 @@ class CalendarViewModel: ObservableObject {
     private func saveAndSync() {
         AppState.shared.timeBlocks = timeBlocks
         ScheduleService.registerAllTimeBlocks()
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }

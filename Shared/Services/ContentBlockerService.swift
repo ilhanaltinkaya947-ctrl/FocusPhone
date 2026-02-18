@@ -14,7 +14,8 @@ final class ContentBlockerService {
     // MARK: - Public API
 
     static func applyWebsiteBlocks(for domains: [String]) {
-        let rules = generateRules(for: domains)
+        let validDomains = domains.compactMap(sanitizeDomain).filter { !$0.isEmpty }
+        let rules = generateRules(for: validDomains)
         writeRules(rules)
         reloadContentBlocker()
     }
@@ -24,18 +25,42 @@ final class ContentBlockerService {
         reloadContentBlocker()
     }
 
+    // MARK: - Domain Validation
+
+    private static func sanitizeDomain(_ raw: String) -> String? {
+        let domain = raw
+            .trimmingCharacters(in: .whitespaces)
+            .lowercased()
+
+        guard !domain.isEmpty,
+              domain.contains("."),
+              !domain.hasPrefix("."),
+              !domain.hasSuffix(".") else {
+            return nil
+        }
+        return domain
+    }
+
     // MARK: - Rule Generation
 
     private static func generateRules(for domains: [String]) -> [[String: Any]] {
         guard !domains.isEmpty else { return noOpRules }
 
         return domains.map { domain in
-            let escaped = domain.replacingOccurrences(of: ".", with: "\\\\.")
+            let escaped = escapeForRegex(domain)
             return [
                 "trigger": ["url-filter": ".*\\\\.?\(escaped)"],
                 "action": ["type": "block"]
             ] as [String: Any]
         }
+    }
+
+    private static func escapeForRegex(_ domain: String) -> String {
+        var result = domain
+        for char in ["\\", ".", "+", "*", "?", "[", "]", "(", ")", "{", "}", "^", "$", "|"] {
+            result = result.replacingOccurrences(of: char, with: "\\\\\(char)")
+        }
+        return result
     }
 
     private static let noOpRules: [[String: Any]] = [

@@ -277,7 +277,10 @@ struct OnboardingView: View {
     }
 
     private func onboardingButton(_ title: String, style: ButtonStyle = .primary, color: Color = .blue, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        Button {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            action()
+        } label: {
             Text(title)
                 .font(.headline)
                 .frame(maxWidth: .infinity)

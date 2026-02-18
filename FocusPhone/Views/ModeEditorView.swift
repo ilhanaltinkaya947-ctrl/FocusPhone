@@ -191,5 +191,6 @@ struct ModeEditorView: View {
 
         mode.blockedWebsites.append(domain)
         newWebsite = ""
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }
 }

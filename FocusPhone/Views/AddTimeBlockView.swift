@@ -11,6 +11,7 @@ struct AddTimeBlockView: View {
     @State private var selectedModeID: UUID?
     @State private var startTime: Date
     @State private var endTime: Date
+    @State private var showingOverlapAlert = false
 
     private var isEditing: Bool { existingBlock != nil }
 
@@ -29,6 +30,36 @@ struct AddTimeBlockView: View {
             _startTime = State(initialValue: Calendar.current.date(from: DateComponents(hour: 9)) ?? Date())
             _endTime = State(initialValue: Calendar.current.date(from: DateComponents(hour: 10)) ?? Date())
         }
+    }
+
+    private var startMinutes: Int {
+        let comps = Calendar.current.dateComponents([.hour, .minute], from: startTime)
+        return (comps.hour ?? 0) * 60 + (comps.minute ?? 0)
+    }
+
+    private var endMinutes: Int {
+        let comps = Calendar.current.dateComponents([.hour, .minute], from: endTime)
+        return (comps.hour ?? 0) * 60 + (comps.minute ?? 0)
+    }
+
+    private var isValidTimeRange: Bool {
+        endMinutes > startMinutes
+    }
+
+    private var hasOverlap: Bool {
+        let existing = AppState.shared.timeBlocks(forDay: selectedDayOfWeek)
+        let newStart = startMinutes
+        let newEnd = endMinutes
+        return existing.contains { block in
+            guard block.id != existingBlock?.id else { return false }
+            let bStart = block.startHour * 60 + block.startMinute
+            let bEnd = block.endHour * 60 + block.endMinute
+            return newStart < bEnd && newEnd > bStart
+        }
+    }
+
+    private var canSave: Bool {
+        selectedModeID != nil && isValidTimeRange
     }
 
     var body: some View {
@@ -54,9 +85,19 @@ struct AddTimeBlockView: View {
                     }
                 }
 
-                Section("Time") {
+                Section {
                     DatePicker("Start", selection: $startTime, displayedComponents: .hourAndMinute)
                     DatePicker("End", selection: $endTime, displayedComponents: .hourAndMinute)
+                } header: {
+                    Text("Time")
+                } footer: {
+                    if !isValidTimeRange {
+                        Text("End time must be after start time.")
+                            .foregroundStyle(.red)
+                    } else if hasOverlap {
+                        Text("This overlaps with an existing time block.")
+                            .foregroundStyle(.orange)
+                    }
                 }
             }
             .navigationTitle(isEditing ? "Edit Time Block" : "Add Time Block")
@@ -67,11 +108,24 @@ struct AddTimeBlockView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        save()
-                        dismiss()
+                        if hasOverlap {
+                            showingOverlapAlert = true
+                        } else {
+                            save()
+                            dismiss()
+                        }
                     }
-                    .disabled(selectedModeID == nil)
+                    .disabled(!canSave)
                 }
+            }
+            .alert("Overlapping Block", isPresented: $showingOverlapAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Save Anyway") {
+                    save()
+                    dismiss()
+                }
+            } message: {
+                Text("This time block overlaps with an existing one. Save anyway?")
             }
         }
     }
@@ -91,6 +145,7 @@ struct AddTimeBlockView: View {
             endHour: endComps.hour ?? 10,
             endMinute: endComps.minute ?? 0
         )
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
         onSave(block)
     }
 }

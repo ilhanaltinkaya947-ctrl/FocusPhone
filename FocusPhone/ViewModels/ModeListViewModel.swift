@@ -1,5 +1,6 @@
 import SwiftUI
 import FamilyControls
+import WidgetKit
 
 @MainActor
 class ModeListViewModel: ObservableObject {
@@ -24,6 +25,7 @@ class ModeListViewModel: ObservableObject {
             // If this is the active mode, re-apply blocks immediately
             if AppState.shared.activeModeID == mode.id {
                 BlockingService.applyBlocks(for: mode)
+                WidgetCenter.shared.reloadAllTimelines()
             }
         }
     }

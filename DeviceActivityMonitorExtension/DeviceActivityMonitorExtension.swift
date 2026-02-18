@@ -1,6 +1,7 @@
 import DeviceActivity
 import Foundation
 import ManagedSettings
+import WidgetKit
 
 class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     override func intervalDidStart(for activity: DeviceActivityName) {
@@ -14,6 +15,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         AppState.shared.activeModeID = modeID
         AppState.shared.startSession(for: mode)
         BlockingService.applyBlocks(for: mode)
+        WidgetCenter.shared.reloadAllTimelines()
 
         // Store block end time so the shield can show remaining time
         let now = Date()
@@ -55,5 +57,6 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
             AppState.shared.activeBlockEndTime = nil
             BlockingService.clearAllBlocks()
         }
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }

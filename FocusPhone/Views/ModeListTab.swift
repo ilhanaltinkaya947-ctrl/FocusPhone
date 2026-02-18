@@ -23,6 +23,7 @@ struct ModeListTab: View {
                             .onTapGesture { editingMode = mode }
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
+                                    UINotificationFeedbackGenerator().notificationOccurred(.warning)
                                     viewModel.deleteMode(mode)
                                 } label: {
                                     Label("Delete", systemImage: "trash")
