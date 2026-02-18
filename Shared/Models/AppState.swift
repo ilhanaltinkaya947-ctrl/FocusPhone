@@ -29,6 +29,11 @@ final class AppState {
         return mode(for: id)
     }
 
+    var activeBlockEndTime: Date? {
+        get { defaults.object(forKey: Constants.activeBlockEndTimeKey) as? Date }
+        set { defaults.set(newValue, forKey: Constants.activeBlockEndTimeKey) }
+    }
+
     // MARK: - Modes
 
     var modes: [Mode] {

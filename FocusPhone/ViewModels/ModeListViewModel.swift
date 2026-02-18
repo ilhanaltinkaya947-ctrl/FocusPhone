@@ -4,6 +4,7 @@ import FamilyControls
 @MainActor
 class ModeListViewModel: ObservableObject {
     @Published var modes: [Mode] = []
+    @Published var activeModeID: UUID?
 
     init() {
         loadModes()
@@ -12,6 +13,7 @@ class ModeListViewModel: ObservableObject {
     func loadModes() {
         AppState.shared.seedDefaultsIfNeeded()
         modes = AppState.shared.modes
+        activeModeID = AppState.shared.activeModeID
     }
 
     func updateMode(_ mode: Mode) {

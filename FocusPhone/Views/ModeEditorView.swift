@@ -20,7 +20,7 @@ struct ModeEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Appearance") {
+                Section {
                     TextField("Name", text: $mode.name)
                     Button { showingIconPicker = true } label: {
                         HStack {
@@ -31,7 +31,7 @@ struct ModeEditorView: View {
                                 .foregroundStyle(Color(hex: mode.colorHex))
                             Image(systemName: "chevron.right")
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.tertiary)
                         }
                     }
                     Button { showingColorPicker = true } label: {
@@ -44,26 +44,47 @@ struct ModeEditorView: View {
                                 .frame(width: 24, height: 24)
                             Image(systemName: "chevron.right")
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.tertiary)
                         }
                     }
+                } header: {
+                    Text("Appearance")
                 }
 
-                Section("Blocked Apps & Categories") {
+                Section {
                     Button {
                         showingAppPicker = true
                     } label: {
                         HStack {
                             Text("Select Apps & Categories")
+                                .foregroundStyle(.primary)
                             Spacer()
+                            let count = appSelectionCount
+                            if count > 0 {
+                                Text("\(count) selected")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                            }
                             Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
                         }
                     }
+                } header: {
+                    Text("Blocked Apps")
+                } footer: {
+                    Text("Choose which apps and categories to block when this mode is active.")
                 }
 
-                Section("Blocked Websites") {
+                Section {
                     ForEach(mode.blockedWebsites, id: \.self) { website in
-                        Text(website)
+                        HStack {
+                            Image(systemName: "globe")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            Text(website)
+                                .font(.subheadline)
+                        }
                     }
                     .onDelete { indexSet in
                         mode.blockedWebsites.remove(atOffsets: indexSet)
@@ -74,18 +95,42 @@ struct ModeEditorView: View {
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
                             .keyboardType(.URL)
+                            .font(.subheadline)
                         Button {
                             addWebsite()
                         } label: {
                             Image(systemName: "plus.circle.fill")
+                                .foregroundStyle(Color(hex: mode.colorHex))
                         }
                         .disabled(newWebsite.trimmingCharacters(in: .whitespaces).isEmpty)
                     }
+                } header: {
+                    Text("Blocked Websites")
+                } footer: {
+                    Text("Websites are blocked via Safari Content Blocker when this mode is active.")
                 }
 
-                Section("Restrictions") {
-                    Toggle("Block App Store", isOn: $mode.blockAppStore)
-                    Toggle("Block App Deletion", isOn: $mode.blockAppDeletion)
+                Section {
+                    Toggle(isOn: $mode.blockAppStore) {
+                        Label {
+                            Text("Block App Store")
+                        } icon: {
+                            Image(systemName: "bag.fill")
+                                .foregroundStyle(.blue)
+                        }
+                    }
+                    Toggle(isOn: $mode.blockAppDeletion) {
+                        Label {
+                            Text("Block App Deletion")
+                        } icon: {
+                            Image(systemName: "trash.slash.fill")
+                                .foregroundStyle(.red)
+                        }
+                    }
+                } header: {
+                    Text("Restrictions")
+                } footer: {
+                    Text("Prevent installing new apps or removing existing ones while this mode is active.")
                 }
             }
             .navigationTitle("Edit Mode")
@@ -100,6 +145,7 @@ struct ModeEditorView: View {
                         onSave(mode)
                         dismiss()
                     }
+                    .fontWeight(.semibold)
                 }
             }
             .familyActivityPicker(
@@ -113,6 +159,10 @@ struct ModeEditorView: View {
                 ColorPickerGridView(selectedColorHex: $mode.colorHex)
             }
         }
+    }
+
+    private var appSelectionCount: Int {
+        activitySelection.applicationTokens.count + activitySelection.categoryTokens.count
     }
 
     private func addWebsite() {

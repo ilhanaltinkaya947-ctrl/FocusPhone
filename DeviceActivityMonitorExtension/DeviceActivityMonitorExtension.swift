@@ -14,6 +14,17 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         AppState.shared.activeModeID = modeID
         AppState.shared.startSession(for: mode)
         BlockingService.applyBlocks(for: mode)
+
+        // Store block end time so the shield can show remaining time
+        let now = Date()
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: now)
+        let currentMinutes = calendar.component(.hour, from: now) * 60 + calendar.component(.minute, from: now)
+        if let block = AppState.shared.timeBlocks(forDay: weekday)
+            .first(where: { $0.modeID == modeID && $0.startHour * 60 + $0.startMinute <= currentMinutes && $0.endHour * 60 + $0.endMinute > currentMinutes }),
+           let endTime = calendar.date(bySettingHour: block.endHour, minute: block.endMinute, second: 0, of: now) {
+            AppState.shared.activeBlockEndTime = endTime
+        }
     }
 
     override func intervalDidEnd(for activity: DeviceActivityName) {
@@ -41,6 +52,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         } else {
             AppState.shared.endCurrentSession()
             AppState.shared.activeModeID = nil
+            AppState.shared.activeBlockEndTime = nil
             BlockingService.clearAllBlocks()
         }
     }

@@ -16,6 +16,10 @@ final class StatsViewModel: ObservableObject {
         streakDays = calculateStreak()
     }
 
+    var todayTotalDuration: TimeInterval {
+        todaySessions.reduce(0) { $0 + $1.duration }
+    }
+
     var todayUsageByMode: [(modeName: String, colorHex: String, duration: TimeInterval)] {
         var usage: [UUID: (name: String, hex: String, duration: TimeInterval)] = [:]
         for session in todaySessions {

@@ -6,10 +6,13 @@ class SettingsViewModel: ObservableObject {
     @Published var contentBlockerEnabled = false
     @Published var totalModes = 0
     @Published var totalTimeBlocks = 0
+    @Published var totalBlockedWebsites = 0
 
     func loadData() {
-        totalModes = AppState.shared.modes.count
+        let modes = AppState.shared.modes
+        totalModes = modes.count
         totalTimeBlocks = AppState.shared.timeBlocks.count
+        totalBlockedWebsites = Set(modes.flatMap(\.blockedWebsites)).count
         checkContentBlockerState()
     }
 

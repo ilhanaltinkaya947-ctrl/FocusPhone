@@ -8,50 +8,85 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Safari Content Blocker") {
-                    HStack {
-                        Image(systemName: viewModel.contentBlockerEnabled ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
-                            .foregroundStyle(viewModel.contentBlockerEnabled ? .green : .orange)
-                        Text(viewModel.contentBlockerEnabled ? "Enabled" : "Not Enabled")
+                Section {
+                    HStack(spacing: 12) {
+                        settingsIcon("safari", color: .blue)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Safari Content Blocker")
+                                .font(.subheadline.weight(.medium))
+                            Text(viewModel.contentBlockerEnabled ? "Enabled" : "Not Enabled")
+                                .font(.caption)
+                                .foregroundStyle(viewModel.contentBlockerEnabled ? .green : .orange)
+                        }
+
                         Spacer()
-                        if !viewModel.contentBlockerEnabled {
-                            Button("Open Settings") {
+
+                        if viewModel.contentBlockerEnabled {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundStyle(.green)
+                        } else {
+                            Button("Enable") {
                                 if let url = URL(string: UIApplication.openSettingsURLString) {
                                     UIApplication.shared.open(url)
                                 }
                             }
-                            .font(.caption)
+                            .font(.caption.weight(.medium))
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
                         }
                     }
+                    .padding(.vertical, 2)
+
                     if !viewModel.contentBlockerEnabled {
-                        Text("Enable in Settings > Safari > Extensions to block websites during focus modes.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        Label {
+                            Text("Go to Settings > Safari > Extensions to enable website blocking during focus modes.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        } icon: {
+                            Image(systemName: "info.circle")
+                                .foregroundStyle(.secondary)
+                                .font(.caption)
+                        }
                     }
+                } header: {
+                    Text("Extensions")
                 }
 
-                Section("Schedule") {
-                    HStack {
+                Section {
+                    HStack(spacing: 12) {
+                        settingsIcon("square.stack.fill", color: .purple)
                         Text("Modes")
                         Spacer()
                         Text("\(viewModel.totalModes)")
                             .foregroundStyle(.secondary)
                     }
-                    HStack {
+                    HStack(spacing: 12) {
+                        settingsIcon("calendar.badge.clock", color: .blue)
                         Text("Time Blocks")
                         Spacer()
                         Text("\(viewModel.totalTimeBlocks)")
                             .foregroundStyle(.secondary)
                     }
+                    HStack(spacing: 12) {
+                        settingsIcon("globe", color: .orange)
+                        Text("Blocked Websites")
+                        Spacer()
+                        Text("\(viewModel.totalBlockedWebsites)")
+                            .foregroundStyle(.secondary)
+                    }
+                } header: {
+                    Text("Schedule")
                 }
 
-                Section("Data") {
+                Section {
                     Button(role: .destructive) {
                         showingResetAlert = true
                     } label: {
-                        HStack {
-                            Image(systemName: "arrow.counterclockwise")
+                        HStack(spacing: 12) {
+                            settingsIcon("arrow.counterclockwise", color: .red)
                             Text("Reset All Data")
+                                .foregroundStyle(.red)
                         }
                     }
                     .alert("Reset All Data?", isPresented: $showingResetAlert) {
@@ -62,22 +97,24 @@ struct SettingsView: View {
                     } message: {
                         Text("This will delete all custom modes, time blocks, and schedules. Default modes will be restored.")
                     }
+                } header: {
+                    Text("Data")
                 }
 
-                Section("About") {
-                    HStack {
+                Section {
+                    HStack(spacing: 12) {
+                        settingsIcon("info.circle", color: .gray)
                         Text("Version")
                         Spacer()
                         Text("\(viewModel.appVersion) (\(viewModel.buildNumber))")
                             .foregroundStyle(.secondary)
                     }
-                    HStack {
-                        Text("FocusPhone")
-                        Spacer()
-                        Text("The calendar that controls your phone")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
+                } header: {
+                    Text("About")
+                } footer: {
+                    Text("FocusPhone — The calendar that controls your phone")
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 12)
                 }
             }
             .navigationTitle("Settings")
@@ -88,5 +125,13 @@ struct SettingsView: View {
                 }
             }
         }
+    }
+
+    private func settingsIcon(_ systemName: String, color: Color) -> some View {
+        Image(systemName: systemName)
+            .font(.system(size: 14))
+            .foregroundStyle(.white)
+            .frame(width: 28, height: 28)
+            .background(color, in: RoundedRectangle(cornerRadius: 6))
     }
 }

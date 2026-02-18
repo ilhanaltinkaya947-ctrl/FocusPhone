@@ -25,15 +25,32 @@ struct CalendarTab: View {
                     }
                     .frame(maxHeight: .infinity)
                 } else {
-                    ScrollView {
-                        DayTimelineView(
-                            blocks: viewModel.blocksForSelectedDay,
-                            modes: viewModel.modes,
-                            isToday: isToday,
-                            onEdit: { block in editingBlock = block },
-                            onDelete: { block in viewModel.removeTimeBlock(block) }
-                        )
-                        .padding()
+                    ScrollViewReader { proxy in
+                        ScrollView {
+                            DayTimelineView(
+                                blocks: viewModel.blocksForSelectedDay,
+                                modes: viewModel.modes,
+                                isToday: isToday,
+                                onEdit: { block in editingBlock = block },
+                                onDelete: { block in viewModel.removeTimeBlock(block) }
+                            )
+                            .padding()
+
+                            // Anchor for scrolling to current time area
+                            Color.clear
+                                .frame(height: 1)
+                                .id("currentTime")
+                        }
+                        .onAppear {
+                            if isToday {
+                                // Slight delay to let layout complete
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                    withAnimation(.easeOut(duration: 0.4)) {
+                                        proxy.scrollTo("currentTime", anchor: .center)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

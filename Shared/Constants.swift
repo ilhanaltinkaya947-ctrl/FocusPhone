@@ -16,6 +16,7 @@ enum Constants {
     static let activeModeIDKey = "activeModeID"
     static let hasSeededDefaultsKey = "hasSeededDefaults"
     static let modeSessionsKey = "modeSessions"
+    static let activeBlockEndTimeKey = "activeBlockEndTime"
     static let contentBlockerRulesFileName = "contentBlockerRules.json"
 
     static var sharedDefaults: UserDefaults {

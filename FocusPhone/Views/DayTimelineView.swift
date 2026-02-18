@@ -28,7 +28,7 @@ struct DayTimelineView: View {
                     HStack(alignment: .top) {
                         Text(hourLabel(hour))
                             .font(.caption2)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.tertiary)
                             .frame(width: 44, alignment: .trailing)
 
                         VStack {
@@ -65,13 +65,13 @@ struct DayTimelineView: View {
         return HStack(spacing: 0) {
             Circle()
                 .fill(.red)
-                .frame(width: 8, height: 8)
+                .frame(width: 10, height: 10)
             Rectangle()
                 .fill(.red)
-                .frame(height: 1)
+                .frame(height: 1.5)
         }
-        .padding(.leading, 48)
-        .offset(y: offset)
+        .padding(.leading, 46)
+        .offset(y: offset - 5) // center the dot vertically
     }
 
     // MARK: - Time Block View
@@ -80,23 +80,25 @@ struct DayTimelineView: View {
         let topOffset = CGFloat(block.startHour * 60 + block.startMinute - startHourDisplay * 60)
             / 60.0 * hourHeight
         let height = CGFloat(block.durationMinutes) / 60.0 * hourHeight
+        let color = Color(hex: mode.colorHex)
 
         return HStack(spacing: 0) {
             // Colored accent strip
             RoundedRectangle(cornerRadius: 2)
-                .fill(Color(hex: mode.colorHex))
-                .frame(width: 3)
+                .fill(color)
+                .frame(width: 4)
                 .padding(.vertical, 2)
 
             // Content
             HStack(spacing: 6) {
                 Image(systemName: mode.icon)
                     .font(.caption)
+                    .foregroundStyle(color)
                 Text(mode.name)
                     .font(.caption)
                     .fontWeight(.medium)
                 Spacer()
-                Text("\(block.startTimeString)–\(block.endTimeString)")
+                Text("\(block.startTimeString) – \(block.endTimeString)")
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
@@ -107,13 +109,12 @@ struct DayTimelineView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(Color(hex: mode.colorHex).opacity(0.15))
+                .fill(color.opacity(0.12))
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(Color(hex: mode.colorHex).opacity(0.4), lineWidth: 1)
+                .strokeBorder(color.opacity(0.3), lineWidth: 1)
         )
-        .shadow(color: Color(hex: mode.colorHex).opacity(0.15), radius: 4, y: 2)
         .padding(.leading, 52)
         .offset(y: topOffset)
         .onTapGesture { onEdit?(block) }
