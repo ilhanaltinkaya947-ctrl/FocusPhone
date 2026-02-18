@@ -4,43 +4,50 @@ import DeviceActivity
 final class ScheduleService {
     static let center = DeviceActivityCenter()
 
-    static func registerSchedules(for windows: [FreedomWindow]) {
-        // Stop all existing monitoring first
+    static func registerAllTimeBlocks() {
         center.stopMonitoring()
 
-        for window in windows where window.isEnabled {
-            for day in window.days {
-                let activityName = DeviceActivityName(
-                    rawValue: "freedom_\(window.id.uuidString)_\(day.rawValue)"
-                )
+        let blocks = AppState.shared.timeBlocks
 
-                let start = DateComponents(
-                    hour: window.startHour,
-                    minute: window.startMinute,
-                    weekday: day.rawValue
-                )
-                let end = DateComponents(
-                    hour: window.endHour,
-                    minute: window.endMinute,
-                    weekday: day.rawValue
-                )
+        for block in blocks {
+            let activityName = DeviceActivityName(
+                rawValue: "mode_\(block.modeID.uuidString)_\(block.id.uuidString)"
+            )
 
-                let schedule = DeviceActivitySchedule(
-                    intervalStart: start,
-                    intervalEnd: end,
-                    repeats: true
-                )
+            let start = DateComponents(
+                hour: block.startHour,
+                minute: block.startMinute,
+                weekday: block.dayOfWeek
+            )
+            let end = DateComponents(
+                hour: block.endHour,
+                minute: block.endMinute,
+                weekday: block.dayOfWeek
+            )
 
-                do {
-                    try center.startMonitoring(activityName, during: schedule)
-                } catch {
-                    print("Failed to start monitoring \(activityName.rawValue): \(error)")
-                }
+            let schedule = DeviceActivitySchedule(
+                intervalStart: start,
+                intervalEnd: end,
+                repeats: block.isRecurring
+            )
+
+            do {
+                try center.startMonitoring(activityName, during: schedule)
+            } catch {
+                print("Failed to monitor \(activityName.rawValue): \(error)")
             }
         }
     }
 
     static func stopAllSchedules() {
         center.stopMonitoring()
+    }
+
+    static func modeID(from activityName: DeviceActivityName) -> UUID? {
+        let raw = activityName.rawValue
+        guard raw.hasPrefix("mode_"), raw.count > 41 else { return nil }
+        let startIndex = raw.index(raw.startIndex, offsetBy: 5)
+        let endIndex = raw.index(startIndex, offsetBy: 36)
+        return UUID(uuidString: String(raw[startIndex..<endIndex]))
     }
 }

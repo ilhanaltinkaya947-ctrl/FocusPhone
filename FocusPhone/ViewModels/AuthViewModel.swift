@@ -1,14 +1,15 @@
 import SwiftUI
 import FamilyControls
+import SafariServices
 
 @MainActor
-class AppBlockingViewModel: ObservableObject {
+class AuthViewModel: ObservableObject {
     @Published var authorizationStatus: AuthorizationStatus = .notDetermined
-    @Published var activitySelection = FamilyActivitySelection()
+    @Published var contentBlockerEnabled = false
 
     init() {
-        loadSavedSelection()
         checkAuthorizationStatus()
+        checkContentBlockerState()
     }
 
     func requestAuthorization() {
@@ -23,32 +24,17 @@ class AppBlockingViewModel: ObservableObject {
         }
     }
 
-    func activateDetoxMode() {
-        BlockingService.applyBlocks(using: activitySelection)
-        AppState.shared.currentMode = .detox
-        objectWillChange.send()
-    }
-
-    func deactivateDetoxMode() {
-        BlockingService.clearAllBlocks()
-        AppState.shared.currentMode = .freedom
-        objectWillChange.send()
-    }
-
-    func saveSelection() {
-        BlockingService.saveSelection(activitySelection)
-    }
-
-    private func loadSavedSelection() {
-        if let data = Constants.sharedDefaults.data(forKey: Constants.selectedCategoriesKey),
-           let selection = try? JSONDecoder().decode(FamilyActivitySelection.self, from: data) {
-            activitySelection = selection
+    func checkContentBlockerState() {
+        SFContentBlockerManager.getStateOfContentBlocker(
+            withIdentifier: Constants.contentBlockerBundleID
+        ) { state, error in
+            DispatchQueue.main.async {
+                self.contentBlockerEnabled = state?.isEnabled ?? false
+            }
         }
     }
 
     private func checkAuthorizationStatus() {
-        // AuthorizationCenter status is checked via the shared instance
-        // On app launch, if we've previously authorized, status will be .approved
         let center = AuthorizationCenter.shared
         switch center.authorizationStatus {
         case .approved:

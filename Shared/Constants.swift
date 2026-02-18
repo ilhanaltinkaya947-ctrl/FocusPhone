@@ -8,12 +8,15 @@ enum Constants {
     static let contentBlockerBundleID = "com.axon.focus-phone.contentblocker"
     static let widgetBundleID = "com.axon.focus-phone.wgt"
 
-    // UserDefaults keys (stored in App Group)
-    static let selectedProfileKey = "selectedProfile"
-    static let freedomWindowsKey = "freedomWindows"
-    static let currentModeKey = "currentMode"
+    // UserDefaults keys
     static let onboardingCompletedKey = "onboardingCompleted"
-    static let selectedCategoriesKey = "selectedCategories"
+    static let modesKey = "modes"
+    static let timeBlocksKey = "timeBlocks"
+    static let weeklySchedulesKey = "weeklySchedules"
+    static let activeModeIDKey = "activeModeID"
+    static let hasSeededDefaultsKey = "hasSeededDefaults"
+    static let modeSessionsKey = "modeSessions"
+    static let contentBlockerRulesFileName = "contentBlockerRules.json"
 
     static var sharedDefaults: UserDefaults {
         UserDefaults(suiteName: appGroupID) ?? .standard

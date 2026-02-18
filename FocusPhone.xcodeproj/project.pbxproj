@@ -7,46 +7,99 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00093C0B41C4D550BD8A1A02 /* FreedomWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566F104514B2B42F55DF3845 /* FreedomWindow.swift */; };
 		025773A172E31D4B7DCE3FAF /* FocusPhoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC40D2EA0A1A8B966F3257FD /* FocusPhoneApp.swift */; };
+		02F8CD28C50F7F5BEE4B8FB6 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53380FB50E34F4ACE6F907ED /* MainTabView.swift */; };
+		04D90CC13C8ABE9D846D7078 /* BlockingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594B7BE104190E51B06FB01C /* BlockingService.swift */; };
+		089388C6FE2F97486DE0312B /* WeeklySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B03BCD44643D1F43B3EB4 /* WeeklySchedule.swift */; };
+		08EE3C042C04C8B14915A0F8 /* ModeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091A8F3DC57D8E21F2782EA6 /* ModeEditorView.swift */; };
+		0A9238A226B7A9B9753CA80C /* AddTimeBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3226870292F5A68BEC23591A /* AddTimeBlockView.swift */; };
 		0E456D6BF1DA4F9300B09D11 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC5EECC93A9D82CDC2F27BE /* AppState.swift */; };
 		15A10BAB02F5D8958C4CE7C5 /* BlockingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594B7BE104190E51B06FB01C /* BlockingService.swift */; };
+		17627C7D1669B03E37A55AF2 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EA15BFADFA42D3D6A31F2E /* SettingsViewModel.swift */; };
 		188F5D00711BD4EF9D309071 /* blockerList.json in Resources */ = {isa = PBXBuildFile; fileRef = 721B6912F360904BD0A2D800 /* blockerList.json */; };
+		1D6B4C087B6BCABBB3852E5B /* ContentBlockerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AEF32365B0361D3B3BC800 /* ContentBlockerService.swift */; };
+		1E07C691F79C0419D0E57B10 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5FF9BDBBCEC3334409C107 /* UIColor+Hex.swift */; };
+		1EFA64542753E7BE521C0DC1 /* TimeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D98D6620172FCA7B736765 /* TimeBlock.swift */; };
+		212BB6EC8152C0D5E9792A41 /* CalendarTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = C531965CF0B2497FC019175D /* CalendarTab.swift */; };
 		21F3326787BF9DAADCC006A1 /* DeviceActivityMonitorExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 13A32D2DA50D72D17181FC51 /* DeviceActivityMonitorExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		226C6762EB06C8C69809A380 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5FF9BDBBCEC3334409C107 /* UIColor+Hex.swift */; };
 		244E091E5897FFB63C455709 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0230933076CFE791064BFA /* Constants.swift */; };
-		2B74E00623385346EC95DCAC /* DetoxProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63469710518B8D9D2DC1BEB3 /* DetoxProfile.swift */; };
-		329C292F247954510C0D7351 /* DetoxProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63469710518B8D9D2DC1BEB3 /* DetoxProfile.swift */; };
+		322DF3F96167E43D9F97EA3E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0230933076CFE791064BFA /* Constants.swift */; };
 		33EBF83D48EF70434347E9F2 /* FocusPhoneWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA392E7299AA64DE38A6C09 /* FocusPhoneWidget.swift */; };
+		3BC548E9EAAA7D5D28B80C3E /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625AFD09AD0CF5DFE3553855 /* Mode.swift */; };
+		3DFC7767E81B974AF3D55800 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5FF9BDBBCEC3334409C107 /* UIColor+Hex.swift */; };
+		47796E56815BA874D59A67D2 /* DefaultModes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B83D67A1A4A8149845433 /* DefaultModes.swift */; };
+		49DBE9DEDB07C0A06313B34A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82165BA9EC22CC77CA6C8909 /* SettingsView.swift */; };
+		4C434C7498FC79D7E9B00D8B /* TimeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D98D6620172FCA7B736765 /* TimeBlock.swift */; };
+		4C58DDF933C6255426B05251 /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625AFD09AD0CF5DFE3553855 /* Mode.swift */; };
 		4C89293F10CAE0C62BE73094 /* BlockingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594B7BE104190E51B06FB01C /* BlockingService.swift */; };
-		4E7BA96BA1E0553FEE9B5B84 /* FreedomWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566F104514B2B42F55DF3845 /* FreedomWindow.swift */; };
+		4ED2F9ED48E835FA99375E16 /* ModeListTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = C432225678C4C1879B3E9CD1 /* ModeListTab.swift */; };
+		4FF8FAF4785C6A2C1B613B8C /* DefaultModes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B83D67A1A4A8149845433 /* DefaultModes.swift */; };
 		51CDF02FEE697C3E642F6A09 /* BlockingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594B7BE104190E51B06FB01C /* BlockingService.swift */; };
-		547E93335D0551311BDC999D /* ScheduleSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04D30487A6FEB1B4BF2CC4 /* ScheduleSetupView.swift */; };
+		5580DBCB5CEAF0A5809AAA2F /* IconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA2EC78BA531FD508093EEA /* IconPickerView.swift */; };
+		566898E393BF279FFFCFCCF7 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF71488AB8CBE9EAA91406A7 /* AuthViewModel.swift */; };
 		5B8FAD797F84C5926BC809B4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941DD181E6572785AD762908 /* ContentView.swift */; };
-		6867A5DD96FE20CEACFFE1AC /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97069BD8C8E3123CCDE0C431 /* ScheduleViewModel.swift */; };
+		62460B72A6B35D3C229488A1 /* DefaultModes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B83D67A1A4A8149845433 /* DefaultModes.swift */; };
+		63B7C95FE932DF4BD262166B /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED967B427728E7E02870B55 /* Weekday.swift */; };
+		643B90223F9221DBEBCCDD34 /* ModeSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65532370280A426249164C93 /* ModeSession.swift */; };
+		68EB1A747370664933A36892 /* ModeSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65532370280A426249164C93 /* ModeSession.swift */; };
+		6A5A15BFBC9E9584B3F5778E /* ContentBlockerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AEF32365B0361D3B3BC800 /* ContentBlockerService.swift */; };
 		7158AD7E9EA32E52A96C745F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D870530867D1C5BF3D2DBB4 /* OnboardingView.swift */; };
+		76EC309D0D53065888AD1D06 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5FF9BDBBCEC3334409C107 /* UIColor+Hex.swift */; };
 		774752A993FF93C11918A181 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0230933076CFE791064BFA /* Constants.swift */; };
-		77B4F0BCB33EBE96F7D9ECC1 /* FreedomWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566F104514B2B42F55DF3845 /* FreedomWindow.swift */; };
+		7770E23ED0B00AE353112CF7 /* ColorPickerGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969C7B0A77A80986AFB78672 /* ColorPickerGridView.swift */; };
 		7A65B706A1E9033497C528F5 /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D615F496A73FD46E0C3BB7 /* ScheduleService.swift */; };
+		7B0633E0E7636EC522185446 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5FF9BDBBCEC3334409C107 /* UIColor+Hex.swift */; };
+		7CFFCB0F4EA1C89ECF72EADC /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED967B427728E7E02870B55 /* Weekday.swift */; };
 		7D4157DD880166D9CDC86255 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0230933076CFE791064BFA /* Constants.swift */; };
+		7DDF60492292BCB3576B9743 /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625AFD09AD0CF5DFE3553855 /* Mode.swift */; };
+		7E2B417C80425E6F55C0BFB5 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202449C712B38F1723046417 /* Color+Hex.swift */; };
 		82E6A99F1AC9F10730CDD00A /* ShieldConfigurationExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = ABA9E32158914313B6846D91 /* ShieldConfigurationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		83EB66C2A49A1B61CB8F9E3D /* FreedomWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566F104514B2B42F55DF3845 /* FreedomWindow.swift */; };
+		84E3ACE2B71D82727804D176 /* ContentBlockerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AEF32365B0361D3B3BC800 /* ContentBlockerService.swift */; };
 		8840AC6E1C00C36D171B6798 /* BlockingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594B7BE104190E51B06FB01C /* BlockingService.swift */; };
 		891B3ECFA838962FCDA19B62 /* ContentBlockerExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 13ABA97AE6030D3314E5B0DE /* ContentBlockerExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8ADC5EBE22E5707E6BF3D5FD /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286248FD344AFD8CCC385F72 /* DeviceActivityMonitorExtension.swift */; };
 		8BD6E8FF208644A0BB54263F /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D615F496A73FD46E0C3BB7 /* ScheduleService.swift */; };
-		9517222F6C5EE81B03EDFDF3 /* AppBlockingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CE57B7027DCED405569AEA /* AppBlockingViewModel.swift */; };
+		8CA5BB976F8B82E9CC1B4991 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202449C712B38F1723046417 /* Color+Hex.swift */; };
+		972F91E3549FF2BC524B7603 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CA11843C7EE57B7F2B804B /* StatsView.swift */; };
+		99243340FF9D8E7F2009940D /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CF075A6306801351383958 /* StatsViewModel.swift */; };
+		9C998CB5B9BDF7AD1BB82362 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202449C712B38F1723046417 /* Color+Hex.swift */; };
+		9D0F1B7430363DCF58DD15F0 /* ContentBlockerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AEF32365B0361D3B3BC800 /* ContentBlockerService.swift */; };
+		9E29DF87BFDEEFFAB5E44EAB /* WeeklySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B03BCD44643D1F43B3EB4 /* WeeklySchedule.swift */; };
 		A668DE4FAFE9CC17F97ED87A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A83EBF4701014989D13A3 /* Assets.xcassets */; };
-		AED284E14DDD24682232E4BF /* DetoxProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63469710518B8D9D2DC1BEB3 /* DetoxProfile.swift */; };
-		B653BE576041A56B2EC93633 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF771D86C12A911C48DB7AE /* DashboardView.swift */; };
+		AA5052D4DC650DCD7A09928B /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED967B427728E7E02870B55 /* Weekday.swift */; };
+		BD360C5E213EEC18513F8C08 /* ModeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02842383AE607AA51C9330A1 /* ModeListViewModel.swift */; };
+		BE7906149DA1EF1980260C16 /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D615F496A73FD46E0C3BB7 /* ScheduleService.swift */; };
+		BF01ACBBBFE91FF30CC2AB16 /* ModeSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65532370280A426249164C93 /* ModeSession.swift */; };
+		C33D987A3A24F5CD319BCBB6 /* WeekDaySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AFE8F5DEABE3D40640D0BD /* WeekDaySelectorView.swift */; };
+		C57CD3A01C1202D847E4B5E0 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202449C712B38F1723046417 /* Color+Hex.swift */; };
 		C64870FA12F415AA0F80C15A /* ShieldConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820532D3B3E41C90DE1782D5 /* ShieldConfigurationExtension.swift */; };
+		CCED84459F187A3241D766F0 /* DayTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA07F60273976DEA7747E87A /* DayTimelineView.swift */; };
+		CD589D817CAB532DEAE779A2 /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625AFD09AD0CF5DFE3553855 /* Mode.swift */; };
+		CE69C1FABBDE9C7C308CDA4D /* WeeklySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B03BCD44643D1F43B3EB4 /* WeeklySchedule.swift */; };
 		D2AE3DAA3EA0FC0295A77D59 /* ContentBlockerRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5128A93B3568851821870CD6 /* ContentBlockerRequestHandler.swift */; };
+		D39824746429944FB75C351B /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625AFD09AD0CF5DFE3553855 /* Mode.swift */; };
+		D4A2E2542D83ABD2597C587F /* DefaultModes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B83D67A1A4A8149845433 /* DefaultModes.swift */; };
 		DC8C62856813C10EEF94621C /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D615F496A73FD46E0C3BB7 /* ScheduleService.swift */; };
+		DCB52EC05AA8F0ABD1DB0063 /* ModeSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65532370280A426249164C93 /* ModeSession.swift */; };
 		DE9137CED88C4D1F3B874AE0 /* FocusPhoneWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 56B7E1F0F0D9FA5EF4D24CEB /* FocusPhoneWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		E426F4182672309D5966AA82 /* DetoxProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63469710518B8D9D2DC1BEB3 /* DetoxProfile.swift */; };
+		DEB4C7854ABF1CF1430E5E95 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED967B427728E7E02870B55 /* Weekday.swift */; };
+		DF473C0A274F65DCF2F86234 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED967B427728E7E02870B55 /* Weekday.swift */; };
+		E04945AF563533F9D57BCA64 /* TimeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D98D6620172FCA7B736765 /* TimeBlock.swift */; };
+		E0CA4DCEE08E2D67D28050AC /* TimeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D98D6620172FCA7B736765 /* TimeBlock.swift */; };
+		E0D0D2470018B197C9187D70 /* WeeklySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B03BCD44643D1F43B3EB4 /* WeeklySchedule.swift */; };
 		E6866B55EF474F44AD61ACCB /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC5EECC93A9D82CDC2F27BE /* AppState.swift */; };
 		E79EE9096A14334D2C90A46A /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D615F496A73FD46E0C3BB7 /* ScheduleService.swift */; };
+		E9C28DCC46F639C20D603CBF /* DefaultModes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B83D67A1A4A8149845433 /* DefaultModes.swift */; };
+		F0BF7E0065226CE29994ABDB /* TimeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D98D6620172FCA7B736765 /* TimeBlock.swift */; };
+		F109C3745B027F6A52FEAF10 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202449C712B38F1723046417 /* Color+Hex.swift */; };
+		F3547AB643B4C9BDF9F3F22E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC5EECC93A9D82CDC2F27BE /* AppState.swift */; };
 		F3BEC8CBB33869ABC7DECD0A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0230933076CFE791064BFA /* Constants.swift */; };
+		F7080D1D266BCB333682016A /* ModeSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65532370280A426249164C93 /* ModeSession.swift */; };
+		F8E0D24B2535064BC2D873A2 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEC7838DADD972E49ED226A /* CalendarViewModel.swift */; };
+		FAD08BD235260AB75CCBF084 /* ContentBlockerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AEF32365B0361D3B3BC800 /* ContentBlockerService.swift */; };
 		FD1A8F4BE3AE248428B4867F /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC5EECC93A9D82CDC2F27BE /* AppState.swift */; };
+		FD463381205F31C29D737783 /* WeeklySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B03BCD44643D1F43B3EB4 /* WeeklySchedule.swift */; };
 		FFD4DCDC36F7CB699ACFD6BE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC5EECC93A9D82CDC2F27BE /* AppState.swift */; };
 /* End PBXBuildFile section */
 
@@ -99,39 +152,59 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		02842383AE607AA51C9330A1 /* ModeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeListViewModel.swift; sourceTree = "<group>"; };
+		091A8F3DC57D8E21F2782EA6 /* ModeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeEditorView.swift; sourceTree = "<group>"; };
+		0B8B03BCD44643D1F43B3EB4 /* WeeklySchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklySchedule.swift; sourceTree = "<group>"; };
 		0EA392E7299AA64DE38A6C09 /* FocusPhoneWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPhoneWidget.swift; sourceTree = "<group>"; };
 		13A32D2DA50D72D17181FC51 /* DeviceActivityMonitorExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = DeviceActivityMonitorExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		13ABA97AE6030D3314E5B0DE /* ContentBlockerExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ContentBlockerExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		142BA91A8F9991BB4DC9F5D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		202449C712B38F1723046417 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
+		22CA11843C7EE57B7F2B804B /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		286248FD344AFD8CCC385F72 /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
+		3226870292F5A68BEC23591A /* AddTimeBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTimeBlockView.swift; sourceTree = "<group>"; };
+		39AFE8F5DEABE3D40640D0BD /* WeekDaySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDaySelectorView.swift; sourceTree = "<group>"; };
+		3EA2EC78BA531FD508093EEA /* IconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconPickerView.swift; sourceTree = "<group>"; };
 		4F8A83EBF4701014989D13A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5128A93B3568851821870CD6 /* ContentBlockerRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlockerRequestHandler.swift; sourceTree = "<group>"; };
+		53380FB50E34F4ACE6F907ED /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		55CF075A6306801351383958 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
 		564950C6AEB834EF17207C26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		566F104514B2B42F55DF3845 /* FreedomWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreedomWindow.swift; sourceTree = "<group>"; };
 		56B7E1F0F0D9FA5EF4D24CEB /* FocusPhoneWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = FocusPhoneWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		594B7BE104190E51B06FB01C /* BlockingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingService.swift; sourceTree = "<group>"; };
-		63469710518B8D9D2DC1BEB3 /* DetoxProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetoxProfile.swift; sourceTree = "<group>"; };
+		625AFD09AD0CF5DFE3553855 /* Mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mode.swift; sourceTree = "<group>"; };
+		65532370280A426249164C93 /* ModeSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSession.swift; sourceTree = "<group>"; };
 		65730AC4F38218C542ECB4D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6720BCE6425B9138CD73DFD3 /* DeviceActivityMonitorExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DeviceActivityMonitorExtension.entitlements; sourceTree = "<group>"; };
 		6C0230933076CFE791064BFA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		6FF771D86C12A911C48DB7AE /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		721B6912F360904BD0A2D800 /* blockerList.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = blockerList.json; sourceTree = "<group>"; };
 		730C68E385C90417A4E03A3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7D870530867D1C5BF3D2DBB4 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		820532D3B3E41C90DE1782D5 /* ShieldConfigurationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldConfigurationExtension.swift; sourceTree = "<group>"; };
+		82165BA9EC22CC77CA6C8909 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		83AEF32365B0361D3B3BC800 /* ContentBlockerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlockerService.swift; sourceTree = "<group>"; };
 		941DD181E6572785AD762908 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		97069BD8C8E3123CCDE0C431 /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
+		969C7B0A77A80986AFB78672 /* ColorPickerGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerGridView.swift; sourceTree = "<group>"; };
 		98226FBFCCE57E2914379AB5 /* FocusPhone.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FocusPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A9396186130BD0BAB302602 /* ContentBlockerExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ContentBlockerExtension.entitlements; sourceTree = "<group>"; };
+		9ED967B427728E7E02870B55 /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		ABA9E32158914313B6846D91 /* ShieldConfigurationExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ShieldConfigurationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1EA15BFADFA42D3D6A31F2E /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		BAC5EECC93A9D82CDC2F27BE /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		CB04D30487A6FEB1B4BF2CC4 /* ScheduleSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleSetupView.swift; sourceTree = "<group>"; };
+		C432225678C4C1879B3E9CD1 /* ModeListTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeListTab.swift; sourceTree = "<group>"; };
+		C531965CF0B2497FC019175D /* CalendarTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTab.swift; sourceTree = "<group>"; };
+		D0D98D6620172FCA7B736765 /* TimeBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBlock.swift; sourceTree = "<group>"; };
 		D5A1CCC34917FC2F0E8CF58E /* ShieldConfigurationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShieldConfigurationExtension.entitlements; sourceTree = "<group>"; };
-		D8CE57B7027DCED405569AEA /* AppBlockingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBlockingViewModel.swift; sourceTree = "<group>"; };
+		DA07F60273976DEA7747E87A /* DayTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayTimelineView.swift; sourceTree = "<group>"; };
 		DC40D2EA0A1A8B966F3257FD /* FocusPhoneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPhoneApp.swift; sourceTree = "<group>"; };
+		DDEC7838DADD972E49ED226A /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		E513875DC1E10F08A7D14D3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7D615F496A73FD46E0C3BB7 /* ScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleService.swift; sourceTree = "<group>"; };
 		EBE3499BB57BC583A76ABBAC /* FocusPhone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusPhone.entitlements; sourceTree = "<group>"; };
+		ED5FF9BDBBCEC3334409C107 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
+		FA6B83D67A1A4A8149845433 /* DefaultModes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultModes.swift; sourceTree = "<group>"; };
 		FBF87B4FA2287FC6586FC461 /* FocusPhoneWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusPhoneWidget.entitlements; sourceTree = "<group>"; };
+		FF71488AB8CBE9EAA91406A7 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -139,10 +212,23 @@
 			isa = PBXGroup;
 			children = (
 				BAC5EECC93A9D82CDC2F27BE /* AppState.swift */,
-				63469710518B8D9D2DC1BEB3 /* DetoxProfile.swift */,
-				566F104514B2B42F55DF3845 /* FreedomWindow.swift */,
+				FA6B83D67A1A4A8149845433 /* DefaultModes.swift */,
+				625AFD09AD0CF5DFE3553855 /* Mode.swift */,
+				65532370280A426249164C93 /* ModeSession.swift */,
+				D0D98D6620172FCA7B736765 /* TimeBlock.swift */,
+				9ED967B427728E7E02870B55 /* Weekday.swift */,
+				0B8B03BCD44643D1F43B3EB4 /* WeeklySchedule.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		2036C3431F999BB90636C1AE /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				202449C712B38F1723046417 /* Color+Hex.swift */,
+				ED5FF9BDBBCEC3334409C107 /* UIColor+Hex.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		22FCCF9A5E612DAB2ECAC502 /* ShieldConfigurationExtension */ = {
@@ -169,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				721B6912F360904BD0A2D800 /* blockerList.json */,
+				9A9396186130BD0BAB302602 /* ContentBlockerExtension.entitlements */,
 				5128A93B3568851821870CD6 /* ContentBlockerRequestHandler.swift */,
 				65730AC4F38218C542ECB4D8 /* Info.plist */,
 			);
@@ -178,9 +265,18 @@
 		56287B3F58F30444AF490B81 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6FF771D86C12A911C48DB7AE /* DashboardView.swift */,
+				3226870292F5A68BEC23591A /* AddTimeBlockView.swift */,
+				C531965CF0B2497FC019175D /* CalendarTab.swift */,
+				969C7B0A77A80986AFB78672 /* ColorPickerGridView.swift */,
+				DA07F60273976DEA7747E87A /* DayTimelineView.swift */,
+				3EA2EC78BA531FD508093EEA /* IconPickerView.swift */,
+				53380FB50E34F4ACE6F907ED /* MainTabView.swift */,
+				091A8F3DC57D8E21F2782EA6 /* ModeEditorView.swift */,
+				C432225678C4C1879B3E9CD1 /* ModeListTab.swift */,
 				7D870530867D1C5BF3D2DBB4 /* OnboardingView.swift */,
-				CB04D30487A6FEB1B4BF2CC4 /* ScheduleSetupView.swift */,
+				82165BA9EC22CC77CA6C8909 /* SettingsView.swift */,
+				22CA11843C7EE57B7F2B804B /* StatsView.swift */,
+				39AFE8F5DEABE3D40640D0BD /* WeekDaySelectorView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -200,8 +296,11 @@
 		83899E3F5B717CBD02CF6EC5 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				D8CE57B7027DCED405569AEA /* AppBlockingViewModel.swift */,
-				97069BD8C8E3123CCDE0C431 /* ScheduleViewModel.swift */,
+				FF71488AB8CBE9EAA91406A7 /* AuthViewModel.swift */,
+				DDEC7838DADD972E49ED226A /* CalendarViewModel.swift */,
+				02842383AE607AA51C9330A1 /* ModeListViewModel.swift */,
+				B1EA15BFADFA42D3D6A31F2E /* SettingsViewModel.swift */,
+				55CF075A6306801351383958 /* StatsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -210,6 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				6C0230933076CFE791064BFA /* Constants.swift */,
+				2036C3431F999BB90636C1AE /* Helpers */,
 				06D178381F712D50543D6C81 /* Models */,
 				E5202C9080338A1CFF2EE963 /* Services */,
 			);
@@ -257,6 +357,7 @@
 			isa = PBXGroup;
 			children = (
 				594B7BE104190E51B06FB01C /* BlockingService.swift */,
+				83AEF32365B0361D3B3BC800 /* ContentBlockerService.swift */,
 				E7D615F496A73FD46E0C3BB7 /* ScheduleService.swift */,
 			);
 			path = Services;
@@ -372,7 +473,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1620;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					0034409725D123AED060BAFD = {
 						DevelopmentTeam = 2W3NRPZS9S;
@@ -440,11 +541,18 @@
 			files = (
 				FD1A8F4BE3AE248428B4867F /* AppState.swift in Sources */,
 				4C89293F10CAE0C62BE73094 /* BlockingService.swift in Sources */,
+				8CA5BB976F8B82E9CC1B4991 /* Color+Hex.swift in Sources */,
 				244E091E5897FFB63C455709 /* Constants.swift in Sources */,
-				329C292F247954510C0D7351 /* DetoxProfile.swift in Sources */,
+				9D0F1B7430363DCF58DD15F0 /* ContentBlockerService.swift in Sources */,
+				4FF8FAF4785C6A2C1B613B8C /* DefaultModes.swift in Sources */,
 				8ADC5EBE22E5707E6BF3D5FD /* DeviceActivityMonitorExtension.swift in Sources */,
-				00093C0B41C4D550BD8A1A02 /* FreedomWindow.swift in Sources */,
+				4C58DDF933C6255426B05251 /* Mode.swift in Sources */,
+				F7080D1D266BCB333682016A /* ModeSession.swift in Sources */,
 				7A65B706A1E9033497C528F5 /* ScheduleService.swift in Sources */,
+				4C434C7498FC79D7E9B00D8B /* TimeBlock.swift in Sources */,
+				3DFC7767E81B974AF3D55800 /* UIColor+Hex.swift in Sources */,
+				7CFFCB0F4EA1C89ECF72EADC /* Weekday.swift in Sources */,
+				FD463381205F31C29D737783 /* WeeklySchedule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,11 +562,18 @@
 			files = (
 				E6866B55EF474F44AD61ACCB /* AppState.swift in Sources */,
 				51CDF02FEE697C3E642F6A09 /* BlockingService.swift in Sources */,
+				9C998CB5B9BDF7AD1BB82362 /* Color+Hex.swift in Sources */,
 				774752A993FF93C11918A181 /* Constants.swift in Sources */,
-				E426F4182672309D5966AA82 /* DetoxProfile.swift in Sources */,
-				4E7BA96BA1E0553FEE9B5B84 /* FreedomWindow.swift in Sources */,
+				6A5A15BFBC9E9584B3F5778E /* ContentBlockerService.swift in Sources */,
+				D4A2E2542D83ABD2597C587F /* DefaultModes.swift in Sources */,
+				7DDF60492292BCB3576B9743 /* Mode.swift in Sources */,
+				BF01ACBBBFE91FF30CC2AB16 /* ModeSession.swift in Sources */,
 				DC8C62856813C10EEF94621C /* ScheduleService.swift in Sources */,
 				C64870FA12F415AA0F80C15A /* ShieldConfigurationExtension.swift in Sources */,
+				1EFA64542753E7BE521C0DC1 /* TimeBlock.swift in Sources */,
+				76EC309D0D53065888AD1D06 /* UIColor+Hex.swift in Sources */,
+				DF473C0A274F65DCF2F86234 /* Weekday.swift in Sources */,
+				9E29DF87BFDEEFFAB5E44EAB /* WeeklySchedule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,7 +581,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3547AB643B4C9BDF9F3F22E /* AppState.swift in Sources */,
+				04D90CC13C8ABE9D846D7078 /* BlockingService.swift in Sources */,
+				7E2B417C80425E6F55C0BFB5 /* Color+Hex.swift in Sources */,
+				322DF3F96167E43D9F97EA3E /* Constants.swift in Sources */,
 				D2AE3DAA3EA0FC0295A77D59 /* ContentBlockerRequestHandler.swift in Sources */,
+				1D6B4C087B6BCABBB3852E5B /* ContentBlockerService.swift in Sources */,
+				62460B72A6B35D3C229488A1 /* DefaultModes.swift in Sources */,
+				3BC548E9EAAA7D5D28B80C3E /* Mode.swift in Sources */,
+				643B90223F9221DBEBCCDD34 /* ModeSession.swift in Sources */,
+				BE7906149DA1EF1980260C16 /* ScheduleService.swift in Sources */,
+				F0BF7E0065226CE29994ABDB /* TimeBlock.swift in Sources */,
+				7B0633E0E7636EC522185446 /* UIColor+Hex.swift in Sources */,
+				AA5052D4DC650DCD7A09928B /* Weekday.swift in Sources */,
+				E0D0D2470018B197C9187D70 /* WeeklySchedule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,11 +604,18 @@
 			files = (
 				FFD4DCDC36F7CB699ACFD6BE /* AppState.swift in Sources */,
 				15A10BAB02F5D8958C4CE7C5 /* BlockingService.swift in Sources */,
+				C57CD3A01C1202D847E4B5E0 /* Color+Hex.swift in Sources */,
 				F3BEC8CBB33869ABC7DECD0A /* Constants.swift in Sources */,
-				2B74E00623385346EC95DCAC /* DetoxProfile.swift in Sources */,
+				FAD08BD235260AB75CCBF084 /* ContentBlockerService.swift in Sources */,
+				E9C28DCC46F639C20D603CBF /* DefaultModes.swift in Sources */,
 				33EBF83D48EF70434347E9F2 /* FocusPhoneWidget.swift in Sources */,
-				77B4F0BCB33EBE96F7D9ECC1 /* FreedomWindow.swift in Sources */,
+				CD589D817CAB532DEAE779A2 /* Mode.swift in Sources */,
+				68EB1A747370664933A36892 /* ModeSession.swift in Sources */,
 				E79EE9096A14334D2C90A46A /* ScheduleService.swift in Sources */,
+				E04945AF563533F9D57BCA64 /* TimeBlock.swift in Sources */,
+				226C6762EB06C8C69809A380 /* UIColor+Hex.swift in Sources */,
+				DEB4C7854ABF1CF1430E5E95 /* Weekday.swift in Sources */,
+				089388C6FE2F97486DE0312B /* WeeklySchedule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,19 +623,38 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9517222F6C5EE81B03EDFDF3 /* AppBlockingViewModel.swift in Sources */,
+				0A9238A226B7A9B9753CA80C /* AddTimeBlockView.swift in Sources */,
 				0E456D6BF1DA4F9300B09D11 /* AppState.swift in Sources */,
+				566898E393BF279FFFCFCCF7 /* AuthViewModel.swift in Sources */,
 				8840AC6E1C00C36D171B6798 /* BlockingService.swift in Sources */,
+				212BB6EC8152C0D5E9792A41 /* CalendarTab.swift in Sources */,
+				F8E0D24B2535064BC2D873A2 /* CalendarViewModel.swift in Sources */,
+				F109C3745B027F6A52FEAF10 /* Color+Hex.swift in Sources */,
+				7770E23ED0B00AE353112CF7 /* ColorPickerGridView.swift in Sources */,
 				7D4157DD880166D9CDC86255 /* Constants.swift in Sources */,
+				84E3ACE2B71D82727804D176 /* ContentBlockerService.swift in Sources */,
 				5B8FAD797F84C5926BC809B4 /* ContentView.swift in Sources */,
-				B653BE576041A56B2EC93633 /* DashboardView.swift in Sources */,
-				AED284E14DDD24682232E4BF /* DetoxProfile.swift in Sources */,
+				CCED84459F187A3241D766F0 /* DayTimelineView.swift in Sources */,
+				47796E56815BA874D59A67D2 /* DefaultModes.swift in Sources */,
 				025773A172E31D4B7DCE3FAF /* FocusPhoneApp.swift in Sources */,
-				83EB66C2A49A1B61CB8F9E3D /* FreedomWindow.swift in Sources */,
+				5580DBCB5CEAF0A5809AAA2F /* IconPickerView.swift in Sources */,
+				02F8CD28C50F7F5BEE4B8FB6 /* MainTabView.swift in Sources */,
+				D39824746429944FB75C351B /* Mode.swift in Sources */,
+				08EE3C042C04C8B14915A0F8 /* ModeEditorView.swift in Sources */,
+				4ED2F9ED48E835FA99375E16 /* ModeListTab.swift in Sources */,
+				BD360C5E213EEC18513F8C08 /* ModeListViewModel.swift in Sources */,
+				DCB52EC05AA8F0ABD1DB0063 /* ModeSession.swift in Sources */,
 				7158AD7E9EA32E52A96C745F /* OnboardingView.swift in Sources */,
 				8BD6E8FF208644A0BB54263F /* ScheduleService.swift in Sources */,
-				547E93335D0551311BDC999D /* ScheduleSetupView.swift in Sources */,
-				6867A5DD96FE20CEACFFE1AC /* ScheduleViewModel.swift in Sources */,
+				49DBE9DEDB07C0A06313B34A /* SettingsView.swift in Sources */,
+				17627C7D1669B03E37A55AF2 /* SettingsViewModel.swift in Sources */,
+				972F91E3549FF2BC524B7603 /* StatsView.swift in Sources */,
+				99243340FF9D8E7F2009940D /* StatsViewModel.swift in Sources */,
+				E0CA4DCEE08E2D67D28050AC /* TimeBlock.swift in Sources */,
+				1E07C691F79C0419D0E57B10 /* UIColor+Hex.swift in Sources */,
+				C33D987A3A24F5CD319BCBB6 /* WeekDaySelectorView.swift in Sources */,
+				63B7C95FE932DF4BD262166B /* Weekday.swift in Sources */,
+				CE69C1FABBDE9C7C308CDA4D /* WeeklySchedule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,6 +687,7 @@
 		00A7402D031FD1AF0CEB1DD8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ContentBlockerExtension/ContentBlockerExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ContentBlockerExtension/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.contentblocker";
@@ -567,8 +722,35 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 2W3NRPZS9S;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -601,8 +783,35 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 2W3NRPZS9S;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -657,6 +866,7 @@
 		DEB21542A5FC29103D92F6DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ContentBlockerExtension/ContentBlockerExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ContentBlockerExtension/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.contentblocker";

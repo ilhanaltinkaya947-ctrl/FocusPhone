@@ -1,15 +1,18 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var blockingVM = AppBlockingViewModel()
+    @StateObject private var authVM = AuthViewModel()
 
     var body: some View {
         Group {
             if AppState.shared.isOnboardingCompleted {
-                DashboardView(blockingVM: blockingVM)
+                MainTabView()
             } else {
-                OnboardingView(blockingVM: blockingVM)
+                OnboardingView(authVM: authVM)
             }
+        }
+        .onAppear {
+            AppState.shared.seedDefaultsIfNeeded()
         }
     }
 }
