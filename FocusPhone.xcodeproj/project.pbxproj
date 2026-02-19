@@ -106,6 +106,28 @@
 		3444E7565DAC813B283A08B9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4682C20C55B1D22FF536CE64 /* PrivacyInfo.xcprivacy */; };
 		AE45A6E87022E25F190DF6D5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 73018DBCE7F7BB3157BF1522 /* PrivacyInfo.xcprivacy */; };
 		903B270ABC1C696A0B74122B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D86DD1ADD77FC7207EEE3FFD /* PrivacyInfo.xcprivacy */; };
+		1CF901A80240729402CD78E2 /* DailyIntention.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE28C0C56B41229F0C763D9 /* DailyIntention.swift */; };
+		7F0A105DE85663830C1F3B5E /* DailyIntention.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE28C0C56B41229F0C763D9 /* DailyIntention.swift */; };
+		874F2AEFE21E2C58172D6BD4 /* DailyIntention.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE28C0C56B41229F0C763D9 /* DailyIntention.swift */; };
+		04A706613CD0836869B3D149 /* DailyIntention.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE28C0C56B41229F0C763D9 /* DailyIntention.swift */; };
+		0DF3A60AEEFB9A73B2254D03 /* DailyIntention.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE28C0C56B41229F0C763D9 /* DailyIntention.swift */; };
+		CACC89F1D97A01013F558B1E /* DailyStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD66608C672AA11D3CE1078B /* DailyStats.swift */; };
+		4810FFC7F65EE2F4EE0F8030 /* DailyStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD66608C672AA11D3CE1078B /* DailyStats.swift */; };
+		2AD78EAFB1254ED37634B170 /* DailyStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD66608C672AA11D3CE1078B /* DailyStats.swift */; };
+		57FE56CD93BE98DE7D0430B1 /* DailyStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD66608C672AA11D3CE1078B /* DailyStats.swift */; };
+		4CB1DC86477F5EC632424E41 /* DailyStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD66608C672AA11D3CE1078B /* DailyStats.swift */; };
+		C7DA264D534320F766438ED3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D045C66563FD25E1D0A214 /* Theme.swift */; };
+		AD6C922E95237F6CD3CCBC1A /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D045C66563FD25E1D0A214 /* Theme.swift */; };
+		EF4334DE3FFC082255F1779A /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D045C66563FD25E1D0A214 /* Theme.swift */; };
+		9D0D3044B1C56FA78C498BC4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D045C66563FD25E1D0A214 /* Theme.swift */; };
+		02A6FA75F6A9B7CC258B9183 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D045C66563FD25E1D0A214 /* Theme.swift */; };
+		F52DFF68C34E6EFBC1324F3B /* ModeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD8F7294FE5FA36161CC998 /* ModeColor.swift */; };
+		AF9F9A10A5318E7D1E47507D /* ModeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD8F7294FE5FA36161CC998 /* ModeColor.swift */; };
+		443287F2348C5FE4090EB252 /* ModeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD8F7294FE5FA36161CC998 /* ModeColor.swift */; };
+		BF4D6FC3D8B3FA9B65BFE95A /* ModeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD8F7294FE5FA36161CC998 /* ModeColor.swift */; };
+		DC1A453E9B0424C55A8A84D5 /* ModeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD8F7294FE5FA36161CC998 /* ModeColor.swift */; };
+		219C4A77BFEBE2D19A69C4E1 /* DailyIntentionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B008E382BA768CDDF412F98F /* DailyIntentionView.swift */; };
+		9BB30290BC882A0CB417030A /* CurrentModeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB15999472B392049777CAC /* CurrentModeCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,6 +237,12 @@
 		4682C20C55B1D22FF536CE64 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		73018DBCE7F7BB3157BF1522 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		D86DD1ADD77FC7207EEE3FFD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		EFE28C0C56B41229F0C763D9 /* DailyIntention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntention.swift; sourceTree = "<group>"; };
+		DD66608C672AA11D3CE1078B /* DailyStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyStats.swift; sourceTree = "<group>"; };
+		D2D045C66563FD25E1D0A214 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		DCD8F7294FE5FA36161CC998 /* ModeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeColor.swift; sourceTree = "<group>"; };
+		B008E382BA768CDDF412F98F /* DailyIntentionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntentionView.swift; sourceTree = "<group>"; };
+		BFB15999472B392049777CAC /* CurrentModeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentModeCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -222,6 +250,8 @@
 			isa = PBXGroup;
 			children = (
 				BAC5EECC93A9D82CDC2F27BE /* AppState.swift */,
+				EFE28C0C56B41229F0C763D9 /* DailyIntention.swift */,
+				DD66608C672AA11D3CE1078B /* DailyStats.swift */,
 				FA6B83D67A1A4A8149845433 /* DefaultModes.swift */,
 				625AFD09AD0CF5DFE3553855 /* Mode.swift */,
 				65532370280A426249164C93 /* ModeSession.swift */,
@@ -236,6 +266,8 @@
 			isa = PBXGroup;
 			children = (
 				202449C712B38F1723046417 /* Color+Hex.swift */,
+				DCD8F7294FE5FA36161CC998 /* ModeColor.swift */,
+				D2D045C66563FD25E1D0A214 /* Theme.swift */,
 				ED5FF9BDBBCEC3334409C107 /* UIColor+Hex.swift */,
 			);
 			path = Helpers;
@@ -281,6 +313,8 @@
 				3226870292F5A68BEC23591A /* AddTimeBlockView.swift */,
 				C531965CF0B2497FC019175D /* CalendarTab.swift */,
 				969C7B0A77A80986AFB78672 /* ColorPickerGridView.swift */,
+				BFB15999472B392049777CAC /* CurrentModeCardView.swift */,
+				B008E382BA768CDDF412F98F /* DailyIntentionView.swift */,
 				DA07F60273976DEA7747E87A /* DayTimelineView.swift */,
 				3EA2EC78BA531FD508093EEA /* IconPickerView.swift */,
 				53380FB50E34F4ACE6F907ED /* MainTabView.swift */,
@@ -588,11 +622,15 @@
 				8CA5BB976F8B82E9CC1B4991 /* Color+Hex.swift in Sources */,
 				244E091E5897FFB63C455709 /* Constants.swift in Sources */,
 				9D0F1B7430363DCF58DD15F0 /* ContentBlockerService.swift in Sources */,
+				1CF901A80240729402CD78E2 /* DailyIntention.swift in Sources */,
+				CACC89F1D97A01013F558B1E /* DailyStats.swift in Sources */,
 				4FF8FAF4785C6A2C1B613B8C /* DefaultModes.swift in Sources */,
 				8ADC5EBE22E5707E6BF3D5FD /* DeviceActivityMonitorExtension.swift in Sources */,
 				4C58DDF933C6255426B05251 /* Mode.swift in Sources */,
+				F52DFF68C34E6EFBC1324F3B /* ModeColor.swift in Sources */,
 				F7080D1D266BCB333682016A /* ModeSession.swift in Sources */,
 				7A65B706A1E9033497C528F5 /* ScheduleService.swift in Sources */,
+				C7DA264D534320F766438ED3 /* Theme.swift in Sources */,
 				4C434C7498FC79D7E9B00D8B /* TimeBlock.swift in Sources */,
 				3DFC7767E81B974AF3D55800 /* UIColor+Hex.swift in Sources */,
 				7CFFCB0F4EA1C89ECF72EADC /* Weekday.swift in Sources */,
@@ -609,11 +647,15 @@
 				9C998CB5B9BDF7AD1BB82362 /* Color+Hex.swift in Sources */,
 				774752A993FF93C11918A181 /* Constants.swift in Sources */,
 				6A5A15BFBC9E9584B3F5778E /* ContentBlockerService.swift in Sources */,
+				04A706613CD0836869B3D149 /* DailyIntention.swift in Sources */,
+				57FE56CD93BE98DE7D0430B1 /* DailyStats.swift in Sources */,
 				D4A2E2542D83ABD2597C587F /* DefaultModes.swift in Sources */,
 				7DDF60492292BCB3576B9743 /* Mode.swift in Sources */,
+				BF4D6FC3D8B3FA9B65BFE95A /* ModeColor.swift in Sources */,
 				BF01ACBBBFE91FF30CC2AB16 /* ModeSession.swift in Sources */,
 				DC8C62856813C10EEF94621C /* ScheduleService.swift in Sources */,
 				C64870FA12F415AA0F80C15A /* ShieldConfigurationExtension.swift in Sources */,
+				9D0D3044B1C56FA78C498BC4 /* Theme.swift in Sources */,
 				1EFA64542753E7BE521C0DC1 /* TimeBlock.swift in Sources */,
 				76EC309D0D53065888AD1D06 /* UIColor+Hex.swift in Sources */,
 				DF473C0A274F65DCF2F86234 /* Weekday.swift in Sources */,
@@ -631,10 +673,14 @@
 				322DF3F96167E43D9F97EA3E /* Constants.swift in Sources */,
 				D2AE3DAA3EA0FC0295A77D59 /* ContentBlockerRequestHandler.swift in Sources */,
 				1D6B4C087B6BCABBB3852E5B /* ContentBlockerService.swift in Sources */,
+				7F0A105DE85663830C1F3B5E /* DailyIntention.swift in Sources */,
+				4810FFC7F65EE2F4EE0F8030 /* DailyStats.swift in Sources */,
 				62460B72A6B35D3C229488A1 /* DefaultModes.swift in Sources */,
 				3BC548E9EAAA7D5D28B80C3E /* Mode.swift in Sources */,
+				AF9F9A10A5318E7D1E47507D /* ModeColor.swift in Sources */,
 				643B90223F9221DBEBCCDD34 /* ModeSession.swift in Sources */,
 				BE7906149DA1EF1980260C16 /* ScheduleService.swift in Sources */,
+				AD6C922E95237F6CD3CCBC1A /* Theme.swift in Sources */,
 				F0BF7E0065226CE29994ABDB /* TimeBlock.swift in Sources */,
 				7B0633E0E7636EC522185446 /* UIColor+Hex.swift in Sources */,
 				AA5052D4DC650DCD7A09928B /* Weekday.swift in Sources */,
@@ -651,11 +697,15 @@
 				C57CD3A01C1202D847E4B5E0 /* Color+Hex.swift in Sources */,
 				F3BEC8CBB33869ABC7DECD0A /* Constants.swift in Sources */,
 				FAD08BD235260AB75CCBF084 /* ContentBlockerService.swift in Sources */,
+				874F2AEFE21E2C58172D6BD4 /* DailyIntention.swift in Sources */,
+				2AD78EAFB1254ED37634B170 /* DailyStats.swift in Sources */,
 				E9C28DCC46F639C20D603CBF /* DefaultModes.swift in Sources */,
 				33EBF83D48EF70434347E9F2 /* FocusPhoneWidget.swift in Sources */,
 				CD589D817CAB532DEAE779A2 /* Mode.swift in Sources */,
+				443287F2348C5FE4090EB252 /* ModeColor.swift in Sources */,
 				68EB1A747370664933A36892 /* ModeSession.swift in Sources */,
 				E79EE9096A14334D2C90A46A /* ScheduleService.swift in Sources */,
+				EF4334DE3FFC082255F1779A /* Theme.swift in Sources */,
 				E04945AF563533F9D57BCA64 /* TimeBlock.swift in Sources */,
 				226C6762EB06C8C69809A380 /* UIColor+Hex.swift in Sources */,
 				DEB4C7854ABF1CF1430E5E95 /* Weekday.swift in Sources */,
@@ -678,12 +728,17 @@
 				7D4157DD880166D9CDC86255 /* Constants.swift in Sources */,
 				84E3ACE2B71D82727804D176 /* ContentBlockerService.swift in Sources */,
 				5B8FAD797F84C5926BC809B4 /* ContentView.swift in Sources */,
+				9BB30290BC882A0CB417030A /* CurrentModeCardView.swift in Sources */,
+				0DF3A60AEEFB9A73B2254D03 /* DailyIntention.swift in Sources */,
+				219C4A77BFEBE2D19A69C4E1 /* DailyIntentionView.swift in Sources */,
+				4CB1DC86477F5EC632424E41 /* DailyStats.swift in Sources */,
 				CCED84459F187A3241D766F0 /* DayTimelineView.swift in Sources */,
 				47796E56815BA874D59A67D2 /* DefaultModes.swift in Sources */,
 				025773A172E31D4B7DCE3FAF /* FocusPhoneApp.swift in Sources */,
 				5580DBCB5CEAF0A5809AAA2F /* IconPickerView.swift in Sources */,
 				02F8CD28C50F7F5BEE4B8FB6 /* MainTabView.swift in Sources */,
 				D39824746429944FB75C351B /* Mode.swift in Sources */,
+				DC1A453E9B0424C55A8A84D5 /* ModeColor.swift in Sources */,
 				08EE3C042C04C8B14915A0F8 /* ModeEditorView.swift in Sources */,
 				4ED2F9ED48E835FA99375E16 /* ModeListTab.swift in Sources */,
 				BD360C5E213EEC18513F8C08 /* ModeListViewModel.swift in Sources */,
@@ -694,6 +749,7 @@
 				17627C7D1669B03E37A55AF2 /* SettingsViewModel.swift in Sources */,
 				972F91E3549FF2BC524B7603 /* StatsView.swift in Sources */,
 				99243340FF9D8E7F2009940D /* StatsViewModel.swift in Sources */,
+				02A6FA75F6A9B7CC258B9183 /* Theme.swift in Sources */,
 				E0CA4DCEE08E2D67D28050AC /* TimeBlock.swift in Sources */,
 				1E07C691F79C0419D0E57B10 /* UIColor+Hex.swift in Sources */,
 				C33D987A3A24F5CD319BCBB6 /* WeekDaySelectorView.swift in Sources */,

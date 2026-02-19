@@ -69,13 +69,13 @@ struct AddTimeBlockView: View {
                     ForEach(modes) { mode in
                         HStack {
                             Image(systemName: mode.icon)
-                                .foregroundStyle(Color(hex: mode.colorHex))
+                                .foregroundStyle(ModeColor.adaptive(lightHex: mode.colorHex))
                                 .frame(width: 30)
                             Text(mode.name)
                             Spacer()
                             if selectedModeID == mode.id {
                                 Image(systemName: "checkmark")
-                                    .foregroundStyle(.blue)
+                                    .foregroundStyle(ModeColor.adaptive(lightHex: mode.colorHex))
                             }
                         }
                         .contentShape(Rectangle())

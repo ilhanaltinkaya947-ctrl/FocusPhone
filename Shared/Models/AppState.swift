@@ -110,7 +110,41 @@ final class AppState {
         return modeSessions.filter { $0.startDate >= weekAgo }
     }
 
-    // MARK: - Seeding
+    // MARK: - Daily Intentions
+
+    var dailyIntentions: [DailyIntention] {
+        get { load(forKey: Constants.dailyIntentionsKey) ?? [] }
+        set { save(newValue, forKey: Constants.dailyIntentionsKey) }
+    }
+
+    func intention(for date: Date) -> DailyIntention? {
+        let calendar = Calendar.current
+        return dailyIntentions.first { calendar.isDate($0.date, inSameDayAs: date) }
+    }
+
+    func setIntention(_ text: String, for date: Date) {
+        let startOfDay = Calendar.current.startOfDay(for: date)
+        var intentions = dailyIntentions
+        if let index = intentions.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: startOfDay) }) {
+            intentions[index].text = text
+        } else {
+            intentions.append(DailyIntention(date: startOfDay, text: text))
+        }
+        dailyIntentions = intentions
+    }
+
+    // MARK: - Daily Stats
+
+    var dailyStats: [DailyStats] {
+        get { load(forKey: Constants.dailyStatsKey) ?? [] }
+        set { save(newValue, forKey: Constants.dailyStatsKey) }
+    }
+
+    func stats(for date: Date) -> DailyStats? {
+        dailyStats.first { Calendar.current.isDate($0.date, inSameDayAs: date) }
+    }
+
+    // MARK: - Seeding & Migration
 
     var hasSeededDefaults: Bool {
         get { defaults.bool(forKey: Constants.hasSeededDefaultsKey) }
@@ -118,11 +152,35 @@ final class AppState {
     }
 
     func seedDefaultsIfNeeded() {
-        guard !hasSeededDefaults else { return }
-        modes = DefaultModes.allDefaults()
-        weeklySchedules = [WeeklySchedule(name: "My Schedule", blockIDs: [], isActive: true)]
-        timeBlocks = []
-        hasSeededDefaults = true
+        if !hasSeededDefaults {
+            modes = DefaultModes.allDefaults()
+            weeklySchedules = [WeeklySchedule(name: "My Schedule", blockIDs: [], isActive: true)]
+            timeBlocks = []
+            hasSeededDefaults = true
+        }
+        migrateColorsIfNeeded()
+    }
+
+    private func migrateColorsIfNeeded() {
+        guard !defaults.bool(forKey: Constants.hasUpdatedColorsV2Key) else { return }
+        let oldToNew: [String: String] = [
+            "#F5A623": "#E8DCC8",
+            "#4A90D9": "#A8C5A0",
+            "#7ED321": "#F0C9A6",
+            "#E74C3C": "#A0B8D0",
+            "#9B59B6": "#8EBAB8",
+            "#8E8E93": "#C4B5D4",
+            "#34C759": "#E8B8B8",
+            "#1C1C1E": "#3A3A4A",
+        ]
+        var updatedModes = modes
+        for i in updatedModes.indices where updatedModes[i].isSystem {
+            if let newHex = oldToNew[updatedModes[i].colorHex] {
+                updatedModes[i].colorHex = newHex
+            }
+        }
+        modes = updatedModes
+        defaults.set(true, forKey: Constants.hasUpdatedColorsV2Key)
     }
 
     // MARK: - JSON Helpers

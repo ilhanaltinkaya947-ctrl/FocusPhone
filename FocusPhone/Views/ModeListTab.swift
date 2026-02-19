@@ -80,11 +80,11 @@ struct ModeRowView: View {
         HStack(spacing: 12) {
             Image(systemName: mode.icon)
                 .font(.title3)
-                .foregroundStyle(Color(hex: mode.colorHex))
+                .foregroundStyle(ModeColor.adaptive(lightHex: mode.colorHex))
                 .frame(width: 36, height: 36)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color(hex: mode.colorHex).opacity(0.15))
+                        .fill(ModeColor.adaptive(lightHex: mode.colorHex).opacity(0.15))
                 )
 
             VStack(alignment: .leading, spacing: 2) {
@@ -97,7 +97,7 @@ struct ModeRowView: View {
                             .foregroundStyle(.white)
                             .padding(.horizontal, 5)
                             .padding(.vertical, 1)
-                            .background(Color(hex: mode.colorHex), in: Capsule())
+                            .background(ModeColor.adaptive(lightHex: mode.colorHex), in: Capsule())
                     }
                 }
                 modeSubtitle

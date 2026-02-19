@@ -6,7 +6,7 @@ struct StatsView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 16) {
+                VStack(spacing: FPTheme.spacing16) {
                     activeModeCard
                     todayOverviewRow
                     todayUsageSection
@@ -15,6 +15,7 @@ struct StatsView: View {
                 }
                 .padding()
             }
+            .background(FPTheme.backgroundPrimary)
             .navigationTitle("Stats")
             .onAppear { viewModel.refresh() }
         }
@@ -28,32 +29,33 @@ struct StatsView: View {
             HStack(spacing: 14) {
                 Image(systemName: mode.icon)
                     .font(.title2)
-                    .foregroundStyle(Color(hex: mode.colorHex))
+                    .foregroundStyle(ModeColor.blockForeground(lightHex: mode.colorHex))
                     .frame(width: 48, height: 48)
-                    .background(Color(hex: mode.colorHex).opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+                    .background(ModeColor.blockBackground(lightHex: mode.colorHex), in: RoundedRectangle(cornerRadius: FPTheme.smallRadius))
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Currently Active")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(FPTheme.captionFont)
+                        .foregroundStyle(FPTheme.textSecondary)
                     Text(mode.name)
                         .font(.title3.weight(.semibold))
+                        .foregroundStyle(FPTheme.textPrimary)
                 }
 
                 Spacer()
 
                 Circle()
-                    .fill(Color(hex: mode.colorHex))
+                    .fill(ModeColor.adaptive(lightHex: mode.colorHex))
                     .frame(width: 10, height: 10)
                     .modifier(PulseModifier())
             }
             .padding()
             .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color(hex: mode.colorHex).opacity(0.08))
+                RoundedRectangle(cornerRadius: FPTheme.cardRadius)
+                    .fill(ModeColor.blockBackground(lightHex: mode.colorHex))
                     .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .strokeBorder(Color(hex: mode.colorHex).opacity(0.2), lineWidth: 1)
+                        RoundedRectangle(cornerRadius: FPTheme.cardRadius)
+                            .strokeBorder(ModeColor.adaptive(lightHex: mode.colorHex).opacity(0.2), lineWidth: 1)
                     )
             )
             .accessibilityElement(children: .combine)
@@ -62,41 +64,41 @@ struct StatsView: View {
             HStack(spacing: 14) {
                 Image(systemName: "moon.zzz.fill")
                     .font(.title2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(FPTheme.textSecondary)
                     .frame(width: 48, height: 48)
-                    .background(Color(.systemGray5), in: RoundedRectangle(cornerRadius: 12))
+                    .background(FPTheme.backgroundSecondary, in: RoundedRectangle(cornerRadius: FPTheme.smallRadius))
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Currently")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(FPTheme.captionFont)
+                        .foregroundStyle(FPTheme.textSecondary)
                     Text("No Active Mode")
                         .font(.title3.weight(.semibold))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(FPTheme.textSecondary)
                 }
 
                 Spacer()
             }
             .padding()
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+            .background(FPTheme.backgroundSecondary, in: RoundedRectangle(cornerRadius: FPTheme.cardRadius))
             .accessibilityElement(children: .combine)
             .accessibilityLabel("No active mode")
         }
     }
 
-    // MARK: - Today Overview (Total Focus Time + Sessions Count)
+    // MARK: - Today Overview
 
     private var todayOverviewRow: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: FPTheme.spacing12) {
             statCard(
                 icon: "clock.fill",
-                iconColor: .blue,
+                iconColor: Color(hex: "#A0B8D0"),
                 title: "Focus Time",
                 value: viewModel.formatDuration(viewModel.todayTotalDuration)
             )
             statCard(
                 icon: "list.bullet.circle.fill",
-                iconColor: .purple,
+                iconColor: Color(hex: "#C4B5D4"),
                 title: "Sessions",
                 value: "\(viewModel.todaySessions.count)"
             )
@@ -111,17 +113,18 @@ struct StatsView: View {
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(title)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(FPTheme.captionFont)
+                    .foregroundStyle(FPTheme.textSecondary)
                 Text(value)
                     .font(.headline)
+                    .foregroundStyle(FPTheme.textPrimary)
             }
 
             Spacer()
         }
-        .padding(12)
+        .padding(FPTheme.spacing12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .background(FPTheme.backgroundSecondary, in: RoundedRectangle(cornerRadius: FPTheme.smallRadius))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title): \(value)")
     }
@@ -129,9 +132,10 @@ struct StatsView: View {
     // MARK: - Today's Usage
 
     private var todayUsageSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: FPTheme.spacing12) {
             Text("Today")
-                .font(.headline)
+                .font(FPTheme.sectionTitleFont)
+                .foregroundStyle(FPTheme.textPrimary)
 
             if viewModel.todayUsageByMode.isEmpty {
                 HStack {
@@ -139,52 +143,54 @@ struct StatsView: View {
                     VStack(spacing: 6) {
                         Image(systemName: "tray")
                             .font(.title2)
-                            .foregroundStyle(.quaternary)
+                            .foregroundStyle(FPTheme.textSecondary.opacity(0.4))
                         Text("No sessions recorded today")
                             .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(FPTheme.textSecondary)
                     }
                     Spacer()
                 }
-                .padding(.vertical, 16)
+                .padding(.vertical, FPTheme.spacing16)
             } else {
                 ForEach(viewModel.todayUsageByMode, id: \.modeName) { item in
                     HStack(spacing: 10) {
                         RoundedRectangle(cornerRadius: 2)
-                            .fill(Color(hex: item.colorHex))
+                            .fill(ModeColor.adaptive(lightHex: item.colorHex))
                             .frame(width: 4, height: 28)
 
                         Text(item.modeName)
                             .font(.subheadline)
+                            .foregroundStyle(FPTheme.textPrimary)
 
                         Spacer()
 
                         Text(viewModel.formatDuration(item.duration))
                             .font(.subheadline.weight(.medium))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(FPTheme.textSecondary)
                     }
                 }
             }
         }
         .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .background(FPTheme.backgroundSecondary, in: RoundedRectangle(cornerRadius: FPTheme.cardRadius))
     }
 
     // MARK: - Weekly Chart
 
     private var weeklyChartSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: FPTheme.spacing12) {
             Text("This Week")
-                .font(.headline)
+                .font(FPTheme.sectionTitleFont)
+                .foregroundStyle(FPTheme.textPrimary)
 
             HStack(alignment: .bottom, spacing: 8) {
-                ForEach(Array(viewModel.weeklyData.enumerated()), id: \.offset) { index, day in
+                ForEach(Array(viewModel.weeklyData.enumerated()), id: \.offset) { _, day in
                     let isToday = Calendar.current.isDateInToday(day.date)
                     VStack(spacing: 6) {
                         weeklyBar(day: day)
                         Text(dayLabel(day.date))
                             .font(.system(size: 10, weight: isToday ? .bold : .regular))
-                            .foregroundStyle(isToday ? .primary : .secondary)
+                            .foregroundStyle(isToday ? FPTheme.textPrimary : FPTheme.textSecondary)
                     }
                     .frame(maxWidth: .infinity)
                     .accessibilityElement(children: .ignore)
@@ -194,7 +200,7 @@ struct StatsView: View {
             .frame(height: 140)
         }
         .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .background(FPTheme.backgroundSecondary, in: RoundedRectangle(cornerRadius: FPTheme.cardRadius))
     }
 
     @ViewBuilder
@@ -207,7 +213,7 @@ struct StatsView: View {
                 Spacer()
                 if day.segments.isEmpty {
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(Color(.systemGray5))
+                        .fill(FPTheme.divider)
                         .frame(height: 4)
                 } else {
                     let totalHeight = max(4, barFraction * geo.size.height * 0.9)
@@ -216,7 +222,7 @@ struct StatsView: View {
                             let segFraction = segment.minutes / day.totalMinutes
                             let height = max(2, CGFloat(segFraction) * totalHeight)
                             RoundedRectangle(cornerRadius: 3)
-                                .fill(Color(hex: segment.colorHex))
+                                .fill(ModeColor.adaptive(lightHex: segment.colorHex))
                                 .frame(height: height)
                         }
                     }
@@ -239,22 +245,23 @@ struct StatsView: View {
         HStack(spacing: 14) {
             Image(systemName: "flame.fill")
                 .font(.title2)
-                .foregroundStyle(.orange)
+                .foregroundStyle(Color(hex: "#F0C9A6"))
                 .frame(width: 48, height: 48)
-                .background(Color.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+                .background(Color(hex: "#F0C9A6").opacity(0.15), in: RoundedRectangle(cornerRadius: FPTheme.smallRadius))
 
             VStack(alignment: .leading, spacing: 2) {
                 Text("Current Streak")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(FPTheme.captionFont)
+                    .foregroundStyle(FPTheme.textSecondary)
                 Text("\(viewModel.streakDays) day\(viewModel.streakDays == 1 ? "" : "s")")
                     .font(.title3.weight(.semibold))
+                    .foregroundStyle(FPTheme.textPrimary)
             }
 
             Spacer()
         }
         .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .background(FPTheme.backgroundSecondary, in: RoundedRectangle(cornerRadius: FPTheme.cardRadius))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Current streak: \(viewModel.streakDays) day\(viewModel.streakDays == 1 ? "" : "s")")
     }

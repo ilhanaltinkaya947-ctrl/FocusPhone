@@ -21,7 +21,7 @@ enum DefaultModes {
             Mode(
                 name: "Morning Routine",
                 icon: "sunrise.fill",
-                colorHex: "#F5A623",
+                colorHex: "#E8DCC8",
                 blockAppStore: true,
                 blockAppDeletion: true,
                 isSystem: true,
@@ -30,7 +30,7 @@ enum DefaultModes {
             Mode(
                 name: "Deep Work",
                 icon: "brain.head.profile",
-                colorHex: "#4A90D9",
+                colorHex: "#A8C5A0",
                 blockAppStore: true,
                 blockAppDeletion: true,
                 isSystem: true,
@@ -39,7 +39,7 @@ enum DefaultModes {
             Mode(
                 name: "Break",
                 icon: "cup.and.saucer.fill",
-                colorHex: "#7ED321",
+                colorHex: "#F0C9A6",
                 blockAppStore: false,
                 blockAppDeletion: false,
                 isSystem: true
@@ -47,7 +47,7 @@ enum DefaultModes {
             Mode(
                 name: "Exercise",
                 icon: "figure.run",
-                colorHex: "#E74C3C",
+                colorHex: "#A0B8D0",
                 blockAppStore: true,
                 blockAppDeletion: true,
                 isSystem: true
@@ -55,7 +55,7 @@ enum DefaultModes {
             Mode(
                 name: "Commute",
                 icon: "car.fill",
-                colorHex: "#9B59B6",
+                colorHex: "#8EBAB8",
                 blockAppStore: false,
                 blockAppDeletion: true,
                 isSystem: true
@@ -63,7 +63,7 @@ enum DefaultModes {
             Mode(
                 name: "Wind Down",
                 icon: "moon.fill",
-                colorHex: "#8E8E93",
+                colorHex: "#C4B5D4",
                 blockAppStore: true,
                 blockAppDeletion: true,
                 isSystem: true,
@@ -72,7 +72,7 @@ enum DefaultModes {
             Mode(
                 name: "Free Time",
                 icon: "gamecontroller.fill",
-                colorHex: "#34C759",
+                colorHex: "#E8B8B8",
                 blockAppStore: false,
                 blockAppDeletion: false,
                 isSystem: true
@@ -80,7 +80,7 @@ enum DefaultModes {
             Mode(
                 name: "Sleep",
                 icon: "bed.double.fill",
-                colorHex: "#1C1C1E",
+                colorHex: "#3A3A4A",
                 blockAppStore: true,
                 blockAppDeletion: true,
                 isSystem: true,

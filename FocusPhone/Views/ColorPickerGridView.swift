@@ -5,10 +5,10 @@ struct ColorPickerGridView: View {
     @Environment(\.dismiss) private var dismiss
 
     private static let colors: [String] = [
-        "#F5A623", "#E74C3C", "#FF6B6B", "#FF9500",
-        "#FF2D55", "#AF52DE", "#9B59B6", "#5856D6",
-        "#4A90D9", "#007AFF", "#30B0C7", "#00C7BE",
-        "#34C759", "#7ED321", "#8E8E93", "#1C1C1E",
+        "#A8C5A0", "#F0C9A6", "#A0B8D0", "#E8DCC8",
+        "#C4B5D4", "#E8B8B8", "#3A3A4A", "#8EBAB8",
+        "#B8C9B5", "#D4C4A0", "#C8D8E8", "#E0D0C0",
+        "#D8C8E0", "#D0B0B0", "#505060", "#A0C8C8",
     ]
 
     var body: some View {
@@ -28,12 +28,12 @@ struct ColorPickerGridView: View {
                                         Image(systemName: "checkmark")
                                             .font(.headline)
                                             .fontWeight(.bold)
-                                            .foregroundStyle(.white)
+                                            .foregroundStyle(hex == "#3A3A4A" || hex == "#505060" ? .white : FPTheme.textPrimary)
                                     }
                                 }
                                 .overlay(
                                     Circle()
-                                        .strokeBorder(selectedColorHex == hex ? Color.primary : Color.clear, lineWidth: 3)
+                                        .strokeBorder(selectedColorHex == hex ? FPTheme.textPrimary : Color.clear, lineWidth: 2.5)
                                 )
                         }
                     }

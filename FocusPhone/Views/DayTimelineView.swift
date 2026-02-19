@@ -10,6 +10,7 @@ struct DayTimelineView: View {
     private let hourHeight: CGFloat = 60
     private let startHourDisplay = 5
     private let endHourDisplay = 24
+    private let leftMargin: CGFloat = 52
 
     init(blocks: [TimeBlock], modes: [Mode], isToday: Bool = false,
          onEdit: ((TimeBlock) -> Void)? = nil, onDelete: ((TimeBlock) -> Void)? = nil) {
@@ -27,12 +28,13 @@ struct DayTimelineView: View {
                 ForEach(startHourDisplay..<endHourDisplay, id: \.self) { hour in
                     HStack(alignment: .top) {
                         Text(hourLabel(hour))
-                            .font(.caption2)
-                            .foregroundStyle(.tertiary)
+                            .font(FPTheme.timelineHourFont)
+                            .foregroundStyle(FPTheme.textSecondary)
                             .frame(width: 44, alignment: .trailing)
 
                         VStack {
-                            Divider()
+                            FPTheme.divider
+                                .frame(height: 0.5)
                             Spacer()
                         }
                         .frame(height: hourHeight)
@@ -64,14 +66,14 @@ struct DayTimelineView: View {
 
         return HStack(spacing: 0) {
             Circle()
-                .fill(.red)
+                .fill(FPTheme.currentTimeIndicator)
                 .frame(width: 10, height: 10)
             Rectangle()
-                .fill(.red)
+                .fill(FPTheme.currentTimeIndicator)
                 .frame(height: 1.5)
         }
-        .padding(.leading, 46)
-        .offset(y: offset - 5) // center the dot vertically
+        .padding(.leading, leftMargin - 6)
+        .offset(y: offset - 5)
     }
 
     // MARK: - Time Block View
@@ -80,42 +82,31 @@ struct DayTimelineView: View {
         let topOffset = CGFloat(block.startHour * 60 + block.startMinute - startHourDisplay * 60)
             / 60.0 * hourHeight
         let height = CGFloat(block.durationMinutes) / 60.0 * hourHeight
-        let color = Color(hex: mode.colorHex)
 
-        return HStack(spacing: 0) {
-            // Colored accent strip
-            RoundedRectangle(cornerRadius: 2)
-                .fill(color)
-                .frame(width: 4)
-                .padding(.vertical, 2)
+        return HStack(spacing: FPTheme.spacing8) {
+            Image(systemName: mode.icon)
+                .font(.caption)
+                .foregroundStyle(ModeColor.blockForeground(lightHex: mode.colorHex))
 
-            // Content
-            HStack(spacing: 6) {
-                Image(systemName: mode.icon)
-                    .font(.caption)
-                    .foregroundStyle(color)
-                Text(mode.name)
-                    .font(.caption)
-                    .fontWeight(.medium)
-                Spacer()
-                Text("\(block.startTimeString) – \(block.endTimeString)")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            Text(mode.name)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(ModeColor.blockForeground(lightHex: mode.colorHex))
+
+            Spacer()
+
+            Text("\(block.startTimeString) – \(block.endTimeString)")
+                .font(.system(size: 11, weight: .regular, design: .monospaced))
+                .foregroundStyle(ModeColor.blockForeground(lightHex: mode.colorHex).opacity(0.7))
         }
-        .frame(height: max(height, 30))
+        .padding(.horizontal, FPTheme.spacing16)
+        .padding(.vertical, FPTheme.spacing8)
+        .frame(height: max(height, 36))
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(color.opacity(0.12))
+            RoundedRectangle(cornerRadius: FPTheme.cardRadius)
+                .fill(ModeColor.blockBackground(lightHex: mode.colorHex))
         )
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(color.opacity(0.3), lineWidth: 1)
-        )
-        .padding(.leading, 52)
+        .padding(.leading, leftMargin)
         .offset(y: topOffset)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(mode.name), \(block.startTimeString) to \(block.endTimeString)")

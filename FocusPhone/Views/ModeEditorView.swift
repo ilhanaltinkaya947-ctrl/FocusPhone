@@ -28,7 +28,7 @@ struct ModeEditorView: View {
                                 .foregroundStyle(.primary)
                             Spacer()
                             Image(systemName: mode.icon)
-                                .foregroundStyle(Color(hex: mode.colorHex))
+                                .foregroundStyle(ModeColor.adaptive(lightHex: mode.colorHex))
                             Image(systemName: "chevron.right")
                                 .font(.caption)
                                 .foregroundStyle(.tertiary)
@@ -40,7 +40,7 @@ struct ModeEditorView: View {
                                 .foregroundStyle(.primary)
                             Spacer()
                             Circle()
-                                .fill(Color(hex: mode.colorHex))
+                                .fill(ModeColor.adaptive(lightHex: mode.colorHex))
                                 .frame(width: 24, height: 24)
                             Image(systemName: "chevron.right")
                                 .font(.caption)
@@ -100,7 +100,7 @@ struct ModeEditorView: View {
                             addWebsite()
                         } label: {
                             Image(systemName: "plus.circle.fill")
-                                .foregroundStyle(Color(hex: mode.colorHex))
+                                .foregroundStyle(ModeColor.adaptive(lightHex: mode.colorHex))
                         }
                         .disabled(newWebsite.trimmingCharacters(in: .whitespaces).isEmpty)
                     }
