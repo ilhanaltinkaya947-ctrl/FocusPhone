@@ -144,6 +144,36 @@ final class AppState {
         dailyStats.first { Calendar.current.isDate($0.date, inSameDayAs: date) }
     }
 
+    // MARK: - AI Settings
+
+    var userProfile: UserProfile? {
+        get { load(forKey: Constants.userProfileKey) }
+        set { save(newValue, forKey: Constants.userProfileKey) }
+    }
+
+    var aiEnabled: Bool {
+        get { defaults.bool(forKey: Constants.aiEnabledKey) }
+        set { defaults.set(newValue, forKey: Constants.aiEnabledKey) }
+    }
+
+    var weeklyReviewDay: Int {
+        get {
+            let val = defaults.integer(forKey: Constants.weeklyReviewDayKey)
+            return val == 0 ? 1 : val // Default Sunday=1
+        }
+        set { defaults.set(newValue, forKey: Constants.weeklyReviewDayKey) }
+    }
+
+    var lastWeeklyReview: Date? {
+        get { defaults.object(forKey: Constants.lastWeeklyReviewKey) as? Date }
+        set { defaults.set(newValue, forKey: Constants.lastWeeklyReviewKey) }
+    }
+
+    var commitmentLevel: String {
+        get { defaults.string(forKey: Constants.commitmentLevelKey) ?? "flexible" }
+        set { defaults.set(newValue, forKey: Constants.commitmentLevelKey) }
+    }
+
     // MARK: - Seeding & Migration
 
     var hasSeededDefaults: Bool {

@@ -128,6 +128,54 @@
 		DC1A453E9B0424C55A8A84D5 /* ModeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD8F7294FE5FA36161CC998 /* ModeColor.swift */; };
 		219C4A77BFEBE2D19A69C4E1 /* DailyIntentionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B008E382BA768CDDF412F98F /* DailyIntentionView.swift */; };
 		9BB30290BC882A0CB417030A /* CurrentModeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB15999472B392049777CAC /* CurrentModeCardView.swift */; };
+		A1B2C3D4E5F60718A9B0C1D2 /* WeeklyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6071829A0B1C2D3 /* WeeklyCalendarView.swift */; };
+		C3D4E5F607182930B1C2D3E4 /* ViewModeToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6071829304AC2D3E4F5 /* ViewModeToggle.swift */; };
+		939A52A4520DBC851C4429E0 /* LifeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DB5D646B30BC596A000D67 /* LifeArea.swift */; };
+		024022443F649CC81A13082B /* LifeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DB5D646B30BC596A000D67 /* LifeArea.swift */; };
+		891703DE573B55AB39DD0E08 /* LifeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DB5D646B30BC596A000D67 /* LifeArea.swift */; };
+		C0A853D150B96E77AD76703C /* LifeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DB5D646B30BC596A000D67 /* LifeArea.swift */; };
+		EC179542D3ED8830D5EB595F /* LifeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DB5D646B30BC596A000D67 /* LifeArea.swift */; };
+		AAD7B9793415BBFC7BF9CAC4 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37AA1480F66F00EA790BF7A /* UserProfile.swift */; };
+		4BBC236587B955FF77728AE9 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37AA1480F66F00EA790BF7A /* UserProfile.swift */; };
+		3A085329C7EC2DA3A06D3F35 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37AA1480F66F00EA790BF7A /* UserProfile.swift */; };
+		E9796FB9F480C233A678F0E7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37AA1480F66F00EA790BF7A /* UserProfile.swift */; };
+		D4CAAF168BE2EB55DEE3FE45 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37AA1480F66F00EA790BF7A /* UserProfile.swift */; };
+		2D2DA3102B6E6279DD7B6889 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74AB05C4FE046D9950B72C2 /* KeychainService.swift */; };
+		44B3F98738C0CDCD6FB0C901 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74AB05C4FE046D9950B72C2 /* KeychainService.swift */; };
+		001DBF37F97FC69732BF01D6 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74AB05C4FE046D9950B72C2 /* KeychainService.swift */; };
+		B895F0F279D6D613424AC0C9 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74AB05C4FE046D9950B72C2 /* KeychainService.swift */; };
+		BB498517F238001825FF54E6 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74AB05C4FE046D9950B72C2 /* KeychainService.swift */; };
+		E176FBC5148F863246AF3008 /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* GroqService.swift */; };
+		88A9B477A7468E9DB3438113 /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* GroqService.swift */; };
+		D4F4B7D1938164F6564F05D5 /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* GroqService.swift */; };
+		5FBE735F56D59E717130425C /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* GroqService.swift */; };
+		C0DB166FEC1283E0537A93ED /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* GroqService.swift */; };
+		37A6E4A95AB4BDC57C8917AE /* AIResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */; };
+		AE2B30DD9754D2C3E3018729 /* AIResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */; };
+		74FD36CBF3A55A2C3D62EFE9 /* AIResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */; };
+		2535A3C05C4E9DC6DD4AB0C6 /* AIResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */; };
+		161DBA9E04D84776549E289D /* AIResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */; };
+		3E72B1CFE34D24930957E7D8 /* ScheduleTemplateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073F4562A7B5383C188541CD /* ScheduleTemplateService.swift */; };
+		5AC10ABB3BB3DC7439985E66 /* ScheduleTemplateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073F4562A7B5383C188541CD /* ScheduleTemplateService.swift */; };
+		4141C67267EBF2E45285C443 /* ScheduleTemplateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073F4562A7B5383C188541CD /* ScheduleTemplateService.swift */; };
+		9197F8E29D9535FCD686B777 /* ScheduleTemplateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073F4562A7B5383C188541CD /* ScheduleTemplateService.swift */; };
+		33FA5AA1F5987CEAC059DC15 /* ScheduleTemplateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073F4562A7B5383C188541CD /* ScheduleTemplateService.swift */; };
+		BC4539692A31BFFD29E0A07C /* AIPromptTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */; };
+		50EF24424912D8F031583588 /* AIPromptTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */; };
+		462ED94A59744602FD018525 /* AIPromptTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */; };
+		040E1D4927494B1CC76773B4 /* AIPromptTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */; };
+		EAFA5736ACBD2C9DED474D4D /* AIPromptTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */; };
+		951775D466421D9910589E3B /* AIOnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F21F3451648298777054BB6 /* AIOnboardingViewModel.swift */; };
+		518A4B03ABCF63C9EB5545AE /* NLCommandViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44DBF32901FBEA80D331F1F /* NLCommandViewModel.swift */; };
+		3B7C4E9555A96DBC8D5A9B37 /* WeeklyReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE76B35BE40841B35CC073E /* WeeklyReviewViewModel.swift */; };
+		A4388E754BF38625EF9D135D /* AISettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92897DB147D830D9AC4CCA01 /* AISettingsSection.swift */; };
+		E38FBD23AE8375E668274091 /* LifeAreaPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDD18B92223218B73FD74E2 /* LifeAreaPickerView.swift */; };
+		4CD3AF3A7D56A32EAA27EB66 /* QuickQuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6466617E86D7E845737C87A3 /* QuickQuestionsView.swift */; };
+		E256B8DCDD2362EA33B4ECE1 /* AIGeneratingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CCA71438DC9F4816809630 /* AIGeneratingView.swift */; };
+		8318F98CAA97559343D30190 /* AISchedulePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A296F14083080C16011ADC0C /* AISchedulePreviewView.swift */; };
+		C58B158E1C0CEC1FE25498A7 /* NLCommandBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E87242CDC775B5CD047A1C8 /* NLCommandBar.swift */; };
+		57B36080F5D4250D2DE85F02 /* NLCommandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB3BC2A46FC4EC26EF801C9 /* NLCommandSheet.swift */; };
+		9080CF20CDE9975D7022BB13 /* WeeklyReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF1C4EA8E5E31183072586E /* WeeklyReviewView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -243,6 +291,26 @@
 		DCD8F7294FE5FA36161CC998 /* ModeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeColor.swift; sourceTree = "<group>"; };
 		B008E382BA768CDDF412F98F /* DailyIntentionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntentionView.swift; sourceTree = "<group>"; };
 		BFB15999472B392049777CAC /* CurrentModeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentModeCardView.swift; sourceTree = "<group>"; };
+		B2C3D4E5F6071829A0B1C2D3 /* WeeklyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCalendarView.swift; sourceTree = "<group>"; };
+		D4E5F6071829304AC2D3E4F5 /* ViewModeToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModeToggle.swift; sourceTree = "<group>"; };
+		C8DB5D646B30BC596A000D67 /* LifeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeArea.swift; sourceTree = "<group>"; };
+		C37AA1480F66F00EA790BF7A /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		F74AB05C4FE046D9950B72C2 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		A20BFF97B643FCB8F9B84622 /* GroqService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroqService.swift; sourceTree = "<group>"; };
+		F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIResponseCache.swift; sourceTree = "<group>"; };
+		073F4562A7B5383C188541CD /* ScheduleTemplateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTemplateService.swift; sourceTree = "<group>"; };
+		A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIPromptTemplates.swift; sourceTree = "<group>"; };
+		9F21F3451648298777054BB6 /* AIOnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIOnboardingViewModel.swift; sourceTree = "<group>"; };
+		D44DBF32901FBEA80D331F1F /* NLCommandViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NLCommandViewModel.swift; sourceTree = "<group>"; };
+		CEE76B35BE40841B35CC073E /* WeeklyReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReviewViewModel.swift; sourceTree = "<group>"; };
+		92897DB147D830D9AC4CCA01 /* AISettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AISettingsSection.swift; sourceTree = "<group>"; };
+		6EDD18B92223218B73FD74E2 /* LifeAreaPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeAreaPickerView.swift; sourceTree = "<group>"; };
+		6466617E86D7E845737C87A3 /* QuickQuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickQuestionsView.swift; sourceTree = "<group>"; };
+		83CCA71438DC9F4816809630 /* AIGeneratingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIGeneratingView.swift; sourceTree = "<group>"; };
+		A296F14083080C16011ADC0C /* AISchedulePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AISchedulePreviewView.swift; sourceTree = "<group>"; };
+		5E87242CDC775B5CD047A1C8 /* NLCommandBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NLCommandBar.swift; sourceTree = "<group>"; };
+		2BB3BC2A46FC4EC26EF801C9 /* NLCommandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NLCommandSheet.swift; sourceTree = "<group>"; };
+		6FF1C4EA8E5E31183072586E /* WeeklyReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReviewView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -258,6 +326,8 @@
 				D0D98D6620172FCA7B736765 /* TimeBlock.swift */,
 				9ED967B427728E7E02870B55 /* Weekday.swift */,
 				0B8B03BCD44643D1F43B3EB4 /* WeeklySchedule.swift */,
+				C8DB5D646B30BC596A000D67 /* LifeArea.swift */,
+				C37AA1480F66F00EA790BF7A /* UserProfile.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -323,7 +393,10 @@
 				7D870530867D1C5BF3D2DBB4 /* OnboardingView.swift */,
 				82165BA9EC22CC77CA6C8909 /* SettingsView.swift */,
 				22CA11843C7EE57B7F2B804B /* StatsView.swift */,
+				D4E5F6071829304AC2D3E4F5 /* ViewModeToggle.swift */,
 				39AFE8F5DEABE3D40640D0BD /* WeekDaySelectorView.swift */,
+				B2C3D4E5F6071829A0B1C2D3 /* WeeklyCalendarView.swift */,
+				2495D5A44882EF1D49B4670D /* AI */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -348,6 +421,9 @@
 				02842383AE607AA51C9330A1 /* ModeListViewModel.swift */,
 				B1EA15BFADFA42D3D6A31F2E /* SettingsViewModel.swift */,
 				55CF075A6306801351383958 /* StatsViewModel.swift */,
+				9F21F3451648298777054BB6 /* AIOnboardingViewModel.swift */,
+				D44DBF32901FBEA80D331F1F /* NLCommandViewModel.swift */,
+				CEE76B35BE40841B35CC073E /* WeeklyReviewViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -408,6 +484,11 @@
 				594B7BE104190E51B06FB01C /* BlockingService.swift */,
 				83AEF32365B0361D3B3BC800 /* ContentBlockerService.swift */,
 				E7D615F496A73FD46E0C3BB7 /* ScheduleService.swift */,
+				F74AB05C4FE046D9950B72C2 /* KeychainService.swift */,
+				A20BFF97B643FCB8F9B84622 /* GroqService.swift */,
+				F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */,
+				073F4562A7B5383C188541CD /* ScheduleTemplateService.swift */,
+				A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -418,6 +499,21 @@
 				4F8A83EBF4701014989D13A3 /* Assets.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		2495D5A44882EF1D49B4670D /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				92897DB147D830D9AC4CCA01 /* AISettingsSection.swift */,
+				6EDD18B92223218B73FD74E2 /* LifeAreaPickerView.swift */,
+				6466617E86D7E845737C87A3 /* QuickQuestionsView.swift */,
+				83CCA71438DC9F4816809630 /* AIGeneratingView.swift */,
+				A296F14083080C16011ADC0C /* AISchedulePreviewView.swift */,
+				5E87242CDC775B5CD047A1C8 /* NLCommandBar.swift */,
+				2BB3BC2A46FC4EC26EF801C9 /* NLCommandSheet.swift */,
+				6FF1C4EA8E5E31183072586E /* WeeklyReviewView.swift */,
+			);
+			path = AI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -635,6 +731,13 @@
 				3DFC7767E81B974AF3D55800 /* UIColor+Hex.swift in Sources */,
 				7CFFCB0F4EA1C89ECF72EADC /* Weekday.swift in Sources */,
 				FD463381205F31C29D737783 /* WeeklySchedule.swift in Sources */,
+				024022443F649CC81A13082B /* LifeArea.swift in Sources */,
+				4BBC236587B955FF77728AE9 /* UserProfile.swift in Sources */,
+				44B3F98738C0CDCD6FB0C901 /* KeychainService.swift in Sources */,
+				88A9B477A7468E9DB3438113 /* GroqService.swift in Sources */,
+				AE2B30DD9754D2C3E3018729 /* AIResponseCache.swift in Sources */,
+				5AC10ABB3BB3DC7439985E66 /* ScheduleTemplateService.swift in Sources */,
+				50EF24424912D8F031583588 /* AIPromptTemplates.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -660,6 +763,13 @@
 				76EC309D0D53065888AD1D06 /* UIColor+Hex.swift in Sources */,
 				DF473C0A274F65DCF2F86234 /* Weekday.swift in Sources */,
 				9E29DF87BFDEEFFAB5E44EAB /* WeeklySchedule.swift in Sources */,
+				891703DE573B55AB39DD0E08 /* LifeArea.swift in Sources */,
+				3A085329C7EC2DA3A06D3F35 /* UserProfile.swift in Sources */,
+				001DBF37F97FC69732BF01D6 /* KeychainService.swift in Sources */,
+				D4F4B7D1938164F6564F05D5 /* GroqService.swift in Sources */,
+				74FD36CBF3A55A2C3D62EFE9 /* AIResponseCache.swift in Sources */,
+				4141C67267EBF2E45285C443 /* ScheduleTemplateService.swift in Sources */,
+				462ED94A59744602FD018525 /* AIPromptTemplates.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,6 +795,13 @@
 				7B0633E0E7636EC522185446 /* UIColor+Hex.swift in Sources */,
 				AA5052D4DC650DCD7A09928B /* Weekday.swift in Sources */,
 				E0D0D2470018B197C9187D70 /* WeeklySchedule.swift in Sources */,
+				C0A853D150B96E77AD76703C /* LifeArea.swift in Sources */,
+				E9796FB9F480C233A678F0E7 /* UserProfile.swift in Sources */,
+				B895F0F279D6D613424AC0C9 /* KeychainService.swift in Sources */,
+				5FBE735F56D59E717130425C /* GroqService.swift in Sources */,
+				2535A3C05C4E9DC6DD4AB0C6 /* AIResponseCache.swift in Sources */,
+				9197F8E29D9535FCD686B777 /* ScheduleTemplateService.swift in Sources */,
+				040E1D4927494B1CC76773B4 /* AIPromptTemplates.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,6 +827,13 @@
 				226C6762EB06C8C69809A380 /* UIColor+Hex.swift in Sources */,
 				DEB4C7854ABF1CF1430E5E95 /* Weekday.swift in Sources */,
 				089388C6FE2F97486DE0312B /* WeeklySchedule.swift in Sources */,
+				EC179542D3ED8830D5EB595F /* LifeArea.swift in Sources */,
+				D4CAAF168BE2EB55DEE3FE45 /* UserProfile.swift in Sources */,
+				BB498517F238001825FF54E6 /* KeychainService.swift in Sources */,
+				C0DB166FEC1283E0537A93ED /* GroqService.swift in Sources */,
+				161DBA9E04D84776549E289D /* AIResponseCache.swift in Sources */,
+				33FA5AA1F5987CEAC059DC15 /* ScheduleTemplateService.swift in Sources */,
+				EAFA5736ACBD2C9DED474D4D /* AIPromptTemplates.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -752,9 +876,29 @@
 				02A6FA75F6A9B7CC258B9183 /* Theme.swift in Sources */,
 				E0CA4DCEE08E2D67D28050AC /* TimeBlock.swift in Sources */,
 				1E07C691F79C0419D0E57B10 /* UIColor+Hex.swift in Sources */,
+				C3D4E5F607182930B1C2D3E4 /* ViewModeToggle.swift in Sources */,
 				C33D987A3A24F5CD319BCBB6 /* WeekDaySelectorView.swift in Sources */,
 				63B7C95FE932DF4BD262166B /* Weekday.swift in Sources */,
+				A1B2C3D4E5F60718A9B0C1D2 /* WeeklyCalendarView.swift in Sources */,
 				CE69C1FABBDE9C7C308CDA4D /* WeeklySchedule.swift in Sources */,
+				939A52A4520DBC851C4429E0 /* LifeArea.swift in Sources */,
+				AAD7B9793415BBFC7BF9CAC4 /* UserProfile.swift in Sources */,
+				2D2DA3102B6E6279DD7B6889 /* KeychainService.swift in Sources */,
+				E176FBC5148F863246AF3008 /* GroqService.swift in Sources */,
+				37A6E4A95AB4BDC57C8917AE /* AIResponseCache.swift in Sources */,
+				3E72B1CFE34D24930957E7D8 /* ScheduleTemplateService.swift in Sources */,
+				BC4539692A31BFFD29E0A07C /* AIPromptTemplates.swift in Sources */,
+				951775D466421D9910589E3B /* AIOnboardingViewModel.swift in Sources */,
+				518A4B03ABCF63C9EB5545AE /* NLCommandViewModel.swift in Sources */,
+				3B7C4E9555A96DBC8D5A9B37 /* WeeklyReviewViewModel.swift in Sources */,
+				A4388E754BF38625EF9D135D /* AISettingsSection.swift in Sources */,
+				E38FBD23AE8375E668274091 /* LifeAreaPickerView.swift in Sources */,
+				4CD3AF3A7D56A32EAA27EB66 /* QuickQuestionsView.swift in Sources */,
+				E256B8DCDD2362EA33B4ECE1 /* AIGeneratingView.swift in Sources */,
+				8318F98CAA97559343D30190 /* AISchedulePreviewView.swift in Sources */,
+				C58B158E1C0CEC1FE25498A7 /* NLCommandBar.swift in Sources */,
+				57B36080F5D4250D2DE85F02 /* NLCommandSheet.swift in Sources */,
+				9080CF20CDE9975D7022BB13 /* WeeklyReviewView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

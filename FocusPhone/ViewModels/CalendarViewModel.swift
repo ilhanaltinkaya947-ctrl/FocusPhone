@@ -95,6 +95,21 @@ class CalendarViewModel: ObservableObject {
         modes.first { $0.id == block.modeID }
     }
 
+    // MARK: - Weekly Helpers
+
+    func weekDates() -> [Date] {
+        let cal = Calendar.current
+        let startOfWeek = cal.dateInterval(of: .weekOfYear, for: selectedDate)?.start ?? selectedDate
+        return (0..<7).compactMap { cal.date(byAdding: .day, value: $0, to: startOfWeek) }
+    }
+
+    func blocksForDate(_ date: Date) -> [TimeBlock] {
+        let weekday = Calendar.current.component(.weekday, from: date)
+        return timeBlocks
+            .filter { $0.dayOfWeek == weekday }
+            .sorted { ($0.startHour * 60 + $0.startMinute) < ($1.startHour * 60 + $1.startMinute) }
+    }
+
     private func saveAndSync() {
         AppState.shared.timeBlocks = timeBlocks
         ScheduleService.registerAllTimeBlocks()

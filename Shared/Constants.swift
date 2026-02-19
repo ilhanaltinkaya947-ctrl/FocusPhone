@@ -21,6 +21,12 @@ enum Constants {
     static let dailyStatsKey = "dailyStats"
     static let hasUpdatedColorsV2Key = "hasUpdatedColorsV2"
     static let contentBlockerRulesFileName = "contentBlockerRules.json"
+    static let userProfileKey = "userProfile"
+    static let aiResponseCacheKey = "aiResponseCache"
+    static let weeklyReviewDayKey = "weeklyReviewDay"
+    static let lastWeeklyReviewKey = "lastWeeklyReview"
+    static let aiEnabledKey = "aiEnabled"
+    static let commitmentLevelKey = "commitmentLevel"
 
     static var sharedDefaults: UserDefaults {
         UserDefaults(suiteName: appGroupID) ?? .standard

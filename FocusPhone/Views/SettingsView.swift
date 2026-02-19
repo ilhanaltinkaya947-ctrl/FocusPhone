@@ -3,6 +3,8 @@ import SwiftUI
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
     @State private var showingResetAlert = false
+    @State private var aiEnabled = AppState.shared.aiEnabled
+    @State private var weeklyReviewDay = AppState.shared.weeklyReviewDay
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
@@ -52,6 +54,8 @@ struct SettingsView: View {
                 } header: {
                     Text("Extensions")
                 }
+
+                AISettingsSection(aiEnabled: $aiEnabled, weeklyReviewDay: $weeklyReviewDay)
 
                 Section {
                     HStack(spacing: 12) {

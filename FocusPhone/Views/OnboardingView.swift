@@ -3,6 +3,7 @@ import FamilyControls
 
 struct OnboardingView: View {
     @ObservedObject var authVM: AuthViewModel
+    @StateObject var aiVM = AIOnboardingViewModel()
     @State private var currentPage = 0
     @State private var iconScale: CGFloat = 0.5
     @State private var iconOpacity: CGFloat = 0
@@ -14,7 +15,24 @@ struct OnboardingView: View {
                 welcomePage.tag(0)
                 screenTimePage.tag(1)
                 safariPage.tag(2)
-                allSetPage.tag(3)
+                LifeAreaPickerView(viewModel: aiVM) {
+                    withAnimation { currentPage = 4 }
+                }.tag(3)
+                QuickQuestionsView(viewModel: aiVM) {
+                    withAnimation { currentPage = 5 }
+                }.tag(4)
+                AIGeneratingView(viewModel: aiVM) {
+                    withAnimation { currentPage = 6 }
+                }.tag(5)
+                AISchedulePreviewView(
+                    viewModel: aiVM,
+                    onAccept: { withAnimation { currentPage = 7 } },
+                    onAdjust: {
+                        AppState.shared.isOnboardingCompleted = true
+                        authVM.objectWillChange.send()
+                    }
+                ).tag(6)
+                allSetPage.tag(7)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(.easeInOut(duration: 0.35), value: currentPage)
@@ -34,7 +52,7 @@ struct OnboardingView: View {
 
     private var progressIndicator: some View {
         HStack(spacing: 6) {
-            ForEach(0..<4, id: \.self) { index in
+            ForEach(0..<8, id: \.self) { index in
                 Capsule()
                     .fill(index <= currentPage ? Color.blue : Color(.systemGray4))
                     .frame(width: index == currentPage ? 24 : 8, height: 8)
@@ -42,7 +60,7 @@ struct OnboardingView: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Step \(currentPage + 1) of 4")
+        .accessibilityLabel("Step \(currentPage + 1) of 8")
     }
 
     // MARK: - Page 1: Welcome
@@ -230,7 +248,7 @@ struct OnboardingView: View {
                 .font(.title2.bold())
                 .padding(.top, 24)
 
-            Text("Your default modes are ready.\nStart by adding time blocks\nto your calendar.")
+            Text("Your personalized schedule is ready.\nOpen the calendar to see\nyour week at a glance.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
