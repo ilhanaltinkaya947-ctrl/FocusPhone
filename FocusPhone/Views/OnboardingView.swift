@@ -41,6 +41,8 @@ struct OnboardingView: View {
                     .animation(.spring(response: 0.35), value: currentPage)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Step \(currentPage + 1) of 4")
     }
 
     // MARK: - Page 1: Welcome

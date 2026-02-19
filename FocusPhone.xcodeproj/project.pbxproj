@@ -101,6 +101,11 @@
 		FD1A8F4BE3AE248428B4867F /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC5EECC93A9D82CDC2F27BE /* AppState.swift */; };
 		FD463381205F31C29D737783 /* WeeklySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B03BCD44643D1F43B3EB4 /* WeeklySchedule.swift */; };
 		FFD4DCDC36F7CB699ACFD6BE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC5EECC93A9D82CDC2F27BE /* AppState.swift */; };
+		E1011D7AB549E56D3B74823E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 7EBD98CEC340EDA9C44AE50D /* PrivacyInfo.xcprivacy */; };
+		50FC3F25BE0DCBB159C82809 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 851E459784822640C0B05113 /* PrivacyInfo.xcprivacy */; };
+		3444E7565DAC813B283A08B9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4682C20C55B1D22FF536CE64 /* PrivacyInfo.xcprivacy */; };
+		AE45A6E87022E25F190DF6D5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 73018DBCE7F7BB3157BF1522 /* PrivacyInfo.xcprivacy */; };
+		903B270ABC1C696A0B74122B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D86DD1ADD77FC7207EEE3FFD /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -205,6 +210,11 @@
 		FA6B83D67A1A4A8149845433 /* DefaultModes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultModes.swift; sourceTree = "<group>"; };
 		FBF87B4FA2287FC6586FC461 /* FocusPhoneWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusPhoneWidget.entitlements; sourceTree = "<group>"; };
 		FF71488AB8CBE9EAA91406A7 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		7EBD98CEC340EDA9C44AE50D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		851E459784822640C0B05113 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		4682C20C55B1D22FF536CE64 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		73018DBCE7F7BB3157BF1522 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		D86DD1ADD77FC7207EEE3FFD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -237,6 +247,7 @@
 				564950C6AEB834EF17207C26 /* Info.plist */,
 				D5A1CCC34917FC2F0E8CF58E /* ShieldConfigurationExtension.entitlements */,
 				820532D3B3E41C90DE1782D5 /* ShieldConfigurationExtension.swift */,
+				4682C20C55B1D22FF536CE64 /* PrivacyInfo.xcprivacy */,
 			);
 			path = ShieldConfigurationExtension;
 			sourceTree = "<group>";
@@ -247,6 +258,7 @@
 				6720BCE6425B9138CD73DFD3 /* DeviceActivityMonitorExtension.entitlements */,
 				286248FD344AFD8CCC385F72 /* DeviceActivityMonitorExtension.swift */,
 				142BA91A8F9991BB4DC9F5D3 /* Info.plist */,
+				851E459784822640C0B05113 /* PrivacyInfo.xcprivacy */,
 			);
 			path = DeviceActivityMonitorExtension;
 			sourceTree = "<group>";
@@ -258,6 +270,7 @@
 				9A9396186130BD0BAB302602 /* ContentBlockerExtension.entitlements */,
 				5128A93B3568851821870CD6 /* ContentBlockerRequestHandler.swift */,
 				65730AC4F38218C542ECB4D8 /* Info.plist */,
+				73018DBCE7F7BB3157BF1522 /* PrivacyInfo.xcprivacy */,
 			);
 			path = ContentBlockerExtension;
 			sourceTree = "<group>";
@@ -322,6 +335,7 @@
 				FBF87B4FA2287FC6586FC461 /* FocusPhoneWidget.entitlements */,
 				0EA392E7299AA64DE38A6C09 /* FocusPhoneWidget.swift */,
 				E513875DC1E10F08A7D14D3C /* Info.plist */,
+				D86DD1ADD77FC7207EEE3FFD /* PrivacyInfo.xcprivacy */,
 			);
 			path = FocusPhoneWidget;
 			sourceTree = "<group>";
@@ -349,6 +363,7 @@
 				FCBF4AD63F9C5BA4D7644512 /* Resources */,
 				83899E3F5B717CBD02CF6EC5 /* ViewModels */,
 				56287B3F58F30444AF490B81 /* Views */,
+				7EBD98CEC340EDA9C44AE50D /* PrivacyInfo.xcprivacy */,
 			);
 			path = FocusPhone;
 			sourceTree = "<group>";
@@ -379,6 +394,7 @@
 			buildConfigurationList = 50DB496D5B2C91C8A5569B55 /* Build configuration list for PBXNativeTarget "DeviceActivityMonitorExtension" */;
 			buildPhases = (
 				027D8DA5207836B305C63AE6 /* Sources */,
+				AFECF4B0CBEB53CF31AA0215 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -414,6 +430,7 @@
 			buildConfigurationList = 633479D95811005FBBEF5216 /* Build configuration list for PBXNativeTarget "FocusPhoneWidget" */;
 			buildPhases = (
 				B19FCE0041AA5ED3A06471E2 /* Sources */,
+				897056D0F5BAACD195F664E5 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -431,6 +448,7 @@
 			buildConfigurationList = DF61E172E718B75FEFA999A9 /* Build configuration list for PBXNativeTarget "ShieldConfigurationExtension" */;
 			buildPhases = (
 				53A1A10157559F89166045DC /* Sources */,
+				23BE602F14618524674585E8 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -521,6 +539,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				188F5D00711BD4EF9D309071 /* blockerList.json in Resources */,
+				AE45A6E87022E25F190DF6D5 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,6 +548,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				A668DE4FAFE9CC17F97ED87A /* Assets.xcassets in Resources */,
+				E1011D7AB549E56D3B74823E /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFECF4B0CBEB53CF31AA0215 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50FC3F25BE0DCBB159C82809 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23BE602F14618524674585E8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3444E7565DAC813B283A08B9 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		897056D0F5BAACD195F664E5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				903B270ABC1C696A0B74122B /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -56,6 +56,8 @@ struct StatsView: View {
                             .strokeBorder(Color(hex: mode.colorHex).opacity(0.2), lineWidth: 1)
                     )
             )
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Currently active: \(mode.name)")
         } else {
             HStack(spacing: 14) {
                 Image(systemName: "moon.zzz.fill")
@@ -77,6 +79,8 @@ struct StatsView: View {
             }
             .padding()
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("No active mode")
         }
     }
 
@@ -118,6 +122,8 @@ struct StatsView: View {
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(value)")
     }
 
     // MARK: - Today's Usage
@@ -181,6 +187,8 @@ struct StatsView: View {
                             .foregroundStyle(isToday ? .primary : .secondary)
                     }
                     .frame(maxWidth: .infinity)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("\(dayLabel(day.date)): \(Int(day.totalMinutes)) minutes")
                 }
             }
             .frame(height: 140)
@@ -247,6 +255,8 @@ struct StatsView: View {
         }
         .padding()
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Current streak: \(viewModel.streakDays) day\(viewModel.streakDays == 1 ? "" : "s")")
     }
 }
 

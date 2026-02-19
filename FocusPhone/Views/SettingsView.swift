@@ -133,5 +133,6 @@ struct SettingsView: View {
             .foregroundStyle(.white)
             .frame(width: 28, height: 28)
             .background(color, in: RoundedRectangle(cornerRadius: 6))
+            .accessibilityHidden(true)
     }
 }

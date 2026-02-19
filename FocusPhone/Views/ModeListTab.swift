@@ -109,6 +109,9 @@ struct ModeRowView: View {
                 .foregroundStyle(.quaternary)
         }
         .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(mode.name)\(isActive ? ", active" : "")")
+        .accessibilityHint("Tap to edit")
     }
 
     private var modeSubtitle: some View {

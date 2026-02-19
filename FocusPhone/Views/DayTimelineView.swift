@@ -117,6 +117,9 @@ struct DayTimelineView: View {
         )
         .padding(.leading, 52)
         .offset(y: topOffset)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(mode.name), \(block.startTimeString) to \(block.endTimeString)")
+        .accessibilityHint("Tap to edit, long press for options")
         .onTapGesture { onEdit?(block) }
         .contextMenu {
             Button { onEdit?(block) } label: {
