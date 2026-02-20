@@ -152,18 +152,18 @@ struct OnboardingAPIKeyView: View {
         let trimmed = apiKey.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
 
-        KeychainService.saveAPIKey(trimmed)
-        AppState.shared.aiEnabled = true
         isTesting = true
         testResult = nil
 
         Task {
-            let success = await GroqService.shared.testConnection()
+            let success = await GroqService.shared.testConnection(withKey: trimmed)
             isTesting = false
-            testResult = success ? .success : .failure
-            if !success {
-                KeychainService.deleteAPIKey()
-                AppState.shared.aiEnabled = false
+            if success {
+                KeychainService.saveAPIKey(trimmed)
+                AppState.shared.aiEnabled = true
+                testResult = .success
+            } else {
+                testResult = .failure
             }
         }
     }

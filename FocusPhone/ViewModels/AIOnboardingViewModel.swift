@@ -1,5 +1,6 @@
 import SwiftUI
 import FamilyControls
+import ManagedSettings
 import WidgetKit
 
 struct GroqScheduleBlock: Codable {
@@ -121,6 +122,7 @@ class AIOnboardingViewModel: ObservableObject {
                     isGenerating = false
                     return
                 } catch {
+                    errorMessage = error.localizedDescription
                     // Fall through to template
                 }
             }
@@ -153,12 +155,17 @@ class AIOnboardingViewModel: ObservableObject {
             state.modes = modes
         }
 
-        // Append custom websites to blocking modes
-        if !customBlockedWebsites.isEmpty {
+        // Map time waster chips to domain lists and add to blocking modes
+        let wasterDomains = domainsForTimeWasters(biggestTimeWasters)
+
+        // Combine custom websites + time waster domains
+        let allWebsites = customBlockedWebsites + wasterDomains
+
+        if !allWebsites.isEmpty {
             var modes = state.modes
             for i in modes.indices where blockingModeNames.contains(modes[i].name) {
                 let existing = Set(modes[i].blockedWebsites)
-                let newSites = customBlockedWebsites.filter { !existing.contains($0) }
+                let newSites = allWebsites.filter { !existing.contains($0) }
                 modes[i].blockedWebsites.append(contentsOf: newSites)
             }
             state.modes = modes
@@ -169,6 +176,23 @@ class AIOnboardingViewModel: ObservableObject {
 
         // Reload widgets
         WidgetCenter.shared.reloadAllTimelines()
+
+        // Apply blocks immediately if there's an active mode
+        BlockingService.applyBlocksForActiveMode()
+    }
+
+    // MARK: - Time Waster Mapping
+
+    private func domainsForTimeWasters(_ wasters: [String]) -> [String] {
+        let mapping: [String: [String]] = [
+            "Social Media": ["twitter.com", "x.com", "facebook.com", "instagram.com", "tiktok.com", "reddit.com", "snapchat.com"],
+            "YouTube": ["youtube.com"],
+            "News": ["news.ycombinator.com", "cnn.com", "bbc.com"],
+            "Gaming": ["twitch.tv", "steampowered.com"],
+            "Shopping": ["amazon.com", "ebay.com"],
+            "Streaming": ["netflix.com", "hulu.com", "disneyplus.com"],
+        ]
+        return wasters.flatMap { mapping[$0] ?? [] }
     }
 
     // MARK: - Private

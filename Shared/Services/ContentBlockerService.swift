@@ -13,11 +13,11 @@ final class ContentBlockerService {
 
     // MARK: - Public API
 
-    static func applyWebsiteBlocks(for domains: [String]) {
+    static func applyWebsiteBlocks(for domains: [String], completion: ((Error?) -> Void)? = nil) {
         let validDomains = domains.compactMap(sanitizeDomain).filter { !$0.isEmpty }
         let rules = generateRules(for: validDomains)
         writeRules(rules)
-        reloadContentBlocker()
+        reloadContentBlocker(completion: completion)
     }
 
     static func clearWebsiteBlocks() {
@@ -28,14 +28,38 @@ final class ContentBlockerService {
     // MARK: - Domain Validation
 
     private static func sanitizeDomain(_ raw: String) -> String? {
-        let domain = raw
+        var domain = raw
             .trimmingCharacters(in: .whitespaces)
             .lowercased()
 
+        // Strip protocol prefixes
+        for prefix in ["https://", "http://"] {
+            if domain.hasPrefix(prefix) {
+                domain = String(domain.dropFirst(prefix.count))
+            }
+        }
+
+        // Strip www. prefix
+        if domain.hasPrefix("www.") {
+            domain = String(domain.dropFirst(4))
+        }
+
+        // Strip trailing paths, query strings, fragments, and ports
+        if let slashIndex = domain.firstIndex(of: "/") {
+            domain = String(domain[..<slashIndex])
+        }
+        if let colonIndex = domain.firstIndex(of: ":") {
+            domain = String(domain[..<colonIndex])
+        }
+
+        // Validate: only alphanumeric, hyphens, dots allowed
+        let allowed = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-."))
         guard !domain.isEmpty,
+              domain.unicodeScalars.allSatisfy({ allowed.contains($0) }),
               domain.contains("."),
               !domain.hasPrefix("."),
-              !domain.hasSuffix(".") else {
+              !domain.hasSuffix("."),
+              !domain.hasPrefix("-") else {
             return nil
         }
         return domain
@@ -49,7 +73,7 @@ final class ContentBlockerService {
         return domains.map { domain in
             let escaped = escapeForRegex(domain)
             return [
-                "trigger": ["url-filter": ".*\\\\.?\(escaped)"],
+                "trigger": ["url-filter": ".*[./]\(escaped)"],
                 "action": ["type": "block"]
             ] as [String: Any]
         }
@@ -84,7 +108,7 @@ final class ContentBlockerService {
 
     // MARK: - Reload
 
-    static func reloadContentBlocker() {
+    static func reloadContentBlocker(completion: ((Error?) -> Void)? = nil) {
         #if canImport(SafariServices)
         SFContentBlockerManager.reloadContentBlocker(
             withIdentifier: Constants.contentBlockerBundleID
@@ -92,7 +116,10 @@ final class ContentBlockerService {
             if let error = error {
                 print("ContentBlockerService: Failed to reload: \(error)")
             }
+            completion?(error)
         }
+        #else
+        completion?(nil)
         #endif
     }
 }

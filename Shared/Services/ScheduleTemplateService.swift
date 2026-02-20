@@ -219,7 +219,179 @@ enum ScheduleTemplateService {
             }
         }
 
+        // Apply life area adjustments
+        applyLifeAreaAdjustments(
+            to: &blocks,
+            lifeAreas: profile.selectedLifeAreas,
+            profile: profile,
+            modeMap: modeMap
+        )
+
         return blocks
+    }
+
+    // MARK: - Life Area Adjustments
+
+    private static func applyLifeAreaAdjustments(
+        to blocks: inout [TimeBlock],
+        lifeAreas: [LifeArea],
+        profile: UserProfile,
+        modeMap: [String: UUID]
+    ) {
+        let isStrict = profile.commitmentLevel == "strict"
+
+        for area in lifeAreas {
+            switch area {
+            case .body:
+                // Ensure exercise blocks exist even at low/zero frequency
+                if profile.exerciseFrequency == 0, let exerciseID = modeMap["Exercise"] {
+                    let offDays = (1...7).filter { !profile.workDays.contains($0) }
+                    let days = offDays.isEmpty ? [1, 4] : Array(offDays.prefix(2))
+                    for day in days {
+                        let hour = profile.wakeTime + 2
+                        blocks.removeAll { $0.dayOfWeek == day && $0.startHour == hour }
+                        blocks.append(TimeBlock(
+                            modeID: exerciseID,
+                            dayOfWeek: day,
+                            startHour: hour,
+                            startMinute: 0,
+                            endHour: hour + 1,
+                            endMinute: 0
+                        ))
+                    }
+                }
+
+            case .mind:
+                // Add evening Deep Work blocks on non-work days for reading/learning
+                if let deepID = modeMap["Deep Work"] {
+                    let offDays = (1...7).filter { !profile.workDays.contains($0) }
+                    for day in offDays {
+                        let startHour = profile.sleepTime - 3
+                        let endHour = profile.sleepTime - 1
+                        guard startHour > profile.wakeTime + 1 else { continue }
+                        // Remove any Free Time block in this slot
+                        blocks.removeAll {
+                            $0.dayOfWeek == day && $0.startHour == startHour &&
+                            $0.endHour == endHour
+                        }
+                        blocks.append(TimeBlock(
+                            modeID: deepID,
+                            dayOfWeek: day,
+                            startHour: startHour,
+                            startMinute: 0,
+                            endHour: endHour,
+                            endMinute: 0
+                        ))
+                    }
+                }
+
+            case .peace:
+                // Extend Wind Down by 30 min earlier, extend Morning Routine by 30 min
+                if let windDownID = modeMap["Wind Down"] {
+                    for i in blocks.indices {
+                        if blocks[i].modeID == windDownID {
+                            let newStart = blocks[i].startHour * 60 + blocks[i].startMinute - 30
+                            blocks[i] = TimeBlock(
+                                modeID: windDownID,
+                                dayOfWeek: blocks[i].dayOfWeek,
+                                startHour: newStart / 60,
+                                startMinute: newStart % 60,
+                                endHour: blocks[i].endHour,
+                                endMinute: blocks[i].endMinute
+                            )
+                        }
+                    }
+                }
+                if let morningID = modeMap["Morning Routine"] {
+                    for i in blocks.indices {
+                        if blocks[i].modeID == morningID {
+                            let newEnd = blocks[i].endHour * 60 + blocks[i].endMinute + 30
+                            blocks[i] = TimeBlock(
+                                modeID: morningID,
+                                dayOfWeek: blocks[i].dayOfWeek,
+                                startHour: blocks[i].startHour,
+                                startMinute: blocks[i].startMinute,
+                                endHour: newEnd / 60,
+                                endMinute: newEnd % 60
+                            )
+                        }
+                    }
+                }
+
+            case .career:
+                // Extend Deep Work blocks on work days by starting 30 min earlier
+                if let deepID = modeMap["Deep Work"] {
+                    for i in blocks.indices {
+                        let block = blocks[i]
+                        guard block.modeID == deepID,
+                              profile.workDays.contains(block.dayOfWeek),
+                              block.startHour >= profile.workStartHour else { continue }
+                        let newEnd = block.endHour * 60 + block.endMinute + 30
+                        blocks[i] = TimeBlock(
+                            modeID: deepID,
+                            dayOfWeek: block.dayOfWeek,
+                            startHour: block.startHour,
+                            startMinute: block.startMinute,
+                            endHour: min(newEnd / 60, 23),
+                            endMinute: newEnd % 60
+                        )
+                    }
+                }
+
+            case .creativity:
+                // Add a dedicated creative block on weekend afternoons
+                if let freeID = modeMap["Free Time"] {
+                    let weekendDays = (1...7).filter { !profile.workDays.contains($0) }
+                    for day in weekendDays {
+                        let startHour = 14
+                        let endHour = 16
+                        // Replace Free Time in this slot
+                        blocks.removeAll {
+                            $0.dayOfWeek == day && $0.modeID == freeID &&
+                            $0.startHour <= startHour && $0.endHour >= endHour
+                        }
+                        // Re-add shortened Free Time if needed
+                        blocks.append(TimeBlock(
+                            modeID: freeID,
+                            dayOfWeek: day,
+                            startHour: startHour,
+                            startMinute: 0,
+                            endHour: endHour,
+                            endMinute: 0
+                        ))
+                    }
+                }
+
+            case .relationships:
+                // Protect evening Free Time — don't fill with focus blocks in strict mode
+                if isStrict, let freeID = modeMap["Free Time"], let deepID = modeMap["Deep Work"] {
+                    let windDownStart = profile.sleepTime - 1
+                    for day in 1...7 {
+                        // Remove evening Deep Work blocks that were added by strict mode
+                        blocks.removeAll {
+                            $0.dayOfWeek == day && $0.modeID == deepID &&
+                            $0.startHour >= profile.workEndHour && $0.endHour <= windDownStart
+                        }
+                        // Ensure Free Time covers the evening
+                        if profile.workEndHour < windDownStart {
+                            // Remove any existing free time in this slot to avoid duplicates
+                            blocks.removeAll {
+                                $0.dayOfWeek == day && $0.modeID == freeID &&
+                                $0.startHour == profile.workEndHour
+                            }
+                            blocks.append(TimeBlock(
+                                modeID: freeID,
+                                dayOfWeek: day,
+                                startHour: profile.workEndHour,
+                                startMinute: 0,
+                                endHour: windDownStart,
+                                endMinute: 0
+                            ))
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private static func pickExerciseDays(frequency: Int, workDays: [Int]) -> [Int] {

@@ -13,6 +13,32 @@ struct OnboardingView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            // Back button (visible on pages 1–9)
+            if currentPage > 0 && currentPage < totalPages - 1 {
+                HStack {
+                    Button {
+                        withAnimation {
+                            if currentPage == 7 {
+                                // Generating page → back to API key or distractions
+                                currentPage = KeychainService.hasKey ? 5 : 6
+                            } else {
+                                currentPage -= 1
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.body.weight(.semibold))
+                            .foregroundStyle(.primary)
+                            .padding(10)
+                            .background(Color(.systemGray5), in: Circle())
+                    }
+                    .accessibilityLabel("Go back")
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+            }
+
             TabView(selection: $currentPage) {
                 // Chapter 1: Setup
                 welcomePage.tag(0)

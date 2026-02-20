@@ -135,6 +135,36 @@ actor GroqService {
         }
     }
 
+    func testConnection(withKey apiKey: String) async -> Bool {
+        let messages = [Message(role: "user", content: "Say OK")]
+
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: [
+                "model": fallbackModel,
+                "messages": messages.map { ["role": $0.role, "content": $0.content] },
+                "temperature": 0,
+                "max_tokens": 4,
+            ] as [String: Any])
+
+            var request = URLRequest(url: baseURL)
+            request.httpMethod = "POST"
+            request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+            request.timeoutInterval = 15
+
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200 else {
+                return false
+            }
+            let content = try parseResponse(data)
+            return !content.isEmpty
+        } catch {
+            return false
+        }
+    }
+
     // MARK: - Private
 
     private struct ChatCompletion: Decodable {
