@@ -7,12 +7,14 @@ struct QuickQuestionsView: View {
     @State private var visibleQuestions = 1
     @State private var isAnimating = false
 
-    private let timeWasterOptions = [
-        "Social Media", "YouTube", "News", "Gaming", "Shopping", "Netflix",
-    ]
-
     private let dayLabels: [(Int, String)] = [
         (2, "Mon"), (3, "Tue"), (4, "Wed"), (5, "Thu"), (6, "Fri"), (7, "Sat"), (1, "Sun"),
+    ]
+
+    private let commitmentOptions: [(String, String, String)] = [
+        ("gentle", "Gentle", "Suggest, but keep me flexible"),
+        ("balanced", "Balanced", "Block distractions during focus"),
+        ("strict", "Strict", "Lock me out \u{2014} I mean it"),
     ]
 
     var body: some View {
@@ -123,24 +125,48 @@ struct QuickQuestionsView: View {
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                     }
 
-                    // Q5: Time wasters
+                    // Q5: Commitment level
                     if visibleQuestions >= 5 {
-                        questionBubble(id: 5, question: "What are your biggest time wasters?") {
-                            FlowLayout(spacing: 8) {
-                                ForEach(timeWasterOptions, id: \.self) { waster in
-                                    let isSelected = viewModel.biggestTimeWasters.contains(waster)
+                        questionBubble(id: 5, question: "How strict should we be?") {
+                            VStack(spacing: 8) {
+                                ForEach(commitmentOptions, id: \.0) { option in
+                                    let isSelected = viewModel.commitmentLevel == option.0
                                     Button {
-                                        viewModel.toggleTimeWaster(waster)
+                                        withAnimation(.spring(response: 0.3)) {
+                                            viewModel.commitmentLevel = option.0
+                                        }
                                     } label: {
-                                        Text(waster)
-                                            .font(.subheadline)
-                                            .padding(.horizontal, 12)
-                                            .padding(.vertical, 8)
-                                            .background(
-                                                Capsule()
-                                                    .fill(isSelected ? Color.blue.opacity(0.2) : Color(.systemGray5))
-                                            )
-                                            .foregroundStyle(isSelected ? .blue : .primary)
+                                        HStack(spacing: 12) {
+                                            Image(systemName: commitmentIcon(option.0))
+                                                .font(.title3)
+                                                .foregroundStyle(isSelected ? .blue : .secondary)
+                                                .frame(width: 28)
+
+                                            VStack(alignment: .leading, spacing: 2) {
+                                                Text(option.1)
+                                                    .font(.subheadline.weight(.semibold))
+                                                    .foregroundStyle(.primary)
+                                                Text(option.2)
+                                                    .font(.caption)
+                                                    .foregroundStyle(.secondary)
+                                            }
+
+                                            Spacer()
+
+                                            if isSelected {
+                                                Image(systemName: "checkmark.circle.fill")
+                                                    .foregroundStyle(.blue)
+                                            }
+                                        }
+                                        .padding(12)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .fill(isSelected ? Color.blue.opacity(0.08) : Color(.systemGray6))
+                                        )
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .strokeBorder(isSelected ? Color.blue.opacity(0.3) : Color.clear, lineWidth: 1.5)
+                                        )
                                     }
                                     .buttonStyle(.plain)
                                 }
@@ -149,22 +175,20 @@ struct QuickQuestionsView: View {
                         .transition(.move(edge: .bottom).combined(with: .opacity))
 
                         // Continue button
-                        if !viewModel.biggestTimeWasters.isEmpty {
-                            Button {
-                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                                onContinue()
-                            } label: {
-                                Text("Continue")
-                                    .font(.headline)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 16)
-                                    .background(Color.blue)
-                                    .foregroundStyle(.white)
-                                    .clipShape(RoundedRectangle(cornerRadius: 14))
-                            }
-                            .padding(.top, 8)
-                            .transition(.opacity)
+                        Button {
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            onContinue()
+                        } label: {
+                            Text("Continue")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 16)
+                                .background(Color.blue)
+                                .foregroundStyle(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 14))
                         }
+                        .padding(.top, 8)
+                        .transition(.opacity)
                     }
                 }
                 .padding(.horizontal, 32)
@@ -175,6 +199,15 @@ struct QuickQuestionsView: View {
     }
 
     // MARK: - Components
+
+    private func commitmentIcon(_ level: String) -> String {
+        switch level {
+        case "gentle": return "hand.raised"
+        case "balanced": return "scale.3d"
+        case "strict": return "lock.shield"
+        default: return "scale.3d"
+        }
+    }
 
     private func questionBubble<Content: View>(
         id: Int,

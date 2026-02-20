@@ -64,6 +64,18 @@ struct LifeAreaPickerView: View {
             }
             .padding(.horizontal, 32)
 
+            // Weekly goal text field
+            VStack(alignment: .leading, spacing: 6) {
+                Text("What's your #1 goal this week?")
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.secondary)
+                TextField("e.g. Ship my project, Read 30 minutes daily", text: $viewModel.weeklyGoalText)
+                    .textFieldStyle(.roundedBorder)
+                    .font(.subheadline)
+            }
+            .padding(.horizontal, 32)
+            .padding(.top, 16)
+
             Spacer()
 
             Button {

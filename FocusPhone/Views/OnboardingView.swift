@@ -9,30 +9,45 @@ struct OnboardingView: View {
     @State private var iconOpacity: CGFloat = 0
     @Environment(\.scenePhase) private var scenePhase
 
+    private let totalPages = 10
+
     var body: some View {
         VStack(spacing: 0) {
             TabView(selection: $currentPage) {
+                // Chapter 1: Setup
                 welcomePage.tag(0)
                 screenTimePage.tag(1)
                 safariPage.tag(2)
+
+                // Chapter 2: Know You
                 LifeAreaPickerView(viewModel: aiVM) {
                     withAnimation { currentPage = 4 }
                 }.tag(3)
                 QuickQuestionsView(viewModel: aiVM) {
                     withAnimation { currentPage = 5 }
                 }.tag(4)
-                AIGeneratingView(viewModel: aiVM) {
-                    withAnimation { currentPage = 6 }
-                }.tag(5)
-                AISchedulePreviewView(
-                    viewModel: aiVM,
-                    onAccept: { withAnimation { currentPage = 7 } },
-                    onAdjust: {
-                        AppState.shared.isOnboardingCompleted = true
-                        authVM.objectWillChange.send()
+                OnboardingDistractionsView(viewModel: aiVM) {
+                    withAnimation {
+                        // Skip API key page if key already exists
+                        if KeychainService.hasKey {
+                            currentPage = 7
+                        } else {
+                            currentPage = 6
+                        }
                     }
-                ).tag(6)
-                allSetPage.tag(7)
+                }.tag(5)
+                OnboardingAPIKeyView {
+                    withAnimation { currentPage = 7 }
+                }.tag(6)
+
+                // Chapter 3: Build
+                AIGeneratingView(viewModel: aiVM) {
+                    withAnimation { currentPage = 8 }
+                }.tag(7)
+                OnboardingScheduleBuilderView(viewModel: aiVM) {
+                    withAnimation { currentPage = 9 }
+                }.tag(8)
+                allSetPage.tag(9)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(.easeInOut(duration: 0.35), value: currentPage)
@@ -52,7 +67,7 @@ struct OnboardingView: View {
 
     private var progressIndicator: some View {
         HStack(spacing: 6) {
-            ForEach(0..<8, id: \.self) { index in
+            ForEach(0..<totalPages, id: \.self) { index in
                 Capsule()
                     .fill(index <= currentPage ? Color.blue : Color(.systemGray4))
                     .frame(width: index == currentPage ? 24 : 8, height: 8)
@@ -60,10 +75,10 @@ struct OnboardingView: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Step \(currentPage + 1) of 8")
+        .accessibilityLabel("Step \(currentPage + 1) of \(totalPages)")
     }
 
-    // MARK: - Page 1: Welcome
+    // MARK: - Page 0: Welcome
 
     private var welcomePage: some View {
         VStack(spacing: 0) {
@@ -116,7 +131,7 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Page 2: Screen Time Permission
+    // MARK: - Page 1: Screen Time Permission
 
     private var screenTimePage: some View {
         VStack(spacing: 0) {
@@ -171,7 +186,7 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Page 3: Safari Content Blocker
+    // MARK: - Page 2: Safari Content Blocker
 
     private var safariPage: some View {
         VStack(spacing: 0) {
@@ -229,7 +244,7 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Page 4: All Set
+    // MARK: - Page 9: All Set
 
     private var allSetPage: some View {
         VStack(spacing: 0) {
@@ -247,6 +262,19 @@ struct OnboardingView: View {
             Text("You're All Set!")
                 .font(.title2.bold())
                 .padding(.top, 24)
+
+            // Summary stats
+            let blocks = aiVM.generatedBlocks
+            let days = Set(blocks.map(\.dayOfWeek)).count
+            let focusMinutes = blocks
+                .filter { modeName(for: $0.modeID) == "Deep Work" }
+                .reduce(0) { $0 + $1.durationMinutes }
+            let focusHours = focusMinutes / 60
+
+            Text("\(days) days \u{2022} \(blocks.count) blocks \u{2022} \(focusHours)h of focus")
+                .font(.subheadline.weight(.medium))
+                .foregroundStyle(.secondary)
+                .padding(.top, 8)
 
             Text("Your personalized schedule is ready.\nOpen the calendar to see\nyour week at a glance.")
                 .font(.subheadline)
@@ -320,5 +348,9 @@ struct OnboardingView: View {
         if let url = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url)
         }
+    }
+
+    private func modeName(for modeID: UUID) -> String? {
+        AppState.shared.modes.first(where: { $0.id == modeID })?.name
     }
 }

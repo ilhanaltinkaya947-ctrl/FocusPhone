@@ -4,13 +4,42 @@ enum AIPromptTemplates {
 
     // MARK: - Schedule Builder (Onboarding)
 
-    static func scheduleBuilderSystem(modeNames: [String]) -> String {
-        """
+    static func scheduleBuilderSystem(modeNames: [String], commitmentLevel: String = "balanced") -> String {
+        let densityGuidance: String
+        switch commitmentLevel {
+        case "gentle":
+            densityGuidance = """
+            The user prefers a GENTLE approach. Create a flexible schedule with:
+            - Fewer focus blocks, more free time
+            - Shorter Deep Work sessions (1-2 hours max)
+            - Generous breaks between blocks
+            - Prioritize suggestions over strict blocking
+            """
+        case "strict":
+            densityGuidance = """
+            The user wants STRICT mode. Create a tight, productive schedule with:
+            - Many focus blocks covering most of the day
+            - Long Deep Work sessions (2-4 hours)
+            - Minimal free time during work hours
+            - Lock down distractions aggressively
+            """
+        default:
+            densityGuidance = """
+            The user prefers a BALANCED approach. Create a moderate schedule with:
+            - Focused work blocks during productive hours
+            - Reasonable breaks and free time
+            - Block distractions during focus periods
+            """
+        }
+
+        return """
         You are a schedule designer for a digital detox app called FocusPhone. \
         The user will describe their lifestyle and you will create a weekly schedule \
         using the available modes.
 
         Available modes: \(modeNames.joined(separator: ", "))
+
+        \(densityGuidance)
 
         Rules:
         - Each day must have at least one block
@@ -42,7 +71,7 @@ enum AIPromptTemplates {
         let workDays = profile.workDays.map { dayName(for: $0) }.joined(separator: ", ")
         let wasters = profile.biggestTimeWasters.joined(separator: ", ")
 
-        return """
+        var prompt = """
         Create a weekly schedule for someone with these preferences:
         - Life priorities: \(areas)
         - Wake time: \(profile.wakeTime):00
@@ -50,9 +79,20 @@ enum AIPromptTemplates {
         - Work hours: \(profile.workStartHour):00 - \(profile.workEndHour):00 on \(workDays)
         - Exercise frequency: \(profile.exerciseFrequency) times per week
         - Biggest time wasters: \(wasters)
-
-        Design a schedule that supports their goals and limits distractions.
+        - Commitment level: \(profile.commitmentLevel)
         """
+
+        if !profile.weeklyGoalText.isEmpty {
+            prompt += "\n- Weekly goal: \(profile.weeklyGoalText)"
+        }
+
+        if !profile.customBlockedWebsites.isEmpty {
+            prompt += "\n- Custom blocked websites: \(profile.customBlockedWebsites.joined(separator: ", "))"
+        }
+
+        prompt += "\n\nDesign a schedule that supports their goals and limits distractions."
+
+        return prompt
     }
 
     // MARK: - Natural Language Editing

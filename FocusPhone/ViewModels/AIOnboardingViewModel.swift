@@ -1,4 +1,5 @@
 import SwiftUI
+import FamilyControls
 import WidgetKit
 
 struct GroqScheduleBlock: Codable {
@@ -28,6 +29,13 @@ class AIOnboardingViewModel: ObservableObject {
     @Published var exerciseFrequency: Int = 3
     @Published var biggestTimeWasters: [String] = []
 
+    // New onboarding fields
+    @Published var weeklyGoalText: String = ""
+    @Published var customBlockedWebsites: [String] = []
+    @Published var commitmentLevel: String = "balanced"
+    @Published var onboardingAppSelection: FamilyActivitySelection = .init()
+    @Published var hasUserEdited: Bool = false
+
     // Generated schedule
     @Published var generatedBlocks: [TimeBlock] = []
     @Published var isGenerating = false
@@ -43,7 +51,10 @@ class AIOnboardingViewModel: ObservableObject {
             workEndHour: workEndHour,
             workDays: workDays,
             exerciseFrequency: exerciseFrequency,
-            biggestTimeWasters: biggestTimeWasters
+            biggestTimeWasters: biggestTimeWasters,
+            weeklyGoalText: weeklyGoalText,
+            customBlockedWebsites: customBlockedWebsites,
+            commitmentLevel: commitmentLevel
         )
     }
 
@@ -70,6 +81,27 @@ class AIOnboardingViewModel: ObservableObject {
             biggestTimeWasters.append(waster)
         }
     }
+
+    // MARK: - Block Editing
+
+    func addBlock(_ block: TimeBlock) {
+        generatedBlocks.append(block)
+        hasUserEdited = true
+    }
+
+    func updateBlock(_ block: TimeBlock) {
+        if let index = generatedBlocks.firstIndex(where: { $0.id == block.id }) {
+            generatedBlocks[index] = block
+            hasUserEdited = true
+        }
+    }
+
+    func removeBlock(_ block: TimeBlock) {
+        generatedBlocks.removeAll { $0.id == block.id }
+        hasUserEdited = true
+    }
+
+    // MARK: - Schedule Generation
 
     func generateSchedule() {
         isGenerating = true
@@ -110,6 +142,28 @@ class AIOnboardingViewModel: ObservableObject {
         // Set time blocks
         state.timeBlocks = generatedBlocks
 
+        // Apply app selection to blocking modes (Deep Work, Morning Routine, Wind Down, Sleep)
+        let blockingModeNames = ["Deep Work", "Morning Routine", "Wind Down", "Sleep"]
+        if !onboardingAppSelection.applicationTokens.isEmpty ||
+           !onboardingAppSelection.categoryTokens.isEmpty {
+            var modes = state.modes
+            for i in modes.indices where blockingModeNames.contains(modes[i].name) {
+                modes[i].setFamilyActivitySelection(onboardingAppSelection)
+            }
+            state.modes = modes
+        }
+
+        // Append custom websites to blocking modes
+        if !customBlockedWebsites.isEmpty {
+            var modes = state.modes
+            for i in modes.indices where blockingModeNames.contains(modes[i].name) {
+                let existing = Set(modes[i].blockedWebsites)
+                let newSites = customBlockedWebsites.filter { !existing.contains($0) }
+                modes[i].blockedWebsites.append(contentsOf: newSites)
+            }
+            state.modes = modes
+        }
+
         // Register schedules
         ScheduleService.registerAllTimeBlocks()
 
@@ -131,7 +185,7 @@ class AIOnboardingViewModel: ObservableObject {
         }
 
         let messages: [GroqService.Message] = [
-            .init(role: "system", content: AIPromptTemplates.scheduleBuilderSystem(modeNames: modeNames)),
+            .init(role: "system", content: AIPromptTemplates.scheduleBuilderSystem(modeNames: modeNames, commitmentLevel: profile.commitmentLevel)),
             .init(role: "user", content: userPrompt),
         ]
 

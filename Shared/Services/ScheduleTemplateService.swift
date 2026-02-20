@@ -6,6 +6,8 @@ enum ScheduleTemplateService {
         var blocks: [TimeBlock] = []
 
         let modeMap = Dictionary(uniqueKeysWithValues: modes.map { ($0.name, $0.id) })
+        let isGentle = profile.commitmentLevel == "gentle"
+        let isStrict = profile.commitmentLevel == "strict"
 
         for day in 1...7 {
             let isWorkDay = profile.workDays.contains(day)
@@ -58,42 +60,78 @@ enum ScheduleTemplateService {
                     ))
                 }
 
-                // Work blocks with break
+                // Work blocks with break — commitment level affects break length
                 if let deepID = modeMap["Deep Work"], let breakID = modeMap["Break"] {
                     let midWork = profile.workStartHour + (profile.workEndHour - profile.workStartHour) / 2
+                    let breakDuration = isStrict ? 0 : (isGentle ? 2 : 1) // hours
 
-                    blocks.append(TimeBlock(
-                        modeID: deepID,
-                        dayOfWeek: day,
-                        startHour: profile.workStartHour,
-                        startMinute: 0,
-                        endHour: midWork,
-                        endMinute: 0
-                    ))
+                    if breakDuration == 0 {
+                        // Strict: no break, continuous deep work
+                        blocks.append(TimeBlock(
+                            modeID: deepID,
+                            dayOfWeek: day,
+                            startHour: profile.workStartHour,
+                            startMinute: 0,
+                            endHour: profile.workEndHour,
+                            endMinute: 0
+                        ))
+                    } else {
+                        blocks.append(TimeBlock(
+                            modeID: deepID,
+                            dayOfWeek: day,
+                            startHour: profile.workStartHour,
+                            startMinute: 0,
+                            endHour: midWork,
+                            endMinute: 0
+                        ))
 
-                    blocks.append(TimeBlock(
-                        modeID: breakID,
-                        dayOfWeek: day,
-                        startHour: midWork,
-                        startMinute: 0,
-                        endHour: midWork + 1,
-                        endMinute: 0
-                    ))
+                        blocks.append(TimeBlock(
+                            modeID: breakID,
+                            dayOfWeek: day,
+                            startHour: midWork,
+                            startMinute: 0,
+                            endHour: midWork + breakDuration,
+                            endMinute: 0
+                        ))
 
-                    blocks.append(TimeBlock(
-                        modeID: deepID,
-                        dayOfWeek: day,
-                        startHour: midWork + 1,
-                        startMinute: 0,
-                        endHour: profile.workEndHour,
-                        endMinute: 0
-                    ))
+                        blocks.append(TimeBlock(
+                            modeID: deepID,
+                            dayOfWeek: day,
+                            startHour: midWork + breakDuration,
+                            startMinute: 0,
+                            endHour: profile.workEndHour,
+                            endMinute: 0
+                        ))
+                    }
                 }
 
                 // After work: free time until wind down
                 let windDownStart = profile.sleepTime - 1
                 if profile.workEndHour < windDownStart {
-                    if let freeID = modeMap["Free Time"] {
+                    if isStrict {
+                        // Strict: add a Deep Work block in the evening too, then short free time
+                        let eveningFocusEnd = min(profile.workEndHour + 2, windDownStart)
+                        if let deepID = modeMap["Deep Work"], eveningFocusEnd > profile.workEndHour {
+                            blocks.append(TimeBlock(
+                                modeID: deepID,
+                                dayOfWeek: day,
+                                startHour: profile.workEndHour,
+                                startMinute: 0,
+                                endHour: eveningFocusEnd,
+                                endMinute: 0
+                            ))
+                        }
+                        if eveningFocusEnd < windDownStart, let freeID = modeMap["Free Time"] {
+                            blocks.append(TimeBlock(
+                                modeID: freeID,
+                                dayOfWeek: day,
+                                startHour: eveningFocusEnd,
+                                startMinute: 0,
+                                endHour: windDownStart,
+                                endMinute: 0
+                            ))
+                        }
+                    } else if let freeID = modeMap["Free Time"] {
                         blocks.append(TimeBlock(
                             modeID: freeID,
                             dayOfWeek: day,
@@ -109,7 +147,30 @@ enum ScheduleTemplateService {
                 let morningEnd = profile.wakeTime + 1
                 let windDownStart = profile.sleepTime - 1
 
-                if let freeID = modeMap["Free Time"] {
+                if isStrict {
+                    // Strict: add some focus time even on weekends
+                    let focusEnd = min(morningEnd + 2, windDownStart)
+                    if let deepID = modeMap["Deep Work"] {
+                        blocks.append(TimeBlock(
+                            modeID: deepID,
+                            dayOfWeek: day,
+                            startHour: morningEnd,
+                            startMinute: 0,
+                            endHour: focusEnd,
+                            endMinute: 0
+                        ))
+                    }
+                    if focusEnd < windDownStart, let freeID = modeMap["Free Time"] {
+                        blocks.append(TimeBlock(
+                            modeID: freeID,
+                            dayOfWeek: day,
+                            startHour: focusEnd,
+                            startMinute: 0,
+                            endHour: windDownStart,
+                            endMinute: 0
+                        ))
+                    }
+                } else if let freeID = modeMap["Free Time"] {
                     blocks.append(TimeBlock(
                         modeID: freeID,
                         dayOfWeek: day,

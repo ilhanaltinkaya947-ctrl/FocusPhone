@@ -176,6 +176,9 @@
 		C58B158E1C0CEC1FE25498A7 /* NLCommandBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E87242CDC775B5CD047A1C8 /* NLCommandBar.swift */; };
 		57B36080F5D4250D2DE85F02 /* NLCommandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB3BC2A46FC4EC26EF801C9 /* NLCommandSheet.swift */; };
 		9080CF20CDE9975D7022BB13 /* WeeklyReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF1C4EA8E5E31183072586E /* WeeklyReviewView.swift */; };
+		DD4E5F6A7B8C9D0E1F2A3B4C /* OnboardingDistractionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1B2C3D4E5F6A7B8C9D0E1F /* OnboardingDistractionsView.swift */; };
+		EE5F6A7B8C9D0E1F2A3B4C5D /* OnboardingAPIKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2C3D4E5F6A7B8C9D0E1F2A /* OnboardingAPIKeyView.swift */; };
+		FF6A7B8C9D0E1F2A3B4C5D6E /* OnboardingScheduleBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3D4E5F6A7B8C9D0E1F2A3B /* OnboardingScheduleBuilderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -311,6 +314,9 @@
 		5E87242CDC775B5CD047A1C8 /* NLCommandBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NLCommandBar.swift; sourceTree = "<group>"; };
 		2BB3BC2A46FC4EC26EF801C9 /* NLCommandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NLCommandSheet.swift; sourceTree = "<group>"; };
 		6FF1C4EA8E5E31183072586E /* WeeklyReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReviewView.swift; sourceTree = "<group>"; };
+		AA1B2C3D4E5F6A7B8C9D0E1F /* OnboardingDistractionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDistractionsView.swift; sourceTree = "<group>"; };
+		BB2C3D4E5F6A7B8C9D0E1F2A /* OnboardingAPIKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAPIKeyView.swift; sourceTree = "<group>"; };
+		CC3D4E5F6A7B8C9D0E1F2A3B /* OnboardingScheduleBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScheduleBuilderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -512,6 +518,9 @@
 				5E87242CDC775B5CD047A1C8 /* NLCommandBar.swift */,
 				2BB3BC2A46FC4EC26EF801C9 /* NLCommandSheet.swift */,
 				6FF1C4EA8E5E31183072586E /* WeeklyReviewView.swift */,
+				AA1B2C3D4E5F6A7B8C9D0E1F /* OnboardingDistractionsView.swift */,
+				BB2C3D4E5F6A7B8C9D0E1F2A /* OnboardingAPIKeyView.swift */,
+				CC3D4E5F6A7B8C9D0E1F2A3B /* OnboardingScheduleBuilderView.swift */,
 			);
 			path = AI;
 			sourceTree = "<group>";
@@ -899,6 +908,9 @@
 				C58B158E1C0CEC1FE25498A7 /* NLCommandBar.swift in Sources */,
 				57B36080F5D4250D2DE85F02 /* NLCommandSheet.swift in Sources */,
 				9080CF20CDE9975D7022BB13 /* WeeklyReviewView.swift in Sources */,
+				DD4E5F6A7B8C9D0E1F2A3B4C /* OnboardingDistractionsView.swift in Sources */,
+				EE5F6A7B8C9D0E1F2A3B4C5D /* OnboardingAPIKeyView.swift in Sources */,
+				FF6A7B8C9D0E1F2A3B4C5D6E /* OnboardingScheduleBuilderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

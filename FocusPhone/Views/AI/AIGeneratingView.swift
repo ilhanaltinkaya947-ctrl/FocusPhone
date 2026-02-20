@@ -5,6 +5,17 @@ struct AIGeneratingView: View {
     var onComplete: () -> Void
 
     @State private var sparkleRotation: Double = 0
+    @State private var statusIndex: Int = 0
+
+    private let statusMessages = [
+        "Analyzing your schedule...",
+        "Placing focus blocks...",
+        "Balancing your week...",
+        "Adding recovery time...",
+        "Almost there...",
+    ]
+
+    private let timer = Timer.publish(every: 2.0, on: .main, in: .common).autoconnect()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -27,8 +38,17 @@ struct AIGeneratingView: View {
                 .padding(.top, 24)
 
             if viewModel.isGenerating {
-                ProgressView()
-                    .padding(.top, 16)
+                VStack(spacing: 12) {
+                    ProgressView()
+
+                    Text(statusMessages[statusIndex])
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .animation(.easeInOut(duration: 0.3), value: statusIndex)
+                        .id(statusIndex)
+                        .transition(.opacity)
+                }
+                .padding(.top, 16)
             }
 
             if viewModel.usedFallback {
@@ -52,6 +72,12 @@ struct AIGeneratingView: View {
                 sparkleRotation = 360
             }
             viewModel.generateSchedule()
+        }
+        .onReceive(timer) { _ in
+            guard viewModel.isGenerating else { return }
+            withAnimation {
+                statusIndex = (statusIndex + 1) % statusMessages.count
+            }
         }
         .onChange(of: viewModel.generatedBlocks) {
             if !viewModel.generatedBlocks.isEmpty {
