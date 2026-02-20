@@ -2,20 +2,36 @@ import Foundation
 
 enum GroqError: Error, LocalizedError {
     case noAPIKey
+    case invalidAPIKey
     case networkError(Error)
     case httpError(Int)
     case rateLimited
     case decodingError(Error)
     case emptyResponse
+    case allModelsFailed([Error])
 
     var errorDescription: String? {
         switch self {
-        case .noAPIKey: return "No API key configured"
+        case .noAPIKey: return "No API key configured. Add your Groq key in Settings."
+        case .invalidAPIKey: return "Your API key is invalid. Check it in Settings."
         case .networkError(let error): return "Network error: \(error.localizedDescription)"
-        case .httpError(let code): return "Server error (HTTP \(code))"
-        case .rateLimited: return "Rate limited — please try again shortly"
-        case .decodingError(let error): return "Failed to parse response: \(error.localizedDescription)"
-        case .emptyResponse: return "Empty response from AI"
+        case .httpError(let code): return "Server error (HTTP \(code)). Try again shortly."
+        case .rateLimited: return "Rate limited — please try again in a minute."
+        case .decodingError(let error): return "Failed to parse AI response: \(error.localizedDescription)"
+        case .emptyResponse: return "Empty response from AI. Try again."
+        case .allModelsFailed(let errors):
+            let descriptions = errors.map { $0.localizedDescription }
+            return "AI unavailable: \(descriptions.joined(separator: "; "))"
+        }
+    }
+
+    /// Whether this error is transient and worth retrying with a different model
+    var isRetryable: Bool {
+        switch self {
+        case .rateLimited, .emptyResponse: return true
+        case .httpError(let code): return (500...599).contains(code)
+        case .decodingError: return true
+        default: return false
         }
     }
 }
@@ -32,6 +48,85 @@ actor GroqService {
         let role: String
         let content: String
     }
+
+    // MARK: - Public API with Fallback
+
+    /// Chat with automatic model fallback: tries primary model, falls back to 8B on retryable errors
+    func chatWithFallback(
+        messages: [Message],
+        temperature: Double = 0.7,
+        maxTokens: Int = 2048,
+        jsonMode: Bool = false
+    ) async throws -> String {
+        let temp = jsonMode ? min(temperature, 0.3) : temperature
+        var errors: [Error] = []
+
+        // Try primary model
+        do {
+            return try await chat(
+                messages: messages,
+                temperature: temp,
+                maxTokens: maxTokens,
+                jsonMode: jsonMode,
+                useFallbackModel: false
+            )
+        } catch let error as GroqError where error.isRetryable {
+            errors.append(error)
+        }
+
+        // Try fallback model
+        do {
+            return try await chat(
+                messages: messages,
+                temperature: temp,
+                maxTokens: maxTokens,
+                jsonMode: jsonMode,
+                useFallbackModel: true
+            )
+        } catch {
+            errors.append(error)
+            throw GroqError.allModelsFailed(errors)
+        }
+    }
+
+    /// Chat JSON with fallback: tries primary, falls back to 8B on rate limit/5xx/decode errors
+    func chatJSONWithFallback<T: Decodable>(
+        messages: [Message],
+        as type: T.Type,
+        temperature: Double = 0.3,
+        maxTokens: Int = 2048
+    ) async throws -> T {
+        var errors: [Error] = []
+
+        // Try primary model
+        do {
+            return try await chatJSONSingle(
+                messages: messages,
+                as: type,
+                temperature: temperature,
+                maxTokens: maxTokens,
+                useFallbackModel: false
+            )
+        } catch let error as GroqError where error.isRetryable {
+            errors.append(error)
+        }
+
+        // Try fallback model
+        do {
+            return try await chatJSONSingle(
+                messages: messages,
+                as: type,
+                temperature: temperature,
+                maxTokens: maxTokens,
+                useFallbackModel: true
+            )
+        } catch {
+            errors.append(error)
+            throw GroqError.allModelsFailed(errors)
+        }
+    }
+
+    // MARK: - Single-Model Methods
 
     func chat(
         messages: [Message],
@@ -84,6 +179,8 @@ actor GroqService {
                 switch httpResponse.statusCode {
                 case 200:
                     return try parseResponse(data)
+                case 401:
+                    throw GroqError.invalidAPIKey
                 case 429:
                     lastError = GroqError.rateLimited
                     continue
@@ -190,5 +287,31 @@ actor GroqService {
         }
 
         return content
+    }
+
+    private func chatJSONSingle<T: Decodable>(
+        messages: [Message],
+        as type: T.Type,
+        temperature: Double,
+        maxTokens: Int,
+        useFallbackModel: Bool
+    ) async throws -> T {
+        let responseString = try await chat(
+            messages: messages,
+            temperature: temperature,
+            maxTokens: maxTokens,
+            jsonMode: true,
+            useFallbackModel: useFallbackModel
+        )
+
+        guard let data = responseString.data(using: .utf8) else {
+            throw GroqError.emptyResponse
+        }
+
+        do {
+            return try JSONDecoder().decode(T.self, from: data)
+        } catch {
+            throw GroqError.decodingError(error)
+        }
     }
 }

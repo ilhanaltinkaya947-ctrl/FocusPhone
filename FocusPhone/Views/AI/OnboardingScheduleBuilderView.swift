@@ -137,6 +137,7 @@ struct OnboardingScheduleBuilderView: View {
         let isSelected = day == selectedDay
         let dayBlocks = blocksForDay(day)
         let modes = AppState.shared.modes
+        let maxVisibleBlocks = 6
 
         return Button {
             withAnimation(.spring(response: 0.3)) {
@@ -148,22 +149,29 @@ struct OnboardingScheduleBuilderView: View {
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(isSelected ? .blue : .secondary)
 
-                // Segment bar showing block colors
+                // Segment bar showing block colors — minimum 4pt height per segment
                 VStack(spacing: 1) {
-                    ForEach(dayBlocks.prefix(6)) { block in
+                    ForEach(dayBlocks.prefix(maxVisibleBlocks)) { block in
                         if let mode = modes.first(where: { $0.id == block.modeID }) {
                             RoundedRectangle(cornerRadius: 1.5)
                                 .fill(Color(hex: mode.colorHex))
-                                .frame(height: max(CGFloat(block.durationMinutes) / 60.0 * 6, 3))
+                                .frame(height: max(CGFloat(block.durationMinutes) / 60.0 * 6, 4))
                         }
                     }
                 }
                 .frame(width: 28, height: 48)
                 .background(Color(.systemGray6), in: RoundedRectangle(cornerRadius: 4))
 
-                Text("\(dayBlocks.count)")
-                    .font(.system(size: 10, weight: .medium, design: .monospaced))
-                    .foregroundStyle(.secondary)
+                // Show count with overflow indicator
+                if dayBlocks.count > maxVisibleBlocks {
+                    Text("+\(dayBlocks.count - maxVisibleBlocks)")
+                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .foregroundStyle(.orange)
+                } else {
+                    Text("\(dayBlocks.count)")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundStyle(.secondary)
+                }
             }
             .frame(width: 44)
             .padding(.vertical, 8)

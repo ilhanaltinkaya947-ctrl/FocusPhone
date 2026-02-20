@@ -4,10 +4,18 @@ import DeviceActivity
 final class ScheduleService {
     static let center = DeviceActivityCenter()
 
-    static func registerAllTimeBlocks() {
+    struct RegistrationResult {
+        let registered: Int
+        let failed: [(TimeBlock, Error)]
+    }
+
+    @discardableResult
+    static func registerAllTimeBlocks() -> RegistrationResult {
         center.stopMonitoring()
 
         let blocks = AppState.shared.timeBlocks
+        var registeredCount = 0
+        var failures: [(TimeBlock, Error)] = []
 
         for block in blocks {
             let activityName = DeviceActivityName(
@@ -33,10 +41,36 @@ final class ScheduleService {
 
             do {
                 try center.startMonitoring(activityName, during: schedule)
+                registeredCount += 1
             } catch {
                 print("Failed to monitor \(activityName.rawValue): \(error)")
+                failures.append((block, error))
             }
         }
+
+        return RegistrationResult(registered: registeredCount, failed: failures)
+    }
+
+    /// Cross-references registered DeviceActivity activities with stored TimeBlocks
+    static func verifyRegistrations() -> (matched: Int, unmatched: Int) {
+        let registeredActivities = center.activities
+        let blocks = AppState.shared.timeBlocks
+
+        var matched = 0
+        var unmatched = 0
+
+        for block in blocks {
+            let expectedName = DeviceActivityName(
+                rawValue: "mode_\(block.modeID.uuidString)_\(block.id.uuidString)"
+            )
+            if registeredActivities.contains(expectedName) {
+                matched += 1
+            } else {
+                unmatched += 1
+            }
+        }
+
+        return (matched: matched, unmatched: unmatched)
     }
 
     static func stopAllSchedules() {

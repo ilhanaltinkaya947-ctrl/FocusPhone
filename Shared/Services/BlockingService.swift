@@ -21,7 +21,11 @@ final class BlockingService {
         store.application.denyAppRemoval = mode.blockAppDeletion
 
         // Website blocking via Safari Content Blocker
-        ContentBlockerService.applyWebsiteBlocks(for: mode.blockedWebsites)
+        do {
+            try ContentBlockerService.applyWebsiteBlocks(for: mode.blockedWebsites)
+        } catch {
+            print("BlockingService: Content blocker error: \(error.localizedDescription)")
+        }
     }
 
     static func applyBlocksForActiveMode() {

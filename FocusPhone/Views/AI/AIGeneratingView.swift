@@ -73,10 +73,16 @@ struct AIGeneratingView: View {
             }
 
             if let error = viewModel.errorMessage {
-                Text(error)
-                    .font(.caption)
-                    .foregroundStyle(.red)
-                    .padding(.top, 8)
+                // Show specific error type
+                HStack(spacing: 8) {
+                    Image(systemName: errorIcon(for: error))
+                        .foregroundStyle(.red)
+                    Text(error)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+                .padding(.horizontal, 32)
+                .padding(.top, 8)
             }
 
             if showRetry {
@@ -130,7 +136,8 @@ struct AIGeneratingView: View {
         .onChange(of: viewModel.generatedBlocks) {
             if !viewModel.generatedBlocks.isEmpty {
                 hasTimedOut = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                // 1.5s delay so user can read fallback notice if shown
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                     onComplete()
                 }
             }
@@ -139,7 +146,8 @@ struct AIGeneratingView: View {
 
     private func startTimeout() {
         Task {
-            try? await Task.sleep(nanoseconds: 30_000_000_000) // 30 seconds
+            // 60s timeout (with model fallback, total Groq time can be ~45s)
+            try? await Task.sleep(nanoseconds: 60_000_000_000)
             if viewModel.isGenerating || viewModel.generatedBlocks.isEmpty {
                 hasTimedOut = true
                 viewModel.isGenerating = false
@@ -154,5 +162,18 @@ struct AIGeneratingView: View {
         )
         viewModel.generatedBlocks = blocks
         viewModel.usedFallback = true
+    }
+
+    /// Returns appropriate SF Symbol for the error type
+    private func errorIcon(for error: String) -> String {
+        if error.contains("API key") || error.contains("invalid") {
+            return "key.slash"
+        } else if error.contains("Network") || error.contains("network") {
+            return "wifi.slash"
+        } else if error.contains("Rate") || error.contains("rate") {
+            return "clock.badge.exclamationmark"
+        } else {
+            return "exclamationmark.triangle"
+        }
     }
 }

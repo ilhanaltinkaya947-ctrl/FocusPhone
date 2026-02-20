@@ -9,19 +9,29 @@ enum ScheduleTemplateService {
         let isGentle = profile.commitmentLevel == "gentle"
         let isStrict = profile.commitmentLevel == "strict"
 
+        // Handle sleep time wrap-around: if sleepTime > 23, clamp to 23
+        // (picker now restricted to 20-24, but 24 means midnight = use 23:59)
+        let effectiveSleepTime = min(profile.sleepTime, 23)
+        let sleepEndHour = effectiveSleepTime == 23 ? 23 : effectiveSleepTime
+        let sleepEndMinute = effectiveSleepTime >= 23 ? 59 : 0
+
         for day in 1...7 {
             let isWorkDay = profile.workDays.contains(day)
 
-            // Sleep block: sleepTime to wakeTime
+            // Sleep block: sleepTime to end of day
             if let sleepID = modeMap["Sleep"] {
-                blocks.append(TimeBlock(
-                    modeID: sleepID,
-                    dayOfWeek: day,
-                    startHour: profile.sleepTime,
-                    startMinute: 0,
-                    endHour: 23,
-                    endMinute: 59
-                ))
+                if profile.sleepTime >= 24 {
+                    // Midnight: only the early morning block
+                } else {
+                    blocks.append(TimeBlock(
+                        modeID: sleepID,
+                        dayOfWeek: day,
+                        startHour: effectiveSleepTime,
+                        startMinute: 0,
+                        endHour: sleepEndHour,
+                        endMinute: sleepEndMinute
+                    ))
+                }
 
                 // Early morning sleep (previous day's sleep continues)
                 blocks.append(TimeBlock(
@@ -45,6 +55,9 @@ enum ScheduleTemplateService {
                     endMinute: 0
                 ))
             }
+
+            // Wind Down start: 1 hour before sleep (guard against underflow)
+            let windDownStart = max(profile.wakeTime + 2, effectiveSleepTime - 1)
 
             if isWorkDay {
                 // Deep Work: morning routine end to work start (if gap exists)
@@ -106,7 +119,6 @@ enum ScheduleTemplateService {
                 }
 
                 // After work: free time until wind down
-                let windDownStart = profile.sleepTime - 1
                 if profile.workEndHour < windDownStart {
                     if isStrict {
                         // Strict: add a Deep Work block in the evening too, then short free time
@@ -145,7 +157,6 @@ enum ScheduleTemplateService {
             } else {
                 // Weekend / non-work day
                 let morningEnd = profile.wakeTime + 1
-                let windDownStart = profile.sleepTime - 1
 
                 if isStrict {
                     // Strict: add some focus time even on weekends
@@ -183,14 +194,13 @@ enum ScheduleTemplateService {
             }
 
             // Wind Down: 1 hour before sleep
-            let windDownStart = profile.sleepTime - 1
-            if windDownStart > 0, let windDownID = modeMap["Wind Down"] {
+            if windDownStart > 0, windDownStart < effectiveSleepTime, let windDownID = modeMap["Wind Down"] {
                 blocks.append(TimeBlock(
                     modeID: windDownID,
                     dayOfWeek: day,
                     startHour: windDownStart,
                     startMinute: 0,
-                    endHour: profile.sleepTime,
+                    endHour: effectiveSleepTime,
                     endMinute: 0
                 ))
             }
@@ -239,6 +249,7 @@ enum ScheduleTemplateService {
         modeMap: [String: UUID]
     ) {
         let isStrict = profile.commitmentLevel == "strict"
+        let effectiveSleepTime = min(profile.sleepTime, 23)
 
         for area in lifeAreas {
             switch area {
@@ -266,8 +277,8 @@ enum ScheduleTemplateService {
                 if let deepID = modeMap["Deep Work"] {
                     let offDays = (1...7).filter { !profile.workDays.contains($0) }
                     for day in offDays {
-                        let startHour = profile.sleepTime - 3
-                        let endHour = profile.sleepTime - 1
+                        let startHour = effectiveSleepTime - 3
+                        let endHour = effectiveSleepTime - 1
                         guard startHour > profile.wakeTime + 1 else { continue }
                         // Remove any Free Time block in this slot
                         blocks.removeAll {
@@ -291,6 +302,7 @@ enum ScheduleTemplateService {
                     for i in blocks.indices {
                         if blocks[i].modeID == windDownID {
                             let newStart = blocks[i].startHour * 60 + blocks[i].startMinute - 30
+                            guard newStart >= 0 else { continue }
                             blocks[i] = TimeBlock(
                                 modeID: windDownID,
                                 dayOfWeek: blocks[i].dayOfWeek,
@@ -365,7 +377,7 @@ enum ScheduleTemplateService {
             case .relationships:
                 // Protect evening Free Time — don't fill with focus blocks in strict mode
                 if isStrict, let freeID = modeMap["Free Time"], let deepID = modeMap["Deep Work"] {
-                    let windDownStart = profile.sleepTime - 1
+                    let windDownStart = max(profile.wakeTime + 2, effectiveSleepTime - 1)
                     for day in 1...7 {
                         // Remove evening Deep Work blocks that were added by strict mode
                         blocks.removeAll {

@@ -165,6 +165,11 @@
 		462ED94A59744602FD018525 /* AIPromptTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */; };
 		040E1D4927494B1CC76773B4 /* AIPromptTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */; };
 		EAFA5736ACBD2C9DED474D4D /* AIPromptTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */; };
+		BA8A1BC16007F9CECD307599 /* TimeBlockValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F403B5D25C9D8566DCBBEC49 /* TimeBlockValidator.swift */; };
+		1F08DAEECD6CF3A52948FB2F /* TimeBlockValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F403B5D25C9D8566DCBBEC49 /* TimeBlockValidator.swift */; };
+		74C33EC6BF0CE530A74AACAF /* TimeBlockValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F403B5D25C9D8566DCBBEC49 /* TimeBlockValidator.swift */; };
+		CD09297E8FC11FE26E3B2B97 /* TimeBlockValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F403B5D25C9D8566DCBBEC49 /* TimeBlockValidator.swift */; };
+		BB69DBD100F7B0348C7949E1 /* TimeBlockValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F403B5D25C9D8566DCBBEC49 /* TimeBlockValidator.swift */; };
 		951775D466421D9910589E3B /* AIOnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F21F3451648298777054BB6 /* AIOnboardingViewModel.swift */; };
 		518A4B03ABCF63C9EB5545AE /* NLCommandViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44DBF32901FBEA80D331F1F /* NLCommandViewModel.swift */; };
 		3B7C4E9555A96DBC8D5A9B37 /* WeeklyReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE76B35BE40841B35CC073E /* WeeklyReviewViewModel.swift */; };
@@ -178,6 +183,11 @@
 		DD4E5F6A7B8C9D0E1F2A3B4C /* OnboardingDistractionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1B2C3D4E5F6A7B8C9D0E1F /* OnboardingDistractionsView.swift */; };
 		EE5F6A7B8C9D0E1F2A3B4C5D /* OnboardingAPIKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2C3D4E5F6A7B8C9D0E1F2A /* OnboardingAPIKeyView.swift */; };
 		FF6A7B8C9D0E1F2A3B4C5D6E /* OnboardingScheduleBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3D4E5F6A7B8C9D0E1F2A3B /* OnboardingScheduleBuilderView.swift */; };
+		1A2B3C4D5E6F70819203A4B5 /* GroqModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */; };
+		2B3C4D5E6F708192A3B4C5D6 /* GroqModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */; };
+		3C4D5E6F70819203B4C5D6E7 /* GroqModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */; };
+		4D5E6F7081920314C5D6E7F8 /* GroqModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */; };
+		5E6F708192031425D6E7F809 /* GroqModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -302,6 +312,7 @@
 		F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIResponseCache.swift; sourceTree = "<group>"; };
 		073F4562A7B5383C188541CD /* ScheduleTemplateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTemplateService.swift; sourceTree = "<group>"; };
 		A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIPromptTemplates.swift; sourceTree = "<group>"; };
+		F403B5D25C9D8566DCBBEC49 /* TimeBlockValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBlockValidator.swift; sourceTree = "<group>"; };
 		9F21F3451648298777054BB6 /* AIOnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIOnboardingViewModel.swift; sourceTree = "<group>"; };
 		D44DBF32901FBEA80D331F1F /* NLCommandViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NLCommandViewModel.swift; sourceTree = "<group>"; };
 		CEE76B35BE40841B35CC073E /* WeeklyReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReviewViewModel.swift; sourceTree = "<group>"; };
@@ -315,6 +326,7 @@
 		AA1B2C3D4E5F6A7B8C9D0E1F /* OnboardingDistractionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDistractionsView.swift; sourceTree = "<group>"; };
 		BB2C3D4E5F6A7B8C9D0E1F2A /* OnboardingAPIKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAPIKeyView.swift; sourceTree = "<group>"; };
 		CC3D4E5F6A7B8C9D0E1F2A3B /* OnboardingScheduleBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScheduleBuilderView.swift; sourceTree = "<group>"; };
+		7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroqModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -332,6 +344,7 @@
 				0B8B03BCD44643D1F43B3EB4 /* WeeklySchedule.swift */,
 				C8DB5D646B30BC596A000D67 /* LifeArea.swift */,
 				C37AA1480F66F00EA790BF7A /* UserProfile.swift */,
+				7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -493,6 +506,7 @@
 				F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */,
 				073F4562A7B5383C188541CD /* ScheduleTemplateService.swift */,
 				A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */,
+				F403B5D25C9D8566DCBBEC49 /* TimeBlockValidator.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -744,6 +758,8 @@
 				AE2B30DD9754D2C3E3018729 /* AIResponseCache.swift in Sources */,
 				5AC10ABB3BB3DC7439985E66 /* ScheduleTemplateService.swift in Sources */,
 				50EF24424912D8F031583588 /* AIPromptTemplates.swift in Sources */,
+				BA8A1BC16007F9CECD307599 /* TimeBlockValidator.swift in Sources */,
+				2B3C4D5E6F708192A3B4C5D6 /* GroqModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -776,6 +792,8 @@
 				74FD36CBF3A55A2C3D62EFE9 /* AIResponseCache.swift in Sources */,
 				4141C67267EBF2E45285C443 /* ScheduleTemplateService.swift in Sources */,
 				462ED94A59744602FD018525 /* AIPromptTemplates.swift in Sources */,
+				1F08DAEECD6CF3A52948FB2F /* TimeBlockValidator.swift in Sources */,
+				3C4D5E6F70819203B4C5D6E7 /* GroqModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -808,6 +826,8 @@
 				2535A3C05C4E9DC6DD4AB0C6 /* AIResponseCache.swift in Sources */,
 				9197F8E29D9535FCD686B777 /* ScheduleTemplateService.swift in Sources */,
 				040E1D4927494B1CC76773B4 /* AIPromptTemplates.swift in Sources */,
+				74C33EC6BF0CE530A74AACAF /* TimeBlockValidator.swift in Sources */,
+				4D5E6F7081920314C5D6E7F8 /* GroqModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -840,6 +860,8 @@
 				161DBA9E04D84776549E289D /* AIResponseCache.swift in Sources */,
 				33FA5AA1F5987CEAC059DC15 /* ScheduleTemplateService.swift in Sources */,
 				EAFA5736ACBD2C9DED474D4D /* AIPromptTemplates.swift in Sources */,
+				CD09297E8FC11FE26E3B2B97 /* TimeBlockValidator.swift in Sources */,
+				5E6F708192031425D6E7F809 /* GroqModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -907,6 +929,8 @@
 				DD4E5F6A7B8C9D0E1F2A3B4C /* OnboardingDistractionsView.swift in Sources */,
 				EE5F6A7B8C9D0E1F2A3B4C5D /* OnboardingAPIKeyView.swift in Sources */,
 				FF6A7B8C9D0E1F2A3B4C5D6E /* OnboardingScheduleBuilderView.swift in Sources */,
+				BB69DBD100F7B0348C7949E1 /* TimeBlockValidator.swift in Sources */,
+				1A2B3C4D5E6F70819203A4B5 /* GroqModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

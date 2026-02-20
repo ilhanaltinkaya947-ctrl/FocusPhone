@@ -3,19 +3,6 @@ import FamilyControls
 import ManagedSettings
 import WidgetKit
 
-struct GroqScheduleBlock: Codable {
-    let mode: String
-    let day: Int
-    let startHour: Int
-    let startMinute: Int
-    let endHour: Int
-    let endMinute: Int
-}
-
-struct GroqScheduleResponse: Codable {
-    let blocks: [GroqScheduleBlock]
-}
-
 @MainActor
 class AIOnboardingViewModel: ObservableObject {
     // Life areas
@@ -172,13 +159,54 @@ class AIOnboardingViewModel: ObservableObject {
         }
 
         // Register schedules
-        ScheduleService.registerAllTimeBlocks()
+        let registration = ScheduleService.registerAllTimeBlocks()
+        if !registration.failed.isEmpty {
+            print("Warning: \(registration.failed.count) blocks failed to register")
+        }
 
         // Reload widgets
         WidgetCenter.shared.reloadAllTimelines()
 
-        // Apply blocks immediately if there's an active mode
-        BlockingService.applyBlocksForActiveMode()
+        // CRITICAL: Find and activate the current block immediately
+        // Without this, activeModeID is nil and nothing blocks after onboarding
+        activateCurrentBlock()
+    }
+
+    /// Finds the TimeBlock active right now and applies its mode's blocking rules
+    private func activateCurrentBlock() {
+        let state = AppState.shared
+        let calendar = Calendar.current
+        let now = Date()
+        let weekday = calendar.component(.weekday, from: now)
+        let currentMinutes = calendar.component(.hour, from: now) * 60 + calendar.component(.minute, from: now)
+
+        let todayBlocks = state.timeBlocks(forDay: weekday)
+        let activeBlock = todayBlocks.first { block in
+            let start = block.startHour * 60 + block.startMinute
+            let end = block.endHour * 60 + block.endMinute
+            return currentMinutes >= start && currentMinutes < end
+        }
+
+        if let activeBlock = activeBlock,
+           let mode = state.mode(for: activeBlock.modeID) {
+            state.activeModeID = activeBlock.modeID
+            state.startSession(for: mode)
+            BlockingService.applyBlocks(for: mode)
+
+            // Set block end time for shield display
+            if let endTime = calendar.date(
+                bySettingHour: activeBlock.endHour,
+                minute: activeBlock.endMinute,
+                second: 0,
+                of: now
+            ) {
+                state.activeBlockEndTime = endTime
+            }
+        } else {
+            state.activeModeID = nil
+            state.activeBlockEndTime = nil
+            BlockingService.clearAllBlocks()
+        }
     }
 
     // MARK: - Time Waster Mapping
@@ -199,13 +227,14 @@ class AIOnboardingViewModel: ObservableObject {
 
     private func generateWithAI(profile: UserProfile, modes: [Mode]) async throws -> [TimeBlock] {
         let modeNames = modes.map(\.name)
+        let modeMap = Dictionary(uniqueKeysWithValues: modes.map { ($0.name.lowercased(), $0.id) })
 
-        // Check cache
+        // Check cache (includes mode context for invalidation)
         let userPrompt = AIPromptTemplates.scheduleBuilderUser(profile: profile)
-        if let cached = AIResponseCache.get(for: userPrompt),
+        if let cached = AIResponseCache.get(for: userPrompt, modeContext: modeNames),
            let data = cached.data(using: .utf8),
            let response = try? JSONDecoder().decode(GroqScheduleResponse.self, from: data) {
-            return mapResponseToBlocks(response, modes: modes)
+            return sanitizeAndValidate(response, modeMap: modeMap)
         }
 
         let messages: [GroqService.Message] = [
@@ -213,30 +242,29 @@ class AIOnboardingViewModel: ObservableObject {
             .init(role: "user", content: userPrompt),
         ]
 
-        let response = try await GroqService.shared.chatJSON(messages: messages, as: GroqScheduleResponse.self)
+        // Use fallback chain — tries 70B then 8B
+        let response = try await GroqService.shared.chatJSONWithFallback(
+            messages: messages,
+            as: GroqScheduleResponse.self
+        )
 
         // Cache the raw response
         if let data = try? JSONEncoder().encode(response),
            let jsonString = String(data: data, encoding: .utf8) {
-            AIResponseCache.set(jsonString, for: userPrompt)
+            AIResponseCache.set(jsonString, for: userPrompt, modeContext: modeNames)
         }
 
-        return mapResponseToBlocks(response, modes: modes)
+        return sanitizeAndValidate(response, modeMap: modeMap)
     }
 
-    private func mapResponseToBlocks(_ response: GroqScheduleResponse, modes: [Mode]) -> [TimeBlock] {
-        let modeMap = Dictionary(uniqueKeysWithValues: modes.map { ($0.name.lowercased(), $0.id) })
-
-        return response.blocks.compactMap { block in
-            guard let modeID = modeMap[block.mode.lowercased()] else { return nil }
-            return TimeBlock(
-                modeID: modeID,
-                dayOfWeek: block.day,
-                startHour: block.startHour,
-                startMinute: block.startMinute,
-                endHour: block.endHour,
-                endMinute: block.endMinute
-            )
+    /// Sanitize, validate, and resolve conflicts in AI-generated blocks
+    private func sanitizeAndValidate(_ response: GroqScheduleResponse, modeMap: [String: UUID]) -> [TimeBlock] {
+        // Sanitize each block (clamp values, map mode names)
+        let sanitized = response.blocks.compactMap { groqBlock in
+            TimeBlockValidator.sanitize(groqBlock, modeMap: modeMap)
         }
+
+        // Resolve any overlapping blocks
+        return TimeBlockValidator.resolveConflicts(sanitized)
     }
 }

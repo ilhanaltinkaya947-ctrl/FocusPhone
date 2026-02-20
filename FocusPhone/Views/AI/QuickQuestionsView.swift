@@ -35,16 +35,15 @@ struct QuickQuestionsView: View {
                         }
                     }
 
-                    // Q2: Sleep time
+                    // Q2: Sleep time — restricted to 20-24 to avoid wrap-around bugs
                     if visibleQuestions >= 2 {
                         questionBubble(id: 2, question: "What time do you go to sleep?") {
                             Picker("Sleep time", selection: $viewModel.sleepTime) {
-                                ForEach(20...26, id: \.self) { hour in
-                                    let displayHour = hour > 24 ? hour - 24 : hour
-                                    let suffix = hour >= 24 ? "AM" : "PM"
-                                    let adjustedHour = displayHour > 12 ? displayHour - 12 : displayHour
-                                    Text("\(adjustedHour):00 \(suffix)").tag(hour > 24 ? hour - 24 : hour)
-                                }
+                                Text("8:00 PM").tag(20)
+                                Text("9:00 PM").tag(21)
+                                Text("10:00 PM").tag(22)
+                                Text("11:00 PM").tag(23)
+                                Text("Midnight").tag(24)
                             }
                             .pickerStyle(.wheel)
                             .frame(height: 100)

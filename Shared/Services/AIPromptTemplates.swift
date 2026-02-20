@@ -37,18 +37,29 @@ enum AIPromptTemplates {
         The user will describe their lifestyle and you will create a weekly schedule \
         using the available modes.
 
-        Available modes: \(modeNames.joined(separator: ", "))
+        Available modes (use these EXACT names): \(modeNames.joined(separator: ", "))
 
         \(densityGuidance)
 
-        Rules:
-        - Each day must have at least one block
-        - Blocks cannot overlap
-        - Use 24-hour format for times
+        STRICT RULES — violations will cause errors:
+        - hours must be 0-23, minutes must be 0 or 30 (no other values)
+        - startHour:startMinute must be BEFORE endHour:endMinute (no midnight-crossing blocks)
+        - Blocks on the same day MUST NOT overlap
         - dayOfWeek uses 1=Sunday, 2=Monday, 3=Tuesday, 4=Wednesday, 5=Thursday, 6=Friday, 7=Saturday
-        - Create a realistic, balanced schedule
-        - Include sleep blocks every night
-        - Match mode names EXACTLY as listed above
+        - Use mode names EXACTLY as listed above (case-sensitive match required)
+        - Each day must have at least 3 blocks
+        - Include a Sleep block every night
+        - Include a Morning Routine block every day
+
+        Example valid Monday schedule:
+        {"mode": "Sleep", "day": 2, "startHour": 0, "startMinute": 0, "endHour": 7, "endMinute": 0}
+        {"mode": "Morning Routine", "day": 2, "startHour": 7, "startMinute": 0, "endHour": 8, "endMinute": 0}
+        {"mode": "Deep Work", "day": 2, "startHour": 8, "startMinute": 0, "endHour": 12, "endMinute": 0}
+        {"mode": "Break", "day": 2, "startHour": 12, "startMinute": 0, "endHour": 13, "endMinute": 0}
+        {"mode": "Deep Work", "day": 2, "startHour": 13, "startMinute": 0, "endHour": 17, "endMinute": 0}
+        {"mode": "Free Time", "day": 2, "startHour": 17, "startMinute": 0, "endHour": 22, "endMinute": 0}
+        {"mode": "Wind Down", "day": 2, "startHour": 22, "startMinute": 0, "endHour": 23, "endMinute": 0}
+        {"mode": "Sleep", "day": 2, "startHour": 23, "startMinute": 0, "endHour": 23, "endMinute": 59}
 
         Respond with ONLY valid JSON in this exact format:
         {
@@ -102,17 +113,20 @@ enum AIPromptTemplates {
         You are a schedule editor for a digital detox app. The user will give you a \
         natural language command to modify their weekly schedule.
 
-        Available modes: \(modeNames.joined(separator: ", "))
+        Available modes (use EXACT names): \(modeNames.joined(separator: ", "))
         dayOfWeek: 1=Sunday, 2=Monday, 3=Tuesday, 4=Wednesday, 5=Thursday, 6=Friday, 7=Saturday
 
-        Current schedule:
+        Current schedule (each line: [UUID] Day StartTime-EndTime ModeName):
         \(currentSchedule)
 
         Supported change types: add, remove, move, resize
-        - "add": creates a new block (requires mode, day, start, end)
-        - "remove": deletes an existing block (requires originalBlockID)
+        - "add": creates a new block (requires modeName, dayOfWeek, startHour, startMinute, endHour, endMinute)
+        - "remove": deletes an existing block (requires originalBlockID — use EXACT UUID from schedule above)
         - "move": changes day/time of existing block (requires originalBlockID + new day/time)
         - "resize": changes start/end of existing block (requires originalBlockID + new times)
+
+        IMPORTANT: Use EXACT UUIDs from the schedule above. Do NOT fabricate block IDs. \
+        If a block doesn't exist in the schedule, you cannot remove/move/resize it.
 
         When the user says "tomorrow", calculate from today's day. \
         Today is day \(currentDayOfWeek()).
@@ -144,10 +158,13 @@ enum AIPromptTemplates {
 
     // MARK: - Weekly Review
 
-    static let weeklyReviewSystem = """
+    static func weeklyReviewSystem(modeNames: [String]) -> String {
+        """
         You are a wellness coach reviewing a user's week in a digital detox app. \
         Analyze their schedule adherence and suggest improvements. \
         Be encouraging but honest. Keep suggestions actionable and specific.
+
+        Available modes (use EXACT names): \(modeNames.joined(separator: ", "))
 
         Respond with ONLY valid JSON:
         {
@@ -166,15 +183,18 @@ enum AIPromptTemplates {
           ]
         }
 
-        Limit to 3 suggestions maximum. Each suggestion must use an existing mode name. \
-        Suggestion types: add, remove, resize. Include originalBlockID for remove/resize.
+        Limit to 3 suggestions maximum. Each suggestion must use an EXACT mode name from above. \
+        Suggestion types: add, remove, resize. \
+        For remove/resize, include originalBlockID using the EXACT UUID from the schedule. \
+        Only reference block IDs that appear in the schedule provided.
         """
+    }
 
     static func weeklyReviewUser(stats: String, schedule: String) -> String {
         """
         Here's my week:
 
-        Schedule:
+        Schedule (each line: [UUID] Day StartTime-EndTime ModeName):
         \(schedule)
 
         Stats:

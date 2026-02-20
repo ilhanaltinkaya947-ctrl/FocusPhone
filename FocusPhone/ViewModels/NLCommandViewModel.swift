@@ -28,6 +28,13 @@ class NLCommandViewModel: ObservableObject {
 
     func processCommand() {
         guard !commandText.trimmingCharacters(in: .whitespaces).isEmpty else { return }
+
+        guard KeychainService.hasKey else {
+            resultMessage = "Set up your AI key in Settings first."
+            resultSuccess = false
+            return
+        }
+
         isProcessing = true
         resultMessage = nil
         resultSuccess = nil
@@ -49,21 +56,33 @@ class NLCommandViewModel: ObservableObject {
                     .init(role: "user", content: command),
                 ]
 
-                let response = try await GroqService.shared.chatJSON(
+                // Use fallback chain with reduced max tokens (NL responses are small)
+                let response = try await GroqService.shared.chatJSONWithFallback(
                     messages: messages,
-                    as: NLCommandResponse.self
+                    as: NLCommandResponse.self,
+                    maxTokens: 512
                 )
 
                 if response.changes.isEmpty {
                     resultMessage = response.message ?? "I couldn't understand that command."
                     resultSuccess = false
                 } else {
-                    pendingChanges = response.changes
-                    resultMessage = response.message
-                    showingConfirmation = true
+                    // Pre-validate changes before showing confirmation
+                    let validationIssues = prevalidateChanges(response.changes)
+                    if let issue = validationIssues {
+                        resultMessage = issue
+                        resultSuccess = false
+                    } else {
+                        pendingChanges = response.changes
+                        resultMessage = response.message
+                        showingConfirmation = true
+                    }
                 }
+            } catch let error as GroqError {
+                resultMessage = error.errorDescription ?? "AI request failed."
+                resultSuccess = false
             } catch {
-                resultMessage = "Something went wrong. Try the manual editor instead."
+                resultMessage = "Network error. Check your connection and try again."
                 resultSuccess = false
             }
 
@@ -89,17 +108,22 @@ class NLCommandViewModel: ObservableObject {
 
                 let newBlock = TimeBlock(
                     modeID: modeID,
-                    dayOfWeek: day,
-                    startHour: sh,
-                    startMinute: sm,
-                    endHour: eh,
-                    endMinute: em
+                    dayOfWeek: clamp(day, 1, 7),
+                    startHour: clamp(sh, 0, 23),
+                    startMinute: clamp(sm, 0, 59),
+                    endHour: clamp(eh, 0, 23),
+                    endMinute: clamp(em, 0, 59)
                 )
-                blocks.append(newBlock)
+
+                // Only add if it doesn't create overlaps
+                if !TimeBlockValidator.wouldOverlap(newBlock, with: blocks) {
+                    blocks.append(newBlock)
+                }
 
             case "remove":
                 guard let idStr = change.originalBlockID,
-                      let blockID = UUID(uuidString: idStr) else { continue }
+                      let blockID = UUID(uuidString: idStr),
+                      blocks.contains(where: { $0.id == blockID }) else { continue }
                 blocks.removeAll { $0.id == blockID }
 
             case "move":
@@ -107,21 +131,21 @@ class NLCommandViewModel: ObservableObject {
                       let blockID = UUID(uuidString: idStr),
                       let index = blocks.firstIndex(where: { $0.id == blockID }) else { continue }
 
-                if let day = change.dayOfWeek { blocks[index].dayOfWeek = day }
-                if let sh = change.startHour { blocks[index].startHour = sh }
-                if let sm = change.startMinute { blocks[index].startMinute = sm }
-                if let eh = change.endHour { blocks[index].endHour = eh }
-                if let em = change.endMinute { blocks[index].endMinute = em }
+                if let day = change.dayOfWeek { blocks[index].dayOfWeek = clamp(day, 1, 7) }
+                if let sh = change.startHour { blocks[index].startHour = clamp(sh, 0, 23) }
+                if let sm = change.startMinute { blocks[index].startMinute = clamp(sm, 0, 59) }
+                if let eh = change.endHour { blocks[index].endHour = clamp(eh, 0, 23) }
+                if let em = change.endMinute { blocks[index].endMinute = clamp(em, 0, 59) }
 
             case "resize":
                 guard let idStr = change.originalBlockID,
                       let blockID = UUID(uuidString: idStr),
                       let index = blocks.firstIndex(where: { $0.id == blockID }) else { continue }
 
-                if let sh = change.startHour { blocks[index].startHour = sh }
-                if let sm = change.startMinute { blocks[index].startMinute = sm }
-                if let eh = change.endHour { blocks[index].endHour = eh }
-                if let em = change.endMinute { blocks[index].endMinute = em }
+                if let sh = change.startHour { blocks[index].startHour = clamp(sh, 0, 23) }
+                if let sm = change.startMinute { blocks[index].startMinute = clamp(sm, 0, 59) }
+                if let eh = change.endHour { blocks[index].endHour = clamp(eh, 0, 23) }
+                if let em = change.endMinute { blocks[index].endMinute = clamp(em, 0, 59) }
 
             default:
                 break
@@ -129,7 +153,10 @@ class NLCommandViewModel: ObservableObject {
         }
 
         AppState.shared.timeBlocks = blocks
-        ScheduleService.registerAllTimeBlocks()
+        let registration = ScheduleService.registerAllTimeBlocks()
+        if !registration.failed.isEmpty {
+            print("Warning: \(registration.failed.count) blocks failed to register")
+        }
         WidgetCenter.shared.reloadAllTimelines()
 
         pendingChanges = []
@@ -163,6 +190,34 @@ class NLCommandViewModel: ObservableObject {
         default:
             return change.type
         }
+    }
+
+    // MARK: - Validation
+
+    /// Pre-validates AI changes before showing confirmation. Returns error message or nil.
+    private func prevalidateChanges(_ changes: [AIScheduleChange]) -> String? {
+        let blocks = AppState.shared.timeBlocks
+
+        for change in changes {
+            switch change.type {
+            case "remove", "move", "resize":
+                guard let idStr = change.originalBlockID,
+                      let blockID = UUID(uuidString: idStr),
+                      blocks.contains(where: { $0.id == blockID }) else {
+                    return "AI referenced a block that doesn't exist. Try rephrasing your command."
+                }
+            default:
+                break
+            }
+        }
+
+        return nil
+    }
+
+    // MARK: - Helpers
+
+    private func clamp(_ value: Int, _ lo: Int, _ hi: Int) -> Int {
+        min(max(value, lo), hi)
     }
 
     private func dayNameForWeekday(_ day: Int) -> String {

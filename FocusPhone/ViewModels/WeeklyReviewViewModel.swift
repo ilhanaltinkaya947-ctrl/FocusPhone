@@ -50,6 +50,7 @@ class WeeklyReviewViewModel: ObservableObject {
         let modes = AppState.shared.modes
         let blocks = AppState.shared.timeBlocks
         let sessions = AppState.shared.sessionsForWeek()
+        let modeNames = modes.map(\.name)
 
         Task {
             // Try AI if available
@@ -59,20 +60,24 @@ class WeeklyReviewViewModel: ObservableObject {
                     let statsText = formatStats(sessions: sessions, modes: modes)
 
                     let messages: [GroqService.Message] = [
-                        .init(role: "system", content: AIPromptTemplates.weeklyReviewSystem),
+                        .init(role: "system", content: AIPromptTemplates.weeklyReviewSystem(modeNames: modeNames)),
                         .init(role: "user", content: AIPromptTemplates.weeklyReviewUser(
                             stats: statsText,
                             schedule: scheduleText
                         )),
                     ]
 
-                    let response = try await GroqService.shared.chatJSON(
+                    // Use fallback chain
+                    let response = try await GroqService.shared.chatJSONWithFallback(
                         messages: messages,
                         as: WeeklyReviewResponse.self
                     )
 
                     summary = response.summary
-                    suggestions = response.suggestions
+                    // Filter out suggestions referencing non-existent block IDs
+                    suggestions = response.suggestions.filter { suggestion in
+                        validateSuggestion(suggestion, existingBlocks: blocks, modes: modes)
+                    }
                     isLoading = false
                     return
                 } catch {
@@ -98,37 +103,43 @@ class WeeklyReviewViewModel: ObservableObject {
         switch suggestion.type {
         case "add":
             guard let modeID = modeMap[suggestion.modeName.lowercased()] else { return }
-            blocks.append(TimeBlock(
+            let newBlock = TimeBlock(
                 modeID: modeID,
                 dayOfWeek: suggestion.dayOfWeek,
                 startHour: suggestion.startHour,
                 startMinute: suggestion.startMinute,
                 endHour: suggestion.endHour,
                 endMinute: suggestion.endMinute
-            ))
+            )
+            // Only add if valid and non-overlapping
+            guard TimeBlockValidator.isValid(newBlock),
+                  !TimeBlockValidator.wouldOverlap(newBlock, with: blocks) else { return }
+            blocks.append(newBlock)
 
         case "remove":
-            if let idStr = suggestion.originalBlockID,
-               let blockID = UUID(uuidString: idStr) {
-                blocks.removeAll { $0.id == blockID }
-            }
+            guard let idStr = suggestion.originalBlockID,
+                  let blockID = UUID(uuidString: idStr),
+                  blocks.contains(where: { $0.id == blockID }) else { return }
+            blocks.removeAll { $0.id == blockID }
 
         case "resize":
-            if let idStr = suggestion.originalBlockID,
-               let blockID = UUID(uuidString: idStr),
-               let idx = blocks.firstIndex(where: { $0.id == blockID }) {
-                blocks[idx].startHour = suggestion.startHour
-                blocks[idx].startMinute = suggestion.startMinute
-                blocks[idx].endHour = suggestion.endHour
-                blocks[idx].endMinute = suggestion.endMinute
-            }
+            guard let idStr = suggestion.originalBlockID,
+                  let blockID = UUID(uuidString: idStr),
+                  let idx = blocks.firstIndex(where: { $0.id == blockID }) else { return }
+            blocks[idx].startHour = suggestion.startHour
+            blocks[idx].startMinute = suggestion.startMinute
+            blocks[idx].endHour = suggestion.endHour
+            blocks[idx].endMinute = suggestion.endMinute
 
         default:
             break
         }
 
         AppState.shared.timeBlocks = blocks
-        ScheduleService.registerAllTimeBlocks()
+        let registration = ScheduleService.registerAllTimeBlocks()
+        if !registration.failed.isEmpty {
+            print("Warning: \(registration.failed.count) blocks failed to register")
+        }
         WidgetCenter.shared.reloadAllTimelines()
 
         appliedSuggestions.insert(index)
@@ -141,6 +152,25 @@ class WeeklyReviewViewModel: ObservableObject {
     }
 
     // MARK: - Private
+
+    /// Validates a suggestion references real blocks and uses valid mode names
+    private func validateSuggestion(_ suggestion: WeeklyReviewSuggestion, existingBlocks: [TimeBlock], modes: [Mode]) -> Bool {
+        let modeMap = Dictionary(uniqueKeysWithValues: modes.map { ($0.name.lowercased(), $0.id) })
+
+        // Mode name must exist
+        guard modeMap[suggestion.modeName.lowercased()] != nil else { return false }
+
+        // For remove/resize, block ID must exist
+        if suggestion.type == "remove" || suggestion.type == "resize" {
+            guard let idStr = suggestion.originalBlockID,
+                  let blockID = UUID(uuidString: idStr),
+                  existingBlocks.contains(where: { $0.id == blockID }) else {
+                return false
+            }
+        }
+
+        return true
+    }
 
     private func formatStats(sessions: [ModeSession], modes: [Mode]) -> String {
         var lines: [String] = []

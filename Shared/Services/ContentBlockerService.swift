@@ -3,6 +3,20 @@ import Foundation
 import SafariServices
 #endif
 
+enum ContentBlockerError: Error, LocalizedError {
+    case noAppGroupContainer
+    case writeFailure(Error)
+    case reloadFailure(Error)
+
+    var errorDescription: String? {
+        switch self {
+        case .noAppGroupContainer: return "Cannot access App Group container for content blocker."
+        case .writeFailure(let error): return "Failed to write blocker rules: \(error.localizedDescription)"
+        case .reloadFailure(let error): return "Failed to reload content blocker: \(error.localizedDescription)"
+        }
+    }
+}
+
 final class ContentBlockerService {
 
     private static var rulesFileURL: URL? {
@@ -13,16 +27,22 @@ final class ContentBlockerService {
 
     // MARK: - Public API
 
-    static func applyWebsiteBlocks(for domains: [String], completion: ((Error?) -> Void)? = nil) {
+    static func applyWebsiteBlocks(for domains: [String]) throws {
         let validDomains = domains.compactMap(sanitizeDomain).filter { !$0.isEmpty }
         let rules = generateRules(for: validDomains)
-        writeRules(rules)
-        reloadContentBlocker(completion: completion)
+        try writeRules(rules)
+        reloadContentBlocker()
     }
 
     static func clearWebsiteBlocks() {
-        writeRules(noOpRules)
+        try? writeRules(noOpRules)
         reloadContentBlocker()
+    }
+
+    /// Checks that the rules file exists in the App Group container
+    static func verifyContentBlocker() -> Bool {
+        guard let fileURL = rulesFileURL else { return false }
+        return FileManager.default.fileExists(atPath: fileURL.path)
     }
 
     // MARK: - Domain Validation
@@ -96,13 +116,15 @@ final class ContentBlockerService {
 
     // MARK: - File I/O
 
-    private static func writeRules(_ rules: [[String: Any]]) {
-        guard let fileURL = rulesFileURL else { return }
+    private static func writeRules(_ rules: [[String: Any]]) throws {
+        guard let fileURL = rulesFileURL else {
+            throw ContentBlockerError.noAppGroupContainer
+        }
         do {
             let data = try JSONSerialization.data(withJSONObject: rules)
             try data.write(to: fileURL, options: .atomic)
         } catch {
-            print("ContentBlockerService: Failed to write rules: \(error)")
+            throw ContentBlockerError.writeFailure(error)
         }
     }
 
