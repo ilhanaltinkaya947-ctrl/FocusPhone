@@ -43,7 +43,7 @@ class SettingsViewModel: ObservableObject {
         defaults.removeObject(forKey: Constants.weeklyReviewDayKey)
         defaults.removeObject(forKey: Constants.lastWeeklyReviewKey)
         defaults.removeObject(forKey: Constants.commitmentLevelKey)
-        KeychainService.deleteAPIKey()
+        defaults.removeObject(forKey: Constants.contentFilterPresetsKey)
         AIResponseCache.clear()
         ScheduleService.stopAllSchedules()
         BlockingService.clearAllBlocks()

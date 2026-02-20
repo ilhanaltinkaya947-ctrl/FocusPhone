@@ -9,18 +9,18 @@ struct OnboardingView: View {
     @State private var iconOpacity: CGFloat = 0
     @Environment(\.scenePhase) private var scenePhase
 
-    private let totalPages = 10
+    private let totalPages = 9
 
     var body: some View {
         VStack(spacing: 0) {
-            // Back button (visible on pages 1–9)
+            // Back button (visible on pages 1–8)
             if currentPage > 0 && currentPage < totalPages - 1 {
                 HStack {
                     Button {
                         withAnimation {
-                            if currentPage == 7 {
-                                // Generating page → back to API key or distractions
-                                currentPage = KeychainService.hasKey ? 5 : 6
+                            if currentPage == 6 {
+                                // Generating page → back to distractions
+                                currentPage = 5
                             } else {
                                 currentPage -= 1
                             }
@@ -53,27 +53,17 @@ struct OnboardingView: View {
                     withAnimation { currentPage = 5 }
                 }.tag(4)
                 OnboardingDistractionsView(viewModel: aiVM) {
-                    withAnimation {
-                        // Skip API key page if key already exists
-                        if KeychainService.hasKey {
-                            currentPage = 7
-                        } else {
-                            currentPage = 6
-                        }
-                    }
+                    withAnimation { currentPage = 6 }
                 }.tag(5)
-                OnboardingAPIKeyView {
-                    withAnimation { currentPage = 7 }
-                }.tag(6)
 
                 // Chapter 3: Build
                 AIGeneratingView(viewModel: aiVM) {
+                    withAnimation { currentPage = 7 }
+                }.tag(6)
+                OnboardingScheduleBuilderView(viewModel: aiVM) {
                     withAnimation { currentPage = 8 }
                 }.tag(7)
-                OnboardingScheduleBuilderView(viewModel: aiVM) {
-                    withAnimation { currentPage = 9 }
-                }.tag(8)
-                allSetPage.tag(9)
+                allSetPage.tag(8)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(.easeInOut(duration: 0.35), value: currentPage)
@@ -270,7 +260,7 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Page 9: All Set
+    // MARK: - Page 8: All Set
 
     private var allSetPage: some View {
         VStack(spacing: 0) {

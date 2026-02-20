@@ -27,6 +27,11 @@ enum Constants {
     static let lastWeeklyReviewKey = "lastWeeklyReview"
     static let aiEnabledKey = "aiEnabled"
     static let commitmentLevelKey = "commitmentLevel"
+    static let contentFilterPresetsKey = "contentFilterPresets"
+
+    // AI Backend
+    static let aiServiceBaseURL = "https://focusphone-api.workers.dev/v1/chat"
+    static let aiServiceToken = "fp_XXXXXXXX"
 
     static var sharedDefaults: UserDefaults {
         UserDefaults(suiteName: appGroupID) ?? .standard

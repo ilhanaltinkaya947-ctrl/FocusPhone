@@ -53,36 +53,34 @@ class WeeklyReviewViewModel: ObservableObject {
         let modeNames = modes.map(\.name)
 
         Task {
-            // Try AI if available
-            if KeychainService.hasKey {
-                do {
-                    let scheduleText = AIPromptTemplates.formatScheduleForPrompt(blocks: blocks, modes: modes)
-                    let statsText = formatStats(sessions: sessions, modes: modes)
+            // Try AI
+            do {
+                let scheduleText = AIPromptTemplates.formatScheduleForPrompt(blocks: blocks, modes: modes)
+                let statsText = formatStats(sessions: sessions, modes: modes)
 
-                    let messages: [GroqService.Message] = [
-                        .init(role: "system", content: AIPromptTemplates.weeklyReviewSystem(modeNames: modeNames)),
-                        .init(role: "user", content: AIPromptTemplates.weeklyReviewUser(
-                            stats: statsText,
-                            schedule: scheduleText
-                        )),
-                    ]
+                let messages: [GroqService.Message] = [
+                    .init(role: "system", content: AIPromptTemplates.weeklyReviewSystem(modeNames: modeNames)),
+                    .init(role: "user", content: AIPromptTemplates.weeklyReviewUser(
+                        stats: statsText,
+                        schedule: scheduleText
+                    )),
+                ]
 
-                    // Use fallback chain
-                    let response = try await GroqService.shared.chatJSONWithFallback(
-                        messages: messages,
-                        as: WeeklyReviewResponse.self
-                    )
+                // Use fallback chain
+                let response = try await GroqService.shared.chatJSONWithFallback(
+                    messages: messages,
+                    as: WeeklyReviewResponse.self
+                )
 
-                    summary = response.summary
-                    // Filter out suggestions referencing non-existent block IDs
-                    suggestions = response.suggestions.filter { suggestion in
-                        validateSuggestion(suggestion, existingBlocks: blocks, modes: modes)
-                    }
-                    isLoading = false
-                    return
-                } catch {
-                    // Fall through to local summary
+                summary = response.summary
+                // Filter out suggestions referencing non-existent block IDs
+                suggestions = response.suggestions.filter { suggestion in
+                    validateSuggestion(suggestion, existingBlocks: blocks, modes: modes)
                 }
+                isLoading = false
+                return
+            } catch {
+                // Fall through to local summary
             }
 
             // Fallback: local summary

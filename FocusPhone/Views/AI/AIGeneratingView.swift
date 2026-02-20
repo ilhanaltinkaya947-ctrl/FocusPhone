@@ -166,9 +166,7 @@ struct AIGeneratingView: View {
 
     /// Returns appropriate SF Symbol for the error type
     private func errorIcon(for error: String) -> String {
-        if error.contains("API key") || error.contains("invalid") {
-            return "key.slash"
-        } else if error.contains("Network") || error.contains("network") {
+        if error.contains("Network") || error.contains("network") {
             return "wifi.slash"
         } else if error.contains("Rate") || error.contains("rate") {
             return "clock.badge.exclamationmark"

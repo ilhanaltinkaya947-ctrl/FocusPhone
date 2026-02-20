@@ -113,6 +113,51 @@ struct OnboardingDistractionsView: View {
                     }
                 }
 
+                // Section D: Smart content filters
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Smart content filters")
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(.secondary)
+
+                    Text("Allow the site but hide addictive feeds")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+
+                    ForEach(ContentFilterPresetStore.allPresets) { preset in
+                        let isEnabled = viewModel.enabledPresets.contains(preset.id)
+                        HStack(spacing: 12) {
+                            Image(systemName: preset.icon)
+                                .font(.system(size: 16))
+                                .foregroundStyle(.blue)
+                                .frame(width: 28)
+
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(preset.displayName)
+                                    .font(.subheadline.weight(.medium))
+                                Text(preset.description)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+
+                            Spacer()
+
+                            Toggle("", isOn: Binding(
+                                get: { isEnabled },
+                                set: { enabled in
+                                    if enabled {
+                                        viewModel.enabledPresets.insert(preset.id)
+                                    } else {
+                                        viewModel.enabledPresets.remove(preset.id)
+                                    }
+                                }
+                            ))
+                            .labelsHidden()
+                        }
+                        .padding(12)
+                        .background(Color(.systemGray6), in: RoundedRectangle(cornerRadius: 12))
+                    }
+                }
+
                 // Continue button
                 Button {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()

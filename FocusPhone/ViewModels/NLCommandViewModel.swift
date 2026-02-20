@@ -29,12 +29,6 @@ class NLCommandViewModel: ObservableObject {
     func processCommand() {
         guard !commandText.trimmingCharacters(in: .whitespaces).isEmpty else { return }
 
-        guard KeychainService.hasKey else {
-            resultMessage = "Set up your AI key in Settings first."
-            resultSuccess = false
-            return
-        }
-
         isProcessing = true
         resultMessage = nil
         resultSuccess = nil

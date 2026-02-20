@@ -14,9 +14,7 @@ struct NLCommandSheet: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                if !KeychainService.hasKey {
-                    setupPromptView
-                } else if viewModel.showingConfirmation {
+                if viewModel.showingConfirmation {
                     confirmationView
                 } else if viewModel.resultSuccess == true {
                     successView
@@ -31,29 +29,6 @@ struct NLCommandSheet: View {
                     Button("Cancel") { dismiss() }
                 }
             }
-        }
-    }
-
-    // MARK: - Setup Prompt (no API key)
-
-    private var setupPromptView: some View {
-        VStack(spacing: 20) {
-            Spacer()
-
-            Image(systemName: "key.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(.orange)
-
-            Text("AI Not Configured")
-                .font(.title3.weight(.semibold))
-
-            Text("Add your Groq API key in Settings to use AI-powered schedule editing.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 32)
-
-            Spacer()
         }
     }
 
@@ -244,9 +219,7 @@ struct NLCommandSheet: View {
     }
 
     private func errorIcon(for message: String) -> String {
-        if message.contains("API key") || message.contains("key") {
-            return "key.slash"
-        } else if message.contains("Network") || message.contains("network") || message.contains("connection") {
+        if message.contains("Network") || message.contains("network") || message.contains("connection") {
             return "wifi.slash"
         } else if message.contains("Rate") || message.contains("rate") {
             return "clock.badge.exclamationmark"

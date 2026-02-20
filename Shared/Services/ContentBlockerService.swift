@@ -27,9 +27,58 @@ final class ContentBlockerService {
 
     // MARK: - Public API
 
+    /// Convenience: apply only domain blocks (backward-compatible)
     static func applyWebsiteBlocks(for domains: [String]) throws {
-        let validDomains = domains.compactMap(sanitizeDomain).filter { !$0.isEmpty }
-        let rules = generateRules(for: validDomains)
+        try applyAllRules(
+            domainBlocks: domains,
+            enabledPresets: AppState.shared.enabledContentFilterPresets
+        )
+    }
+
+    /// Full rule merge: domain blocks + preset URL blocks + preset CSS-hide rules
+    static func applyAllRules(domainBlocks: [String], enabledPresets: Set<String>) throws {
+        var rules: [[String: Any]] = []
+
+        // 1. Domain-block rules
+        let validDomains = domainBlocks.compactMap(sanitizeDomain).filter { !$0.isEmpty }
+        rules.append(contentsOf: generateDomainRules(for: validDomains))
+
+        // 2. Preset URL-block rules
+        for presetID in enabledPresets {
+            guard let preset = ContentFilterPresetStore.preset(for: presetID) else { continue }
+
+            for pattern in preset.urlBlockPatterns {
+                var trigger: [String: Any] = ["url-filter": pattern.urlFilter]
+                if !pattern.ifDomain.isEmpty {
+                    trigger["if-domain"] = pattern.ifDomain
+                }
+                rules.append([
+                    "trigger": trigger,
+                    "action": ["type": "block"]
+                ])
+            }
+
+            // 3. Preset CSS-hide rules
+            for rule in preset.cssHideRules {
+                var trigger: [String: Any] = ["url-filter": rule.urlFilter]
+                if !rule.ifDomain.isEmpty {
+                    trigger["if-domain"] = rule.ifDomain
+                }
+                rules.append([
+                    "trigger": trigger,
+                    "action": [
+                        "type": "css-display-none",
+                        "selector": rule.selector,
+                    ]
+                ])
+            }
+        }
+
+        // If no rules at all, write a no-op so the extension stays valid
+        if rules.isEmpty {
+            rules = noOpRules
+        }
+
         try writeRules(rules)
         reloadContentBlocker()
     }
@@ -87,8 +136,8 @@ final class ContentBlockerService {
 
     // MARK: - Rule Generation
 
-    private static func generateRules(for domains: [String]) -> [[String: Any]] {
-        guard !domains.isEmpty else { return noOpRules }
+    private static func generateDomainRules(for domains: [String]) -> [[String: Any]] {
+        guard !domains.isEmpty else { return [] }
 
         return domains.map { domain in
             let escaped = escapeForRegex(domain)

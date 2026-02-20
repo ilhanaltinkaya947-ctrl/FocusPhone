@@ -5,6 +5,8 @@ struct SettingsView: View {
     @State private var showingResetAlert = false
     @State private var aiEnabled = AppState.shared.aiEnabled
     @State private var weeklyReviewDay = AppState.shared.weeklyReviewDay
+    @State private var enabledPresets = AppState.shared.enabledContentFilterPresets
+    @State private var isReloadingPresets = false
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
@@ -55,6 +57,51 @@ struct SettingsView: View {
                     Text("Extensions")
                 }
 
+                // Content Filters
+                Section {
+                    ForEach(ContentFilterPresetStore.allPresets) { preset in
+                        HStack(spacing: 12) {
+                            Image(systemName: preset.icon)
+                                .font(.system(size: 14))
+                                .foregroundStyle(.white)
+                                .frame(width: 28, height: 28)
+                                .background(Color.blue, in: RoundedRectangle(cornerRadius: 6))
+
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(preset.displayName)
+                                    .font(.subheadline.weight(.medium))
+                                Text(preset.description)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+
+                            Spacer()
+
+                            if isReloadingPresets {
+                                ProgressView()
+                                    .controlSize(.small)
+                            } else {
+                                Toggle("", isOn: Binding(
+                                    get: { enabledPresets.contains(preset.id) },
+                                    set: { enabled in
+                                        if enabled {
+                                            enabledPresets.insert(preset.id)
+                                        } else {
+                                            enabledPresets.remove(preset.id)
+                                        }
+                                        applyPresetChange()
+                                    }
+                                ))
+                                .labelsHidden()
+                            }
+                        }
+                    }
+                } header: {
+                    Text("Content Filters")
+                } footer: {
+                    Text("Allow the site but hide addictive feeds like Shorts, Reels, and Explore.")
+                }
+
                 AISettingsSection(aiEnabled: $aiEnabled, weeklyReviewDay: $weeklyReviewDay)
 
                 Section {
@@ -97,6 +144,7 @@ struct SettingsView: View {
                         Button("Cancel", role: .cancel) { }
                         Button("Reset", role: .destructive) {
                             viewModel.resetAllData()
+                            enabledPresets = []
                         }
                     } message: {
                         Text("This will delete all custom modes, time blocks, and schedules. Default modes will be restored.")
@@ -128,6 +176,27 @@ struct SettingsView: View {
                     viewModel.checkContentBlockerState()
                 }
             }
+        }
+    }
+
+    private func applyPresetChange() {
+        isReloadingPresets = true
+        AppState.shared.enabledContentFilterPresets = enabledPresets
+
+        // Re-apply content blocker rules with current mode's domains + new presets
+        let domains = AppState.shared.activeMode?.blockedWebsites ?? []
+        do {
+            try ContentBlockerService.applyAllRules(
+                domainBlocks: domains,
+                enabledPresets: enabledPresets
+            )
+        } catch {
+            print("Settings: Content blocker error: \(error.localizedDescription)")
+        }
+
+        // Brief spinner feedback
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            isReloadingPresets = false
         }
     }
 

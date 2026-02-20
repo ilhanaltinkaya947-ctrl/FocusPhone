@@ -20,9 +20,12 @@ final class BlockingService {
         store.application.denyAppInstallation = mode.blockAppStore
         store.application.denyAppRemoval = mode.blockAppDeletion
 
-        // Website blocking via Safari Content Blocker
+        // Website blocking via Safari Content Blocker (domain blocks + content filter presets)
         do {
-            try ContentBlockerService.applyWebsiteBlocks(for: mode.blockedWebsites)
+            try ContentBlockerService.applyAllRules(
+                domainBlocks: mode.blockedWebsites,
+                enabledPresets: AppState.shared.enabledContentFilterPresets
+            )
         } catch {
             print("BlockingService: Content blocker error: \(error.localizedDescription)")
         }

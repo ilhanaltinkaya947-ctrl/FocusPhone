@@ -1,8 +1,6 @@
 import Foundation
 
 enum GroqError: Error, LocalizedError {
-    case noAPIKey
-    case invalidAPIKey
     case networkError(Error)
     case httpError(Int)
     case rateLimited
@@ -12,8 +10,6 @@ enum GroqError: Error, LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .noAPIKey: return "No API key configured. Add your Groq key in Settings."
-        case .invalidAPIKey: return "Your API key is invalid. Check it in Settings."
         case .networkError(let error): return "Network error: \(error.localizedDescription)"
         case .httpError(let code): return "Server error (HTTP \(code)). Try again shortly."
         case .rateLimited: return "Rate limited — please try again in a minute."
@@ -39,7 +35,7 @@ enum GroqError: Error, LocalizedError {
 actor GroqService {
     static let shared = GroqService()
 
-    private let baseURL = URL(string: "https://api.groq.com/openai/v1/chat/completions")!
+    private let baseURL = URL(string: Constants.aiServiceBaseURL)!
     private let primaryModel = "llama-3.3-70b-versatile"
     private let fallbackModel = "llama-3.1-8b-instant"
     private let maxRetries = 2
@@ -135,10 +131,6 @@ actor GroqService {
         jsonMode: Bool = false,
         useFallbackModel: Bool = false
     ) async throws -> String {
-        guard let apiKey = KeychainService.getAPIKey() else {
-            throw GroqError.noAPIKey
-        }
-
         let model = useFallbackModel ? fallbackModel : primaryModel
 
         var body: [String: Any] = [
@@ -156,7 +148,7 @@ actor GroqService {
 
         var request = URLRequest(url: baseURL)
         request.httpMethod = "POST"
-        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(Constants.aiServiceToken)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = jsonData
         request.timeoutInterval = 30
@@ -179,8 +171,6 @@ actor GroqService {
                 switch httpResponse.statusCode {
                 case 200:
                     return try parseResponse(data)
-                case 401:
-                    throw GroqError.invalidAPIKey
                 case 429:
                     lastError = GroqError.rateLimited
                     continue
@@ -227,36 +217,6 @@ actor GroqService {
                 useFallbackModel: true
             )
             return !response.isEmpty
-        } catch {
-            return false
-        }
-    }
-
-    func testConnection(withKey apiKey: String) async -> Bool {
-        let messages = [Message(role: "user", content: "Say OK")]
-
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: [
-                "model": fallbackModel,
-                "messages": messages.map { ["role": $0.role, "content": $0.content] },
-                "temperature": 0,
-                "max_tokens": 4,
-            ] as [String: Any])
-
-            var request = URLRequest(url: baseURL)
-            request.httpMethod = "POST"
-            request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = jsonData
-            request.timeoutInterval = 15
-
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard let httpResponse = response as? HTTPURLResponse,
-                  httpResponse.statusCode == 200 else {
-                return false
-            }
-            let content = try parseResponse(data)
-            return !content.isEmpty
         } catch {
             return false
         }

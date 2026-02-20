@@ -174,6 +174,18 @@ final class AppState {
         set { defaults.set(newValue, forKey: Constants.commitmentLevelKey) }
     }
 
+    // MARK: - Content Filter Presets
+
+    var enabledContentFilterPresets: Set<String> {
+        get {
+            guard let array: [String] = load(forKey: Constants.contentFilterPresetsKey) else { return [] }
+            return Set(array)
+        }
+        set {
+            save(Array(newValue), forKey: Constants.contentFilterPresetsKey)
+        }
+    }
+
     // MARK: - Seeding & Migration
 
     var hasSeededDefaults: Bool {
@@ -186,9 +198,19 @@ final class AppState {
             modes = DefaultModes.allDefaults()
             weeklySchedules = [WeeklySchedule(name: "My Schedule", blockIDs: [], isActive: true)]
             timeBlocks = []
+            aiEnabled = true
             hasSeededDefaults = true
         }
         migrateColorsIfNeeded()
+        migrateAIEnabledIfNeeded()
+    }
+
+    /// Existing users who upgrade get AI enabled automatically
+    private func migrateAIEnabledIfNeeded() {
+        let migrationKey = "hasEnabledAIByDefault"
+        guard !defaults.bool(forKey: migrationKey) else { return }
+        aiEnabled = true
+        defaults.set(true, forKey: migrationKey)
     }
 
     private func migrateColorsIfNeeded() {

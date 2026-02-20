@@ -22,6 +22,7 @@ class AIOnboardingViewModel: ObservableObject {
     @Published var customBlockedWebsites: [String] = []
     @Published var commitmentLevel: String = "balanced"
     @Published var onboardingAppSelection: FamilyActivitySelection = .init()
+    @Published var enabledPresets: Set<String> = []
     @Published var hasUserEdited: Bool = false
 
     // Generated schedule
@@ -101,8 +102,8 @@ class AIOnboardingViewModel: ObservableObject {
         let currentProfile = profile
 
         Task {
-            // Try AI first if API key is available
-            if KeychainService.hasKey && AppState.shared.aiEnabled {
+            // Try AI first if enabled
+            if AppState.shared.aiEnabled {
                 do {
                     let blocks = try await generateWithAI(profile: currentProfile, modes: modes)
                     generatedBlocks = blocks
@@ -125,8 +126,9 @@ class AIOnboardingViewModel: ObservableObject {
     func applySchedule() {
         let state = AppState.shared
 
-        // Save profile
+        // Save profile and content filter presets
         state.userProfile = profile
+        state.enabledContentFilterPresets = enabledPresets
 
         // Set time blocks
         state.timeBlocks = generatedBlocks
