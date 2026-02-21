@@ -45,6 +45,17 @@ enum ContentFilterPresetStore {
                 urlFilter: ".*youtube\\.com",
                 ifDomain: ["*youtube.com"]
             ),
+            // Hide video recommendation cards, thumbnails, and feed content
+            CSSHideRule(
+                selector: "ytm-rich-item-renderer, ytm-item-section-renderer, ytm-video-with-context-renderer",
+                urlFilter: ".*youtube\\.com",
+                ifDomain: ["*youtube.com"]
+            ),
+            CSSHideRule(
+                selector: ".rich-grid-media, ytm-rich-section-renderer, ytm-browse-feed-renderer .item",
+                urlFilter: ".*youtube\\.com",
+                ifDomain: ["*youtube.com"]
+            ),
         ]
     )
 
@@ -64,6 +75,11 @@ enum ContentFilterPresetStore {
                 urlFilter: "instagram\\.com/explore",
                 ifDomain: ["*instagram.com"]
             ),
+            // Block individual reel links (opened from DMs)
+            URLBlockPattern(
+                urlFilter: "instagram\\.com/reel/",
+                ifDomain: ["*instagram.com"]
+            ),
         ],
         cssHideRules: [
             CSSHideRule(
@@ -76,9 +92,22 @@ enum ContentFilterPresetStore {
                 urlFilter: ".*instagram\\.com",
                 ifDomain: ["*instagram.com"]
             ),
+            // Story tray (structural selectors — stable against class obfuscation)
             CSSHideRule(
-                selector: "[role='menu'] a[href*='stories'], .stories-container",
+                selector: "section:has(canvas), header + section:first-of-type",
                 urlFilter: ".*instagram\\.com",
+                ifDomain: ["*instagram.com"]
+            ),
+            // Story modal overlay
+            CSSHideRule(
+                selector: "[role='presentation']",
+                urlFilter: ".*instagram\\.com/stories",
+                ifDomain: ["*instagram.com"]
+            ),
+            // Reel embeds in DMs
+            CSSHideRule(
+                selector: "a[href*='/reel/']",
+                urlFilter: ".*instagram\\.com/direct",
                 ifDomain: ["*instagram.com"]
             ),
         ]

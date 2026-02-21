@@ -1,5 +1,13 @@
 import Foundation
 
+struct FixedCommitment: Codable, Equatable, Identifiable {
+    var id: UUID = UUID()
+    var name: String
+    var dayOfWeek: Int   // 1=Sunday ... 7=Saturday
+    var startHour: Int
+    var endHour: Int
+}
+
 struct UserProfile: Codable, Equatable {
     var selectedLifeAreas: [LifeArea]
     var wakeTime: Int           // Hour (5-11)
@@ -12,11 +20,16 @@ struct UserProfile: Codable, Equatable {
     var weeklyGoalText: String
     var customBlockedWebsites: [String]
     var commitmentLevel: String // "gentle", "balanced", "strict"
+    var energyPattern: String   // "morning_person", "night_owl", "steady"
+    var fixedCommitments: [FixedCommitment]
+    var distractionTrigger: String // "boredom", "stress", "habit", "social_pressure"
+    var dailyPhoneGoal: Int     // target max hours of phone time
 
     enum CodingKeys: String, CodingKey {
         case selectedLifeAreas, wakeTime, sleepTime, workStartHour, workEndHour
         case workDays, exerciseFrequency, biggestTimeWasters
         case weeklyGoalText, customBlockedWebsites, commitmentLevel
+        case energyPattern, fixedCommitments, distractionTrigger, dailyPhoneGoal
     }
 
     static let `default` = UserProfile(
@@ -47,6 +60,10 @@ struct UserProfile: Codable, Equatable {
         weeklyGoalText = try container.decodeIfPresent(String.self, forKey: .weeklyGoalText) ?? ""
         customBlockedWebsites = try container.decodeIfPresent([String].self, forKey: .customBlockedWebsites) ?? []
         commitmentLevel = try container.decodeIfPresent(String.self, forKey: .commitmentLevel) ?? "balanced"
+        energyPattern = try container.decodeIfPresent(String.self, forKey: .energyPattern) ?? "steady"
+        fixedCommitments = try container.decodeIfPresent([FixedCommitment].self, forKey: .fixedCommitments) ?? []
+        distractionTrigger = try container.decodeIfPresent(String.self, forKey: .distractionTrigger) ?? "habit"
+        dailyPhoneGoal = try container.decodeIfPresent(Int.self, forKey: .dailyPhoneGoal) ?? 4
     }
 
     init(
@@ -60,7 +77,11 @@ struct UserProfile: Codable, Equatable {
         biggestTimeWasters: [String],
         weeklyGoalText: String = "",
         customBlockedWebsites: [String] = [],
-        commitmentLevel: String = "balanced"
+        commitmentLevel: String = "balanced",
+        energyPattern: String = "steady",
+        fixedCommitments: [FixedCommitment] = [],
+        distractionTrigger: String = "habit",
+        dailyPhoneGoal: Int = 4
     ) {
         self.selectedLifeAreas = selectedLifeAreas
         self.wakeTime = wakeTime
@@ -73,5 +94,9 @@ struct UserProfile: Codable, Equatable {
         self.weeklyGoalText = weeklyGoalText
         self.customBlockedWebsites = customBlockedWebsites
         self.commitmentLevel = commitmentLevel
+        self.energyPattern = energyPattern
+        self.fixedCommitments = fixedCommitments
+        self.distractionTrigger = distractionTrigger
+        self.dailyPhoneGoal = dailyPhoneGoal
     }
 }

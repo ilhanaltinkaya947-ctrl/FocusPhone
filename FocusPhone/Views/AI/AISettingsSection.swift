@@ -73,7 +73,7 @@ struct AISettingsSection: View {
     private func testConnection() {
         connectionStatus = .testing
         Task {
-            let success = await GroqService.shared.testConnection()
+            let success = await AIService.shared.testConnection()
             await MainActor.run {
                 connectionStatus = success ? .success : .failure
             }

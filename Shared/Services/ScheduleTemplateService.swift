@@ -237,7 +237,206 @@ enum ScheduleTemplateService {
             modeMap: modeMap
         )
 
+        // Apply personalization post-processing
+        applyPersonalization(to: &blocks, profile: profile, modeMap: modeMap)
+
         return blocks
+    }
+
+    // MARK: - Personalization Post-Processing
+
+    private static func applyPersonalization(
+        to blocks: inout [TimeBlock],
+        profile: UserProfile,
+        modeMap: [String: UUID]
+    ) {
+        let effectiveSleepTime = min(profile.sleepTime, 23)
+
+        // Energy pattern: shift Deep Work timing
+        if let deepID = modeMap["Deep Work"] {
+            switch profile.energyPattern {
+            case "morning_person":
+                // Move Deep Work blocks to before noon where possible
+                for i in blocks.indices {
+                    let block = blocks[i]
+                    guard block.modeID == deepID,
+                          block.startHour >= 13,
+                          profile.workDays.contains(block.dayOfWeek) else { continue }
+                    // Check if morning slot is free
+                    let morningEnd = profile.wakeTime + 1
+                    let targetStart = morningEnd
+                    let targetEnd = min(morningEnd + (block.endHour - block.startHour), 12)
+                    let wouldOverlap = blocks.contains {
+                        $0.dayOfWeek == block.dayOfWeek && $0.id != block.id &&
+                        $0.startHour < targetEnd && $0.endHour > targetStart
+                    }
+                    if !wouldOverlap && targetEnd > targetStart {
+                        blocks[i] = TimeBlock(
+                            id: block.id,
+                            modeID: deepID,
+                            dayOfWeek: block.dayOfWeek,
+                            startHour: targetStart,
+                            startMinute: 0,
+                            endHour: targetEnd,
+                            endMinute: 0
+                        )
+                    }
+                }
+            case "night_owl":
+                // Move Deep Work to after work hours on work days
+                for i in blocks.indices {
+                    let block = blocks[i]
+                    guard block.modeID == deepID,
+                          block.startHour < 12,
+                          block.startHour >= profile.wakeTime + 1,
+                          profile.workDays.contains(block.dayOfWeek) else { continue }
+                    let duration = block.endHour - block.startHour
+                    let targetStart = profile.workEndHour
+                    let windDownStart = max(profile.wakeTime + 2, effectiveSleepTime - 1)
+                    let targetEnd = min(targetStart + duration, windDownStart)
+                    let wouldOverlap = blocks.contains {
+                        $0.dayOfWeek == block.dayOfWeek && $0.id != block.id &&
+                        $0.startHour < targetEnd && $0.endHour > targetStart
+                    }
+                    if !wouldOverlap && targetEnd > targetStart {
+                        blocks[i] = TimeBlock(
+                            id: block.id,
+                            modeID: deepID,
+                            dayOfWeek: block.dayOfWeek,
+                            startHour: targetStart,
+                            startMinute: 0,
+                            endHour: targetEnd,
+                            endMinute: 0
+                        )
+                    }
+                }
+            default:
+                break
+            }
+        }
+
+        // Fixed commitments: remove blocks that overlap, replace with Break
+        if !profile.fixedCommitments.isEmpty, let breakID = modeMap["Break"] {
+            for commitment in profile.fixedCommitments {
+                // Remove any blocks that overlap the commitment
+                blocks.removeAll { block in
+                    block.dayOfWeek == commitment.dayOfWeek &&
+                    block.startHour < commitment.endHour &&
+                    block.endHour > commitment.startHour
+                }
+                // Add a Break block for the commitment slot
+                blocks.append(TimeBlock(
+                    modeID: breakID,
+                    dayOfWeek: commitment.dayOfWeek,
+                    startHour: commitment.startHour,
+                    startMinute: 0,
+                    endHour: commitment.endHour,
+                    endMinute: 0
+                ))
+            }
+        }
+
+        // Distraction trigger: boredom → split long Deep Work into 90min chunks
+        if profile.distractionTrigger == "boredom", let deepID = modeMap["Deep Work"], let breakID = modeMap["Break"] {
+            var newBlocks: [TimeBlock] = []
+            var toRemove: Set<UUID> = []
+
+            for block in blocks {
+                let duration = block.endHour * 60 + block.endMinute - (block.startHour * 60 + block.startMinute)
+                guard block.modeID == deepID, duration > 120 else { continue }
+
+                toRemove.insert(block.id)
+                var currentStart = block.startHour * 60 + block.startMinute
+                let blockEnd = block.endHour * 60 + block.endMinute
+
+                while currentStart < blockEnd {
+                    let chunkEnd = min(currentStart + 90, blockEnd)
+                    if chunkEnd - currentStart >= 30 {
+                        newBlocks.append(TimeBlock(
+                            modeID: deepID,
+                            dayOfWeek: block.dayOfWeek,
+                            startHour: currentStart / 60,
+                            startMinute: currentStart % 60,
+                            endHour: chunkEnd / 60,
+                            endMinute: chunkEnd % 60
+                        ))
+                    }
+                    currentStart = chunkEnd
+                    // Add a 15min break between chunks
+                    if currentStart < blockEnd {
+                        let breakEnd = min(currentStart + 15, blockEnd)
+                        newBlocks.append(TimeBlock(
+                            modeID: breakID,
+                            dayOfWeek: block.dayOfWeek,
+                            startHour: currentStart / 60,
+                            startMinute: currentStart % 60,
+                            endHour: breakEnd / 60,
+                            endMinute: breakEnd % 60
+                        ))
+                        currentStart = breakEnd
+                    }
+                }
+            }
+
+            blocks.removeAll { toRemove.contains($0.id) }
+            blocks.append(contentsOf: newBlocks)
+        }
+
+        // Distraction trigger: stress → add extra Wind Down around work
+        if profile.distractionTrigger == "stress", let windDownID = modeMap["Wind Down"] {
+            for day in profile.workDays {
+                // Add a short Wind Down after work if not already there
+                let afterWork = profile.workEndHour
+                let hasWindDown = blocks.contains {
+                    $0.dayOfWeek == day && $0.modeID == windDownID && $0.startHour == afterWork
+                }
+                if !hasWindDown {
+                    let wouldOverlap = blocks.contains {
+                        $0.dayOfWeek == day && $0.startHour < afterWork + 1 && $0.endHour > afterWork
+                    }
+                    if !wouldOverlap {
+                        blocks.append(TimeBlock(
+                            modeID: windDownID,
+                            dayOfWeek: day,
+                            startHour: afterWork,
+                            startMinute: 0,
+                            endHour: afterWork + 1,
+                            endMinute: 0
+                        ))
+                    }
+                }
+            }
+        }
+
+        // Strict phone goal: treat dailyPhoneGoal <= 2 as "strict" density
+        if profile.dailyPhoneGoal <= 2, let freeID = modeMap["Free Time"], let deepID = modeMap["Deep Work"] {
+            // Convert some Free Time blocks to Deep Work
+            for i in blocks.indices {
+                let block = blocks[i]
+                guard block.modeID == freeID else { continue }
+                let duration = block.endHour - block.startHour
+                if duration > 2 {
+                    // Split: keep 1h free, convert rest to Deep Work
+                    blocks[i] = TimeBlock(
+                        id: block.id,
+                        modeID: freeID,
+                        dayOfWeek: block.dayOfWeek,
+                        startHour: block.startHour,
+                        startMinute: block.startMinute,
+                        endHour: block.startHour + 1,
+                        endMinute: 0
+                    )
+                    blocks.append(TimeBlock(
+                        modeID: deepID,
+                        dayOfWeek: block.dayOfWeek,
+                        startHour: block.startHour + 1,
+                        startMinute: 0,
+                        endHour: block.endHour,
+                        endMinute: block.endMinute
+                    ))
+                }
+            }
+        }
     }
 
     // MARK: - Life Area Adjustments

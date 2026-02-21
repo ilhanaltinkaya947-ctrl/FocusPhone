@@ -1,6 +1,6 @@
 import Foundation
 
-enum GroqError: Error, LocalizedError {
+enum AIServiceError: Error, LocalizedError {
     case networkError(Error)
     case httpError(Int)
     case rateLimited
@@ -32,12 +32,12 @@ enum GroqError: Error, LocalizedError {
     }
 }
 
-actor GroqService {
-    static let shared = GroqService()
+actor AIService {
+    static let shared = AIService()
 
     private let baseURL = URL(string: Constants.aiServiceBaseURL)!
-    private let primaryModel = "llama-3.3-70b-versatile"
-    private let fallbackModel = "llama-3.1-8b-instant"
+    private let primaryModel = "gemini-2.0-flash"
+    private let fallbackModel = "gemini-2.0-flash-lite"
     private let maxRetries = 2
 
     struct Message: Codable {
@@ -47,7 +47,7 @@ actor GroqService {
 
     // MARK: - Public API with Fallback
 
-    /// Chat with automatic model fallback: tries primary model, falls back to 8B on retryable errors
+    /// Chat with automatic model fallback: tries primary model, falls back on retryable errors
     func chatWithFallback(
         messages: [Message],
         temperature: Double = 0.7,
@@ -66,7 +66,7 @@ actor GroqService {
                 jsonMode: jsonMode,
                 useFallbackModel: false
             )
-        } catch let error as GroqError where error.isRetryable {
+        } catch let error as AIServiceError where error.isRetryable {
             errors.append(error)
         }
 
@@ -81,11 +81,11 @@ actor GroqService {
             )
         } catch {
             errors.append(error)
-            throw GroqError.allModelsFailed(errors)
+            throw AIServiceError.allModelsFailed(errors)
         }
     }
 
-    /// Chat JSON with fallback: tries primary, falls back to 8B on rate limit/5xx/decode errors
+    /// Chat JSON with fallback: tries primary, falls back on rate limit/5xx/decode errors
     func chatJSONWithFallback<T: Decodable>(
         messages: [Message],
         as type: T.Type,
@@ -103,7 +103,7 @@ actor GroqService {
                 maxTokens: maxTokens,
                 useFallbackModel: false
             )
-        } catch let error as GroqError where error.isRetryable {
+        } catch let error as AIServiceError where error.isRetryable {
             errors.append(error)
         }
 
@@ -118,7 +118,7 @@ actor GroqService {
             )
         } catch {
             errors.append(error)
-            throw GroqError.allModelsFailed(errors)
+            throw AIServiceError.allModelsFailed(errors)
         }
     }
 
@@ -153,7 +153,7 @@ actor GroqService {
         request.httpBody = jsonData
         request.timeoutInterval = 30
 
-        var lastError: Error = GroqError.emptyResponse
+        var lastError: Error = AIServiceError.emptyResponse
 
         for attempt in 0...maxRetries {
             if attempt > 0 {
@@ -165,28 +165,28 @@ actor GroqService {
                 let (data, response) = try await URLSession.shared.data(for: request)
 
                 guard let httpResponse = response as? HTTPURLResponse else {
-                    throw GroqError.networkError(URLError(.badServerResponse))
+                    throw AIServiceError.networkError(URLError(.badServerResponse))
                 }
 
                 switch httpResponse.statusCode {
                 case 200:
                     return try parseResponse(data)
                 case 429:
-                    lastError = GroqError.rateLimited
+                    lastError = AIServiceError.rateLimited
                     continue
                 case 500...599:
-                    lastError = GroqError.httpError(httpResponse.statusCode)
+                    lastError = AIServiceError.httpError(httpResponse.statusCode)
                     continue
                 default:
-                    throw GroqError.httpError(httpResponse.statusCode)
+                    throw AIServiceError.httpError(httpResponse.statusCode)
                 }
-            } catch let error as GroqError {
+            } catch let error as AIServiceError {
                 lastError = error
                 if case .rateLimited = error { continue }
                 if case .httpError(let code) = error, (500...599).contains(code) { continue }
                 throw error
             } catch {
-                throw GroqError.networkError(error)
+                throw AIServiceError.networkError(error)
             }
         }
 
@@ -197,13 +197,13 @@ actor GroqService {
         let responseString = try await chat(messages: messages, jsonMode: true)
 
         guard let data = responseString.data(using: .utf8) else {
-            throw GroqError.emptyResponse
+            throw AIServiceError.emptyResponse
         }
 
         do {
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            throw GroqError.decodingError(error)
+            throw AIServiceError.decodingError(error)
         }
     }
 
@@ -239,11 +239,11 @@ actor GroqService {
         do {
             completion = try JSONDecoder().decode(ChatCompletion.self, from: data)
         } catch {
-            throw GroqError.decodingError(error)
+            throw AIServiceError.decodingError(error)
         }
 
         guard let content = completion.choices.first?.message.content, !content.isEmpty else {
-            throw GroqError.emptyResponse
+            throw AIServiceError.emptyResponse
         }
 
         return content
@@ -265,13 +265,13 @@ actor GroqService {
         )
 
         guard let data = responseString.data(using: .utf8) else {
-            throw GroqError.emptyResponse
+            throw AIServiceError.emptyResponse
         }
 
         do {
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            throw GroqError.decodingError(error)
+            throw AIServiceError.decodingError(error)
         }
     }
 }

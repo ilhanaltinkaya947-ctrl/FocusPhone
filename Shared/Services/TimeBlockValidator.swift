@@ -85,12 +85,12 @@ enum TimeBlockValidator {
         return overlaps
     }
 
-    // MARK: - Sanitize Groq Response
+    // MARK: - Sanitize AI Response
 
-    /// Sanitizes a raw Groq schedule block: clamps values and maps mode name to mode ID.
+    /// Sanitizes a raw AI schedule block: clamps values and maps mode name to mode ID.
     /// Returns nil if the mode name doesn't match any known mode.
     static func sanitize(
-        _ groqBlock: GroqScheduleBlock,
+        _ groqBlock: AIScheduleBlock,
         modeMap: [String: UUID]
     ) -> TimeBlock? {
         guard let modeID = modeMap[groqBlock.mode.lowercased()] else {

@@ -25,6 +25,12 @@ class AIOnboardingViewModel: ObservableObject {
     @Published var enabledPresets: Set<String> = []
     @Published var hasUserEdited: Bool = false
 
+    // Personalization
+    @Published var energyPattern: String = "steady"
+    @Published var fixedCommitments: [FixedCommitment] = []
+    @Published var distractionTrigger: String = "habit"
+    @Published var dailyPhoneGoal: Int = 4
+
     // Generated schedule
     @Published var generatedBlocks: [TimeBlock] = []
     @Published var isGenerating = false
@@ -43,7 +49,11 @@ class AIOnboardingViewModel: ObservableObject {
             biggestTimeWasters: biggestTimeWasters,
             weeklyGoalText: weeklyGoalText,
             customBlockedWebsites: customBlockedWebsites,
-            commitmentLevel: commitmentLevel
+            commitmentLevel: commitmentLevel,
+            energyPattern: energyPattern,
+            fixedCommitments: fixedCommitments,
+            distractionTrigger: distractionTrigger,
+            dailyPhoneGoal: dailyPhoneGoal
         )
     }
 
@@ -235,19 +245,19 @@ class AIOnboardingViewModel: ObservableObject {
         let userPrompt = AIPromptTemplates.scheduleBuilderUser(profile: profile)
         if let cached = AIResponseCache.get(for: userPrompt, modeContext: modeNames),
            let data = cached.data(using: .utf8),
-           let response = try? JSONDecoder().decode(GroqScheduleResponse.self, from: data) {
+           let response = try? JSONDecoder().decode(AIScheduleResponse.self, from: data) {
             return sanitizeAndValidate(response, modeMap: modeMap)
         }
 
-        let messages: [GroqService.Message] = [
+        let messages: [AIService.Message] = [
             .init(role: "system", content: AIPromptTemplates.scheduleBuilderSystem(modeNames: modeNames, commitmentLevel: profile.commitmentLevel)),
             .init(role: "user", content: userPrompt),
         ]
 
         // Use fallback chain — tries 70B then 8B
-        let response = try await GroqService.shared.chatJSONWithFallback(
+        let response = try await AIService.shared.chatJSONWithFallback(
             messages: messages,
-            as: GroqScheduleResponse.self
+            as: AIScheduleResponse.self
         )
 
         // Cache the raw response
@@ -260,7 +270,7 @@ class AIOnboardingViewModel: ObservableObject {
     }
 
     /// Sanitize, validate, and resolve conflicts in AI-generated blocks
-    private func sanitizeAndValidate(_ response: GroqScheduleResponse, modeMap: [String: UUID]) -> [TimeBlock] {
+    private func sanitizeAndValidate(_ response: AIScheduleResponse, modeMap: [String: UUID]) -> [TimeBlock] {
         // Sanitize each block (clamp values, map mode names)
         let sanitized = response.blocks.compactMap { groqBlock in
             TimeBlockValidator.sanitize(groqBlock, modeMap: modeMap)

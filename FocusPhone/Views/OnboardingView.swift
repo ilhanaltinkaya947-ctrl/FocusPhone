@@ -9,7 +9,7 @@ struct OnboardingView: View {
     @State private var iconOpacity: CGFloat = 0
     @Environment(\.scenePhase) private var scenePhase
 
-    private let totalPages = 9
+    private let totalPages = 10
 
     var body: some View {
         VStack(spacing: 0) {
@@ -18,9 +18,9 @@ struct OnboardingView: View {
                 HStack {
                     Button {
                         withAnimation {
-                            if currentPage == 6 {
+                            if currentPage == 7 {
                                 // Generating page → back to distractions
-                                currentPage = 5
+                                currentPage = 6
                             } else {
                                 currentPage -= 1
                             }
@@ -52,18 +52,21 @@ struct OnboardingView: View {
                 QuickQuestionsView(viewModel: aiVM) {
                     withAnimation { currentPage = 5 }
                 }.tag(4)
-                OnboardingDistractionsView(viewModel: aiVM) {
+                PersonalizationView(viewModel: aiVM) {
                     withAnimation { currentPage = 6 }
                 }.tag(5)
+                OnboardingDistractionsView(viewModel: aiVM) {
+                    withAnimation { currentPage = 7 }
+                }.tag(6)
 
                 // Chapter 3: Build
                 AIGeneratingView(viewModel: aiVM) {
-                    withAnimation { currentPage = 7 }
-                }.tag(6)
-                OnboardingScheduleBuilderView(viewModel: aiVM) {
                     withAnimation { currentPage = 8 }
                 }.tag(7)
-                allSetPage.tag(8)
+                OnboardingScheduleBuilderView(viewModel: aiVM) {
+                    withAnimation { currentPage = 9 }
+                }.tag(8)
+                allSetPage.tag(9)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .animation(.easeInOut(duration: 0.35), value: currentPage)
@@ -260,7 +263,7 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Page 8: All Set
+    // MARK: - Page 9: All Set
 
     private var allSetPage: some View {
         VStack(spacing: 0) {

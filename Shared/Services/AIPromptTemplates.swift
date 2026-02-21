@@ -50,6 +50,7 @@ enum AIPromptTemplates {
         - Each day must have at least 3 blocks
         - Include a Sleep block every night
         - Include a Morning Routine block every day
+        - If the user has fixed commitments, NEVER schedule over them — leave those time slots as Break
 
         Example valid Monday schedule:
         {"mode": "Sleep", "day": 2, "startHour": 0, "startMinute": 0, "endHour": 7, "endMinute": 0}
@@ -92,6 +93,46 @@ enum AIPromptTemplates {
         - Biggest time wasters: \(wasters)
         - Commitment level: \(profile.commitmentLevel)
         """
+
+        // Energy pattern
+        switch profile.energyPattern {
+        case "morning_person":
+            prompt += "\n- Energy pattern: Morning person — schedule Deep Work before noon"
+        case "night_owl":
+            prompt += "\n- Energy pattern: Night owl — schedule Deep Work in the evening/after work hours"
+        default:
+            prompt += "\n- Energy pattern: Steady throughout the day"
+        }
+
+        // Daily phone goal
+        prompt += "\n- Daily phone goal: Max \(profile.dailyPhoneGoal) hours — "
+        if profile.dailyPhoneGoal <= 2 {
+            prompt += "schedule aggressive blocking with minimal free time"
+        } else if profile.dailyPhoneGoal <= 4 {
+            prompt += "moderate blocking schedule"
+        } else {
+            prompt += "light blocking, more free time"
+        }
+
+        // Distraction trigger
+        switch profile.distractionTrigger {
+        case "boredom":
+            prompt += "\n- Main distraction trigger: Boredom — add varied blocks, avoid long monotonous stretches"
+        case "stress":
+            prompt += "\n- Main distraction trigger: Stress — add extra Wind Down blocks around work, include breaks"
+        case "social_pressure":
+            prompt += "\n- Main distraction trigger: FOMO/social pressure — block social media aggressively during focus time"
+        default:
+            prompt += "\n- Main distraction trigger: Habit — consistent blocking structure to break routines"
+        }
+
+        // Fixed commitments
+        if !profile.fixedCommitments.isEmpty {
+            prompt += "\n- Fixed commitments (DO NOT schedule over these):"
+            for c in profile.fixedCommitments {
+                prompt += "\n  - \(c.name): \(dayName(for: c.dayOfWeek)) \(c.startHour):00-\(c.endHour):00"
+            }
+        }
 
         if !profile.weeklyGoalText.isEmpty {
             prompt += "\n- Weekly goal: \(profile.weeklyGoalText)"

@@ -140,11 +140,11 @@
 		3A085329C7EC2DA3A06D3F35 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37AA1480F66F00EA790BF7A /* UserProfile.swift */; };
 		E9796FB9F480C233A678F0E7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37AA1480F66F00EA790BF7A /* UserProfile.swift */; };
 		D4CAAF168BE2EB55DEE3FE45 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37AA1480F66F00EA790BF7A /* UserProfile.swift */; };
-		E176FBC5148F863246AF3008 /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* GroqService.swift */; };
-		88A9B477A7468E9DB3438113 /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* GroqService.swift */; };
-		D4F4B7D1938164F6564F05D5 /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* GroqService.swift */; };
-		5FBE735F56D59E717130425C /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* GroqService.swift */; };
-		C0DB166FEC1283E0537A93ED /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* GroqService.swift */; };
+		E176FBC5148F863246AF3008 /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* AIService.swift */; };
+		88A9B477A7468E9DB3438113 /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* AIService.swift */; };
+		D4F4B7D1938164F6564F05D5 /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* AIService.swift */; };
+		5FBE735F56D59E717130425C /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* AIService.swift */; };
+		C0DB166FEC1283E0537A93ED /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20BFF97B643FCB8F9B84622 /* AIService.swift */; };
 		37A6E4A95AB4BDC57C8917AE /* AIResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */; };
 		AE2B30DD9754D2C3E3018729 /* AIResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */; };
 		74FD36CBF3A55A2C3D62EFE9 /* AIResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */; };
@@ -177,11 +177,12 @@
 		9080CF20CDE9975D7022BB13 /* WeeklyReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF1C4EA8E5E31183072586E /* WeeklyReviewView.swift */; };
 		DD4E5F6A7B8C9D0E1F2A3B4C /* OnboardingDistractionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1B2C3D4E5F6A7B8C9D0E1F /* OnboardingDistractionsView.swift */; };
 		FF6A7B8C9D0E1F2A3B4C5D6E /* OnboardingScheduleBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3D4E5F6A7B8C9D0E1F2A3B /* OnboardingScheduleBuilderView.swift */; };
-		1A2B3C4D5E6F70819203A4B5 /* GroqModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */; };
-		2B3C4D5E6F708192A3B4C5D6 /* GroqModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */; };
-		3C4D5E6F70819203B4C5D6E7 /* GroqModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */; };
-		4D5E6F7081920314C5D6E7F8 /* GroqModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */; };
-		5E6F708192031425D6E7F809 /* GroqModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */; };
+		BB00000000000001C0000001 /* PersonalizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001C0000002 /* PersonalizationView.swift */; };
+		1A2B3C4D5E6F70819203A4B5 /* AIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* AIModels.swift */; };
+		2B3C4D5E6F708192A3B4C5D6 /* AIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* AIModels.swift */; };
+		3C4D5E6F70819203B4C5D6E7 /* AIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* AIModels.swift */; };
+		4D5E6F7081920314C5D6E7F8 /* AIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* AIModels.swift */; };
+		5E6F708192031425D6E7F809 /* AIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B4C5D6E7F8091A2B3C4D5 /* AIModels.swift */; };
 		AA00000000000001A0000002 /* ContentFilterPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000001A0000001 /* ContentFilterPreset.swift */; };
 		AA00000000000001A0000003 /* ContentFilterPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000001A0000001 /* ContentFilterPreset.swift */; };
 		AA00000000000001A0000004 /* ContentFilterPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000001A0000001 /* ContentFilterPreset.swift */; };
@@ -311,7 +312,7 @@
 		D4E5F6071829304AC2D3E4F5 /* ViewModeToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModeToggle.swift; sourceTree = "<group>"; };
 		C8DB5D646B30BC596A000D67 /* LifeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeArea.swift; sourceTree = "<group>"; };
 		C37AA1480F66F00EA790BF7A /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
-		A20BFF97B643FCB8F9B84622 /* GroqService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroqService.swift; sourceTree = "<group>"; };
+		A20BFF97B643FCB8F9B84622 /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
 		F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIResponseCache.swift; sourceTree = "<group>"; };
 		073F4562A7B5383C188541CD /* ScheduleTemplateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTemplateService.swift; sourceTree = "<group>"; };
 		A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIPromptTemplates.swift; sourceTree = "<group>"; };
@@ -328,9 +329,10 @@
 		6FF1C4EA8E5E31183072586E /* WeeklyReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReviewView.swift; sourceTree = "<group>"; };
 		AA1B2C3D4E5F6A7B8C9D0E1F /* OnboardingDistractionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDistractionsView.swift; sourceTree = "<group>"; };
 		CC3D4E5F6A7B8C9D0E1F2A3B /* OnboardingScheduleBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScheduleBuilderView.swift; sourceTree = "<group>"; };
-		7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroqModels.swift; sourceTree = "<group>"; };
+		7A3B4C5D6E7F8091A2B3C4D5 /* AIModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIModels.swift; sourceTree = "<group>"; };
 		AA00000000000001A0000001 /* ContentFilterPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentFilterPreset.swift; sourceTree = "<group>"; };
 		AA00000000000001B0000001 /* ContentFilterPresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentFilterPresetStore.swift; sourceTree = "<group>"; };
+		BB00000000000001C0000002 /* PersonalizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalizationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -348,7 +350,7 @@
 				0B8B03BCD44643D1F43B3EB4 /* WeeklySchedule.swift */,
 				C8DB5D646B30BC596A000D67 /* LifeArea.swift */,
 				C37AA1480F66F00EA790BF7A /* UserProfile.swift */,
-				7A3B4C5D6E7F8091A2B3C4D5 /* GroqModels.swift */,
+				7A3B4C5D6E7F8091A2B3C4D5 /* AIModels.swift */,
 				AA00000000000001A0000001 /* ContentFilterPreset.swift */,
 			);
 			path = Models;
@@ -506,7 +508,7 @@
 				594B7BE104190E51B06FB01C /* BlockingService.swift */,
 				83AEF32365B0361D3B3BC800 /* ContentBlockerService.swift */,
 				E7D615F496A73FD46E0C3BB7 /* ScheduleService.swift */,
-				A20BFF97B643FCB8F9B84622 /* GroqService.swift */,
+				A20BFF97B643FCB8F9B84622 /* AIService.swift */,
 				F3B866AB7149CFE3965A1839 /* AIResponseCache.swift */,
 				073F4562A7B5383C188541CD /* ScheduleTemplateService.swift */,
 				A9A34F22DAD057ACC098EC99 /* AIPromptTemplates.swift */,
@@ -536,6 +538,7 @@
 				6FF1C4EA8E5E31183072586E /* WeeklyReviewView.swift */,
 				AA1B2C3D4E5F6A7B8C9D0E1F /* OnboardingDistractionsView.swift */,
 				CC3D4E5F6A7B8C9D0E1F2A3B /* OnboardingScheduleBuilderView.swift */,
+				BB00000000000001C0000002 /* PersonalizationView.swift */,
 			);
 			path = AI;
 			sourceTree = "<group>";
@@ -757,12 +760,12 @@
 				FD463381205F31C29D737783 /* WeeklySchedule.swift in Sources */,
 				024022443F649CC81A13082B /* LifeArea.swift in Sources */,
 				4BBC236587B955FF77728AE9 /* UserProfile.swift in Sources */,
-				88A9B477A7468E9DB3438113 /* GroqService.swift in Sources */,
+				88A9B477A7468E9DB3438113 /* AIService.swift in Sources */,
 				AE2B30DD9754D2C3E3018729 /* AIResponseCache.swift in Sources */,
 				5AC10ABB3BB3DC7439985E66 /* ScheduleTemplateService.swift in Sources */,
 				50EF24424912D8F031583588 /* AIPromptTemplates.swift in Sources */,
 				BA8A1BC16007F9CECD307599 /* TimeBlockValidator.swift in Sources */,
-				2B3C4D5E6F708192A3B4C5D6 /* GroqModels.swift in Sources */,
+				2B3C4D5E6F708192A3B4C5D6 /* AIModels.swift in Sources */,
 				AA00000000000001A0000002 /* ContentFilterPreset.swift in Sources */,
 				AA00000000000001B0000002 /* ContentFilterPresetStore.swift in Sources */,
 			);
@@ -792,12 +795,12 @@
 				9E29DF87BFDEEFFAB5E44EAB /* WeeklySchedule.swift in Sources */,
 				891703DE573B55AB39DD0E08 /* LifeArea.swift in Sources */,
 				3A085329C7EC2DA3A06D3F35 /* UserProfile.swift in Sources */,
-				D4F4B7D1938164F6564F05D5 /* GroqService.swift in Sources */,
+				D4F4B7D1938164F6564F05D5 /* AIService.swift in Sources */,
 				74FD36CBF3A55A2C3D62EFE9 /* AIResponseCache.swift in Sources */,
 				4141C67267EBF2E45285C443 /* ScheduleTemplateService.swift in Sources */,
 				462ED94A59744602FD018525 /* AIPromptTemplates.swift in Sources */,
 				1F08DAEECD6CF3A52948FB2F /* TimeBlockValidator.swift in Sources */,
-				3C4D5E6F70819203B4C5D6E7 /* GroqModels.swift in Sources */,
+				3C4D5E6F70819203B4C5D6E7 /* AIModels.swift in Sources */,
 				AA00000000000001A0000003 /* ContentFilterPreset.swift in Sources */,
 				AA00000000000001B0000003 /* ContentFilterPresetStore.swift in Sources */,
 			);
@@ -827,12 +830,12 @@
 				E0D0D2470018B197C9187D70 /* WeeklySchedule.swift in Sources */,
 				C0A853D150B96E77AD76703C /* LifeArea.swift in Sources */,
 				E9796FB9F480C233A678F0E7 /* UserProfile.swift in Sources */,
-				5FBE735F56D59E717130425C /* GroqService.swift in Sources */,
+				5FBE735F56D59E717130425C /* AIService.swift in Sources */,
 				2535A3C05C4E9DC6DD4AB0C6 /* AIResponseCache.swift in Sources */,
 				9197F8E29D9535FCD686B777 /* ScheduleTemplateService.swift in Sources */,
 				040E1D4927494B1CC76773B4 /* AIPromptTemplates.swift in Sources */,
 				74C33EC6BF0CE530A74AACAF /* TimeBlockValidator.swift in Sources */,
-				4D5E6F7081920314C5D6E7F8 /* GroqModels.swift in Sources */,
+				4D5E6F7081920314C5D6E7F8 /* AIModels.swift in Sources */,
 				AA00000000000001A0000004 /* ContentFilterPreset.swift in Sources */,
 				AA00000000000001B0000004 /* ContentFilterPresetStore.swift in Sources */,
 			);
@@ -862,12 +865,12 @@
 				089388C6FE2F97486DE0312B /* WeeklySchedule.swift in Sources */,
 				EC179542D3ED8830D5EB595F /* LifeArea.swift in Sources */,
 				D4CAAF168BE2EB55DEE3FE45 /* UserProfile.swift in Sources */,
-				C0DB166FEC1283E0537A93ED /* GroqService.swift in Sources */,
+				C0DB166FEC1283E0537A93ED /* AIService.swift in Sources */,
 				161DBA9E04D84776549E289D /* AIResponseCache.swift in Sources */,
 				33FA5AA1F5987CEAC059DC15 /* ScheduleTemplateService.swift in Sources */,
 				EAFA5736ACBD2C9DED474D4D /* AIPromptTemplates.swift in Sources */,
 				CD09297E8FC11FE26E3B2B97 /* TimeBlockValidator.swift in Sources */,
-				5E6F708192031425D6E7F809 /* GroqModels.swift in Sources */,
+				5E6F708192031425D6E7F809 /* AIModels.swift in Sources */,
 				AA00000000000001A0000005 /* ContentFilterPreset.swift in Sources */,
 				AA00000000000001B0000005 /* ContentFilterPresetStore.swift in Sources */,
 			);
@@ -919,7 +922,7 @@
 				CE69C1FABBDE9C7C308CDA4D /* WeeklySchedule.swift in Sources */,
 				939A52A4520DBC851C4429E0 /* LifeArea.swift in Sources */,
 				AAD7B9793415BBFC7BF9CAC4 /* UserProfile.swift in Sources */,
-				E176FBC5148F863246AF3008 /* GroqService.swift in Sources */,
+				E176FBC5148F863246AF3008 /* AIService.swift in Sources */,
 				37A6E4A95AB4BDC57C8917AE /* AIResponseCache.swift in Sources */,
 				3E72B1CFE34D24930957E7D8 /* ScheduleTemplateService.swift in Sources */,
 				BC4539692A31BFFD29E0A07C /* AIPromptTemplates.swift in Sources */,
@@ -935,8 +938,9 @@
 				9080CF20CDE9975D7022BB13 /* WeeklyReviewView.swift in Sources */,
 				DD4E5F6A7B8C9D0E1F2A3B4C /* OnboardingDistractionsView.swift in Sources */,
 				FF6A7B8C9D0E1F2A3B4C5D6E /* OnboardingScheduleBuilderView.swift in Sources */,
+				BB00000000000001C0000001 /* PersonalizationView.swift in Sources */,
 				BB69DBD100F7B0348C7949E1 /* TimeBlockValidator.swift in Sources */,
-				1A2B3C4D5E6F70819203A4B5 /* GroqModels.swift in Sources */,
+				1A2B3C4D5E6F70819203A4B5 /* AIModels.swift in Sources */,
 				AA00000000000001A0000006 /* ContentFilterPreset.swift in Sources */,
 				AA00000000000001B0000006 /* ContentFilterPresetStore.swift in Sources */,
 			);

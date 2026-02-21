@@ -17,22 +17,22 @@ export default {
       return new Response("Payload too large", { status: 413 });
     }
 
-    // Forward to Groq
+    // Forward to Gemini (OpenAI-compatible endpoint)
     const body = await request.text();
-    const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    const geminiResponse = await fetch("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${env.GROQ_API_KEY}`,
+        "Authorization": `Bearer ${env.GEMINI_API_KEY}`,
         "Content-Type": "application/json",
       },
       body,
     });
 
-    // Return Groq response unchanged
-    return new Response(groqResponse.body, {
-      status: groqResponse.status,
+    // Return Gemini response unchanged
+    return new Response(geminiResponse.body, {
+      status: geminiResponse.status,
       headers: {
-        "Content-Type": groqResponse.headers.get("Content-Type") || "application/json",
+        "Content-Type": geminiResponse.headers.get("Content-Type") || "application/json",
       },
     });
   },

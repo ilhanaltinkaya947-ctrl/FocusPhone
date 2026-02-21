@@ -58,7 +58,7 @@ class WeeklyReviewViewModel: ObservableObject {
                 let scheduleText = AIPromptTemplates.formatScheduleForPrompt(blocks: blocks, modes: modes)
                 let statsText = formatStats(sessions: sessions, modes: modes)
 
-                let messages: [GroqService.Message] = [
+                let messages: [AIService.Message] = [
                     .init(role: "system", content: AIPromptTemplates.weeklyReviewSystem(modeNames: modeNames)),
                     .init(role: "user", content: AIPromptTemplates.weeklyReviewUser(
                         stats: statsText,
@@ -67,7 +67,7 @@ class WeeklyReviewViewModel: ObservableObject {
                 ]
 
                 // Use fallback chain
-                let response = try await GroqService.shared.chatJSONWithFallback(
+                let response = try await AIService.shared.chatJSONWithFallback(
                     messages: messages,
                     as: WeeklyReviewResponse.self
                 )

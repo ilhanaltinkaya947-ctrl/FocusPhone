@@ -1,6 +1,6 @@
 import Foundation
 
-struct GroqScheduleBlock: Codable {
+struct AIScheduleBlock: Codable {
     let mode: String
     let day: Int
     let startHour: Int
@@ -9,6 +9,6 @@ struct GroqScheduleBlock: Codable {
     let endMinute: Int
 }
 
-struct GroqScheduleResponse: Codable {
-    let blocks: [GroqScheduleBlock]
+struct AIScheduleResponse: Codable {
+    let blocks: [AIScheduleBlock]
 }

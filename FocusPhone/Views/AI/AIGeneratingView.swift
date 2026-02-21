@@ -146,7 +146,7 @@ struct AIGeneratingView: View {
 
     private func startTimeout() {
         Task {
-            // 60s timeout (with model fallback, total Groq time can be ~45s)
+            // 60s timeout (with model fallback, total AI request time can be ~45s)
             try? await Task.sleep(nanoseconds: 60_000_000_000)
             if viewModel.isGenerating || viewModel.generatedBlocks.isEmpty {
                 hasTimedOut = true

@@ -42,7 +42,7 @@ class NLCommandViewModel: ObservableObject {
 
         Task {
             do {
-                let messages: [GroqService.Message] = [
+                let messages: [AIService.Message] = [
                     .init(role: "system", content: AIPromptTemplates.nlCommandSystem(
                         modeNames: modeNames,
                         currentSchedule: scheduleText
@@ -51,7 +51,7 @@ class NLCommandViewModel: ObservableObject {
                 ]
 
                 // Use fallback chain with reduced max tokens (NL responses are small)
-                let response = try await GroqService.shared.chatJSONWithFallback(
+                let response = try await AIService.shared.chatJSONWithFallback(
                     messages: messages,
                     as: NLCommandResponse.self,
                     maxTokens: 512
@@ -72,7 +72,7 @@ class NLCommandViewModel: ObservableObject {
                         showingConfirmation = true
                     }
                 }
-            } catch let error as GroqError {
+            } catch let error as AIServiceError {
                 resultMessage = error.errorDescription ?? "AI request failed."
                 resultSuccess = false
             } catch {
