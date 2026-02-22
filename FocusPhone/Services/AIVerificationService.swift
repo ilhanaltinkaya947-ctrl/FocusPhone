@@ -1,213 +1,140 @@
 import Foundation
 import UIKit
+import Vision
 
 actor AIVerificationService {
     static let shared = AIVerificationService()
 
     enum AIVerificationError: Error, LocalizedError {
-        case imageCompressionFailed
-        case networkError(Error)
-        case httpError(Int, String)
-        case invalidResponse
-        case parseFailed
+        case imageConversionFailed
+        case classificationFailed(Error)
+        case noResults
 
         var errorDescription: String? {
             switch self {
-            case .imageCompressionFailed: return "Failed to process image"
-            case .networkError(let error): return "Network error: \(error.localizedDescription)"
-            case .httpError(let code, let msg): return "Server error (\(code)): \(msg)"
-            case .invalidResponse: return "Invalid response from AI"
-            case .parseFailed: return "Could not parse verification result"
+            case .imageConversionFailed: return "Failed to process image"
+            case .classificationFailed(let error): return "Classification failed: \(error.localizedDescription)"
+            case .noResults: return "Could not classify image"
             }
         }
     }
 
-    func verifyPhoto(image: UIImage, commitment: Commitment) async throws -> AIVerificationResult {
-        // Compress to JPEG < 500KB
-        guard let imageData = compressImage(image) else {
-            throw AIVerificationError.imageCompressionFailed
-        }
+    // MARK: - Category Label Mappings
 
-        let base64Image = imageData.base64EncodedString()
-        let systemPrompt = verificationPrompt(for: commitment)
-
-        // Build Claude Messages API body
-        let body: [String: Any] = [
-            "model": "claude-sonnet-4-6-20250514",
-            "max_tokens": 300,
-            "system": systemPrompt,
-            "messages": [
-                [
-                    "role": "user",
-                    "content": [
-                        [
-                            "type": "image",
-                            "source": [
-                                "type": "base64",
-                                "media_type": "image/jpeg",
-                                "data": base64Image
-                            ]
-                        ],
-                        [
-                            "type": "text",
-                            "text": "Verify this photo for my \(commitment.category.displayName.lowercased()) commitment: \"\(commitment.title)\". Respond with JSON only."
-                        ]
-                    ]
-                ]
-            ]
+    private static let categoryLabels: [CommitmentCategory: Set<String>] = [
+        .gym: [
+            "exercise", "gym", "weight_training", "dumbbell", "barbell",
+            "treadmill", "fitness", "sport", "workout", "push-up",
+            "squat", "bench_press", "exercise_equipment", "weights",
+            "running", "jogging", "yoga", "stretching", "muscle",
+            "athletic", "sports_equipment", "health_club"
+        ],
+        .study: [
+            "book", "library", "desk", "laptop", "notebook",
+            "writing", "reading", "pen", "pencil", "paper",
+            "textbook", "study", "classroom", "school", "education",
+            "computer", "keyboard", "monitor", "homework", "note"
+        ],
+        .work: [
+            "computer", "desk", "office", "keyboard", "monitor",
+            "laptop", "screen", "workspace", "chair", "table",
+            "meeting", "whiteboard", "document", "typing", "desktop"
+        ],
+        .outdoor: [
+            "sky", "nature", "street", "park", "outdoor",
+            "tree", "grass", "cloud", "sun", "mountain",
+            "beach", "river", "lake", "forest", "garden",
+            "sidewalk", "trail", "path", "road", "landscape",
+            "flower", "plant", "hill", "field", "ocean"
         ]
+    ]
 
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: body) else {
-            throw AIVerificationError.imageCompressionFailed
+    // MARK: - Verify Photo
+
+    func verifyPhoto(image: UIImage, commitment: Commitment) async throws -> AIVerificationResult {
+        guard let cgImage = image.cgImage else {
+            throw AIVerificationError.imageConversionFailed
         }
 
-        guard let url = URL(string: Constants.aiVisionBaseURL) else {
-            throw AIVerificationError.invalidResponse
+        let observations = try await classifyImage(cgImage)
+
+        guard !observations.isEmpty else {
+            throw AIVerificationError.noResults
         }
 
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = jsonData
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(Constants.aiServiceToken)", forHTTPHeaderField: "Authorization")
-        request.timeoutInterval = 30
-
-        let (data, response): (Data, URLResponse)
-        do {
-            (data, response) = try await URLSession.shared.data(for: request)
-        } catch {
-            throw AIVerificationError.networkError(error)
-        }
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw AIVerificationError.invalidResponse
-        }
-
-        guard httpResponse.statusCode == 200 else {
-            let body = String(data: data, encoding: .utf8) ?? "Unknown error"
-            throw AIVerificationError.httpError(httpResponse.statusCode, body)
-        }
-
-        return try parseResponse(data)
+        return matchObservations(observations, for: commitment)
     }
 
-    // MARK: - Private
+    // MARK: - On-Device Classification
 
-    private func compressImage(_ image: UIImage) -> Data? {
-        var quality: CGFloat = 0.5
-        var data = image.jpegData(compressionQuality: quality)
+    private func classifyImage(_ cgImage: CGImage) async throws -> [VNClassificationObservation] {
+        try await withCheckedThrowingContinuation { continuation in
+            let request = VNClassifyImageRequest { request, error in
+                if let error {
+                    continuation.resume(throwing: AIVerificationError.classificationFailed(error))
+                    return
+                }
+                let results = (request.results as? [VNClassificationObservation]) ?? []
+                // Only keep observations with meaningful confidence
+                let filtered = results.filter { $0.confidence > 0.05 }
+                continuation.resume(returning: filtered)
+            }
 
-        while let d = data, d.count > 500_000, quality > 0.1 {
-            quality -= 0.1
-            data = image.jpegData(compressionQuality: quality)
+            let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+            do {
+                try handler.perform([request])
+            } catch {
+                continuation.resume(throwing: AIVerificationError.classificationFailed(error))
+            }
         }
-
-        return data
     }
 
-    private func parseResponse(_ data: Data) throws -> AIVerificationResult {
-        // Claude Messages API response format:
-        // { "content": [{ "type": "text", "text": "..." }] }
-        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let content = json["content"] as? [[String: Any]],
-              let firstBlock = content.first,
-              let text = firstBlock["text"] as? String else {
-            throw AIVerificationError.invalidResponse
-        }
+    // MARK: - Match Observations to Commitment
 
-        // Extract JSON from response (handle markdown code blocks)
-        let jsonString = extractJSON(from: text)
+    private func matchObservations(_ observations: [VNClassificationObservation], for commitment: Commitment) -> AIVerificationResult {
+        let targetLabels = Self.categoryLabels[commitment.category] ?? []
+        let topLabels = observations.prefix(20)
 
-        guard let resultData = jsonString.data(using: .utf8),
-              let resultJSON = try? JSONSerialization.jsonObject(with: resultData) as? [String: Any] else {
-            throw AIVerificationError.parseFailed
-        }
+        // For custom category, be lenient — any real photo passes
+        if commitment.category == .custom {
+            let topConfidence = observations.first?.confidence ?? 0
+            let detectedItems = topLabels.prefix(3).map { $0.identifier.replacingOccurrences(of: "_", with: " ") }
+            let context = detectedItems.joined(separator: ", ")
 
-        let isVerified = resultJSON["isVerified"] as? Bool ?? false
-        let confidence = resultJSON["confidence"] as? Double ?? 0.0
-        let detectedContext = resultJSON["detectedContext"] as? String
-        let failureReason = resultJSON["failureReason"] as? String
-
-        // Apply confidence threshold
-        if confidence < 0.65 {
             return AIVerificationResult(
-                isVerified: false,
-                confidence: confidence,
-                detectedContext: detectedContext,
-                failureReason: failureReason ?? "Photo unclear, try again"
+                isVerified: topConfidence > 0.1,
+                confidence: Double(min(topConfidence * 2, 1.0)),
+                detectedContext: context,
+                failureReason: topConfidence <= 0.1 ? "Could not identify activity in photo" : nil
             )
         }
 
+        // Find matching labels and sum their confidence
+        var matchedConfidence: Float = 0
+        var matchedLabels: [String] = []
+
+        for observation in topLabels {
+            let label = observation.identifier.lowercased()
+            let matches = targetLabels.contains(where: { label.contains($0) || $0.contains(label) })
+            if matches {
+                matchedConfidence += observation.confidence
+                matchedLabels.append(observation.identifier.replacingOccurrences(of: "_", with: " "))
+            }
+        }
+
+        // Normalize confidence (cap at 1.0)
+        let confidence = Double(min(matchedConfidence, 1.0))
+        let detectedContext = matchedLabels.isEmpty
+            ? topLabels.prefix(3).map { $0.identifier.replacingOccurrences(of: "_", with: " ") }.joined(separator: ", ")
+            : matchedLabels.prefix(3).joined(separator: ", ")
+
+        let isVerified = confidence >= 0.15
+
         return AIVerificationResult(
             isVerified: isVerified,
-            confidence: confidence,
+            confidence: isVerified ? max(confidence, 0.65) : confidence,
             detectedContext: detectedContext,
-            failureReason: isVerified ? nil : (failureReason ?? "Verification failed")
+            failureReason: isVerified ? nil : "Doesn't look like \(commitment.category.displayName.lowercased()). Try again with a clearer photo."
         )
-    }
-
-    private func extractJSON(from text: String) -> String {
-        // Try to find JSON between ```json and ``` or { and }
-        if let jsonStart = text.range(of: "```json"),
-           let jsonEnd = text.range(of: "```", range: jsonStart.upperBound..<text.endIndex) {
-            return String(text[jsonStart.upperBound..<jsonEnd.lowerBound]).trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-
-        if let start = text.firstIndex(of: "{"),
-           let end = text.lastIndex(of: "}") {
-            return String(text[start...end])
-        }
-
-        return text
-    }
-
-    private func verificationPrompt(for commitment: Commitment) -> String {
-        let categoryPrompt: String
-        switch commitment.category {
-        case .gym:
-            categoryPrompt = """
-            You are verifying a GYM commitment. Look for: gym equipment, workout area, \
-            exercise clothing, sweating, gym mirrors, weight racks, treadmills, or any \
-            indication the person is at a gym or working out.
-            """
-        case .study:
-            categoryPrompt = """
-            You are verifying a STUDY commitment. Look for: books, notebooks, laptop with \
-            study material, desk setup, library, notes, textbooks, or any indication the \
-            person is studying or doing academic work.
-            """
-        case .work:
-            categoryPrompt = """
-            You are verifying a DEEP WORK commitment. Look for: computer screen with work \
-            content, office setup, desk, professional tools, code editor, design tools, \
-            or any indication the person is doing focused work.
-            """
-        case .outdoor:
-            categoryPrompt = """
-            You are verifying an OUTDOOR commitment. Look for: natural scenery, parks, \
-            streets, sky, trees, outdoor lighting, sidewalks, trails, or any indication \
-            the person is outside.
-            """
-        case .custom:
-            categoryPrompt = """
-            You are verifying a custom commitment titled "\(commitment.title)". \
-            Look for any visual evidence that matches this activity.
-            """
-        }
-
-        return """
-        \(categoryPrompt)
-
-        Analyze the photo and respond with ONLY a JSON object (no other text):
-        {
-          "isVerified": true/false,
-          "confidence": 0.0-1.0,
-          "detectedContext": "brief description of what you see",
-          "failureReason": "reason if not verified, null otherwise"
-        }
-
-        Be fair but not easily fooled. A genuine attempt should pass. \
-        Stock photos, screenshots of gyms, or clearly fake images should fail.
-        """
     }
 }
