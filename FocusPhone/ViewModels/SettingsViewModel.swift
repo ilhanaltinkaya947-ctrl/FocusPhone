@@ -4,17 +4,6 @@ import SafariServices
 @MainActor
 class SettingsViewModel: ObservableObject {
     @Published var contentBlockerEnabled = false
-    @Published var totalModes = 0
-    @Published var totalTimeBlocks = 0
-    @Published var totalBlockedWebsites = 0
-
-    func loadData() {
-        let modes = AppState.shared.modes
-        totalModes = modes.count
-        totalTimeBlocks = AppState.shared.timeBlocks.count
-        totalBlockedWebsites = Set(modes.flatMap(\.blockedWebsites)).count
-        checkContentBlockerState()
-    }
 
     func checkContentBlockerState() {
         SFContentBlockerManager.getStateOfContentBlocker(
@@ -28,27 +17,26 @@ class SettingsViewModel: ObservableObject {
 
     func resetAllData() {
         let defaults = Constants.sharedDefaults
-        defaults.removeObject(forKey: Constants.modesKey)
-        defaults.removeObject(forKey: Constants.timeBlocksKey)
-        defaults.removeObject(forKey: Constants.weeklySchedulesKey)
-        defaults.removeObject(forKey: Constants.activeModeIDKey)
-        defaults.removeObject(forKey: Constants.hasSeededDefaultsKey)
-        defaults.removeObject(forKey: Constants.modeSessionsKey)
-        defaults.removeObject(forKey: Constants.dailyIntentionsKey)
-        defaults.removeObject(forKey: Constants.dailyStatsKey)
-        defaults.removeObject(forKey: Constants.hasUpdatedColorsV2Key)
-        // AI cleanup
-        defaults.removeObject(forKey: Constants.userProfileKey)
-        defaults.removeObject(forKey: Constants.aiEnabledKey)
-        defaults.removeObject(forKey: Constants.weeklyReviewDayKey)
-        defaults.removeObject(forKey: Constants.lastWeeklyReviewKey)
-        defaults.removeObject(forKey: Constants.commitmentLevelKey)
+        defaults.removeObject(forKey: Constants.restrictionProfileKey)
+        defaults.removeObject(forKey: Constants.extensionRequestsKey)
+        defaults.removeObject(forKey: Constants.dailyUsageKey)
+        defaults.removeObject(forKey: Constants.isRestrictionActiveKey)
+        defaults.removeObject(forKey: Constants.timedWindowStatesKey)
         defaults.removeObject(forKey: Constants.contentFilterPresetsKey)
-        AIResponseCache.clear()
+        defaults.removeObject(forKey: Constants.onboardingCompletedKey)
         ScheduleService.stopAllSchedules()
         BlockingService.clearAllBlocks()
-        AppState.shared.seedDefaultsIfNeeded()
-        loadData()
+        NotificationService.cancelAll()
+    }
+
+    func emergencyDisable() {
+        RestrictionEngine.deactivateAll()
+    }
+
+    func rerunOnboarding() {
+        RestrictionEngine.deactivateAll()
+        AppState.shared.restrictionProfile = nil
+        AppState.shared.isOnboardingCompleted = false
     }
 
     var appVersion: String {

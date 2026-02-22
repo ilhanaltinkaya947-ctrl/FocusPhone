@@ -1,33 +1,27 @@
 import SwiftUI
 
-struct MainTabView: View {
+struct MainDashboardView: View {
     @Binding var selectedTab: Int
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            CalendarTab()
+            RestrictionDashboardView()
                 .tabItem {
-                    Label("Calendar", systemImage: "calendar")
+                    Label("Dashboard", systemImage: "shield.fill")
                 }
                 .tag(0)
 
-            ModeListTab()
+            ControlledBrowserView()
                 .tabItem {
-                    Label("Modes", systemImage: "square.stack.fill")
+                    Label("Browser", systemImage: "globe")
                 }
                 .tag(1)
-
-            StatsView()
-                .tabItem {
-                    Label("Stats", systemImage: "chart.bar.fill")
-                }
-                .tag(2)
 
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape.fill")
                 }
-                .tag(3)
+                .tag(2)
         }
     }
 }

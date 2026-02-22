@@ -21,7 +21,6 @@ enum AIServiceError: Error, LocalizedError {
         }
     }
 
-    /// Whether this error is transient and worth retrying with a different model
     var isRetryable: Bool {
         switch self {
         case .rateLimited, .emptyResponse: return true
@@ -45,9 +44,8 @@ actor AIService {
         let content: String
     }
 
-    // MARK: - Public API with Fallback
+    // MARK: - Public API
 
-    /// Chat with automatic model fallback: tries primary model, falls back on retryable errors
     func chatWithFallback(
         messages: [Message],
         temperature: Double = 0.7,
@@ -57,7 +55,6 @@ actor AIService {
         let temp = jsonMode ? min(temperature, 0.3) : temperature
         var errors: [Error] = []
 
-        // Try primary model
         do {
             return try await chat(
                 messages: messages,
@@ -70,7 +67,6 @@ actor AIService {
             errors.append(error)
         }
 
-        // Try fallback model
         do {
             return try await chat(
                 messages: messages,
@@ -84,45 +80,6 @@ actor AIService {
             throw AIServiceError.allModelsFailed(errors)
         }
     }
-
-    /// Chat JSON with fallback: tries primary, falls back on rate limit/5xx/decode errors
-    func chatJSONWithFallback<T: Decodable>(
-        messages: [Message],
-        as type: T.Type,
-        temperature: Double = 0.3,
-        maxTokens: Int = 2048
-    ) async throws -> T {
-        var errors: [Error] = []
-
-        // Try primary model
-        do {
-            return try await chatJSONSingle(
-                messages: messages,
-                as: type,
-                temperature: temperature,
-                maxTokens: maxTokens,
-                useFallbackModel: false
-            )
-        } catch let error as AIServiceError where error.isRetryable {
-            errors.append(error)
-        }
-
-        // Try fallback model
-        do {
-            return try await chatJSONSingle(
-                messages: messages,
-                as: type,
-                temperature: temperature,
-                maxTokens: maxTokens,
-                useFallbackModel: true
-            )
-        } catch {
-            errors.append(error)
-            throw AIServiceError.allModelsFailed(errors)
-        }
-    }
-
-    // MARK: - Single-Model Methods
 
     func chat(
         messages: [Message],
@@ -193,18 +150,28 @@ actor AIService {
         throw lastError
     }
 
-    func chatJSON<T: Decodable>(messages: [Message], as type: T.Type) async throws -> T {
-        let responseString = try await chat(messages: messages, jsonMode: true)
+    // MARK: - Extension Request Evaluation
 
-        guard let data = responseString.data(using: .utf8) else {
-            throw AIServiceError.emptyResponse
-        }
-
-        do {
-            return try JSONDecoder().decode(T.self, from: data)
-        } catch {
-            throw AIServiceError.decodingError(error)
-        }
+    func evaluateExtensionRequest(
+        appName: String,
+        reason: String,
+        requestedMinutes: Int,
+        dailyUsed: Int,
+        dailyCap: Int
+    ) async throws -> Bool {
+        let prompt = GeminiPrompts.extensionRequestPrompt(
+            appName: appName,
+            reason: reason,
+            requestedMinutes: requestedMinutes,
+            dailyUsed: dailyUsed,
+            dailyCap: dailyCap
+        )
+        let messages = [
+            Message(role: "system", content: "You are a strict but fair digital wellness assistant. Respond with exactly APPROVED or DENIED followed by a brief reason."),
+            Message(role: "user", content: prompt),
+        ]
+        let response = try await chatWithFallback(messages: messages, temperature: 0.3, maxTokens: 100)
+        return response.uppercased().contains("APPROVED")
     }
 
     func testConnection() async -> Bool {
@@ -247,31 +214,5 @@ actor AIService {
         }
 
         return content
-    }
-
-    private func chatJSONSingle<T: Decodable>(
-        messages: [Message],
-        as type: T.Type,
-        temperature: Double,
-        maxTokens: Int,
-        useFallbackModel: Bool
-    ) async throws -> T {
-        let responseString = try await chat(
-            messages: messages,
-            temperature: temperature,
-            maxTokens: maxTokens,
-            jsonMode: true,
-            useFallbackModel: useFallbackModel
-        )
-
-        guard let data = responseString.data(using: .utf8) else {
-            throw AIServiceError.emptyResponse
-        }
-
-        do {
-            return try JSONDecoder().decode(T.self, from: data)
-        } catch {
-            throw AIServiceError.decodingError(error)
-        }
     }
 }

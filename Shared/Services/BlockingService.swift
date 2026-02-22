@@ -5,41 +5,63 @@ import FamilyControls
 final class BlockingService {
     static let store = ManagedSettingsStore()
 
-    static func applyBlocks(for mode: Mode) {
-        // App/category blocking
-        if let selection = mode.familyActivitySelection {
-            let applications = selection.applicationTokens
+    /// Apply permanent blocks from a restriction profile (categories, apps, App Store, websites).
+    static func applyPermanentBlocks(from profile: PersonalRestrictionProfile) {
+        // Category blocking
+        if let catData = profile.permanentBlockCategories,
+           let selection = try? JSONDecoder().decode(FamilyActivitySelection.self, from: catData) {
             let categories = selection.categoryTokens
-            store.shield.applications = applications.isEmpty ? nil : applications
             store.shield.applicationCategories = categories.isEmpty ? nil : .specific(categories)
-        } else {
-            store.shield.applications = nil
-            store.shield.applicationCategories = nil
         }
 
-        store.application.denyAppInstallation = mode.blockAppStore
-        store.application.denyAppRemoval = mode.blockAppDeletion
+        // App blocking (permanent + YouTube native if flagged)
+        if let appData = profile.permanentBlockApps,
+           let selection = try? JSONDecoder().decode(FamilyActivitySelection.self, from: appData) {
+            let applications = selection.applicationTokens
+            store.shield.applications = applications.isEmpty ? nil : applications
+        }
 
-        // Website blocking via Safari Content Blocker (domain blocks + content filter presets)
+        // Also block timed window apps (they get unblocked during windows)
+        var allBlockedApps = store.shield.applications ?? Set()
+        for app in profile.timedWindowApps {
+            if let tokenData = app.appToken,
+               let token = try? JSONDecoder().decode(ApplicationToken.self, from: tokenData) {
+                allBlockedApps.insert(token)
+            }
+        }
+        store.shield.applications = allBlockedApps.isEmpty ? nil : allBlockedApps
+
+        store.application.denyAppInstallation = profile.blockAppStore
+        store.application.denyAppRemoval = profile.blockAppDeletion
+
+        // Website blocking via Safari Content Blocker
         do {
             try ContentBlockerService.applyAllRules(
-                domainBlocks: mode.blockedWebsites,
-                enabledPresets: AppState.shared.enabledContentFilterPresets
+                domainBlocks: profile.blockedWebsites,
+                enabledPresets: Set(profile.activePresetIDs)
             )
         } catch {
             print("BlockingService: Content blocker error: \(error.localizedDescription)")
         }
     }
 
-    static func applyBlocksForActiveMode() {
-        guard let modeID = AppState.shared.activeModeID,
-              let mode = AppState.shared.mode(for: modeID) else {
-            clearAllBlocks()
-            return
-        }
-        applyBlocks(for: mode)
+    /// Temporarily unblock a specific app (for timed window or extension).
+    static func unblockApp(token: Data) {
+        guard let appToken = try? JSONDecoder().decode(ApplicationToken.self, from: token) else { return }
+        var applications = store.shield.applications ?? Set()
+        applications.remove(appToken)
+        store.shield.applications = applications.isEmpty ? nil : applications
     }
 
+    /// Re-block a specific app after a timed window or extension ends.
+    static func reblockApp(token: Data) {
+        guard let appToken = try? JSONDecoder().decode(ApplicationToken.self, from: token) else { return }
+        var applications = store.shield.applications ?? Set()
+        applications.insert(appToken)
+        store.shield.applications = applications
+    }
+
+    /// Clear all blocks.
     static func clearAllBlocks() {
         store.shield.applications = nil
         store.shield.applicationCategories = nil

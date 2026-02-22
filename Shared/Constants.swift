@@ -10,26 +10,15 @@ enum Constants {
 
     // UserDefaults keys
     static let onboardingCompletedKey = "onboardingCompleted"
-    static let modesKey = "modes"
-    static let timeBlocksKey = "timeBlocks"
-    static let weeklySchedulesKey = "weeklySchedules"
-    static let activeModeIDKey = "activeModeID"
-    static let hasSeededDefaultsKey = "hasSeededDefaults"
-    static let modeSessionsKey = "modeSessions"
-    static let activeBlockEndTimeKey = "activeBlockEndTime"
-    static let dailyIntentionsKey = "dailyIntentions"
-    static let dailyStatsKey = "dailyStats"
-    static let hasUpdatedColorsV2Key = "hasUpdatedColorsV2"
-    static let contentBlockerRulesFileName = "contentBlockerRules.json"
-    static let userProfileKey = "userProfile"
-    static let aiResponseCacheKey = "aiResponseCache"
-    static let weeklyReviewDayKey = "weeklyReviewDay"
-    static let lastWeeklyReviewKey = "lastWeeklyReview"
-    static let aiEnabledKey = "aiEnabled"
-    static let commitmentLevelKey = "commitmentLevel"
+    static let restrictionProfileKey = "restrictionProfile"
+    static let extensionRequestsKey = "extensionRequests"
+    static let dailyUsageKey = "dailyUsage"
+    static let isRestrictionActiveKey = "isRestrictionActive"
+    static let timedWindowStatesKey = "timedWindowStates"
     static let contentFilterPresetsKey = "contentFilterPresets"
+    static let contentBlockerRulesFileName = "contentBlockerRules.json"
 
-    // AI Backend
+    // AI Backend (Cloudflare Worker proxy)
     static let aiServiceBaseURL = "https://focusphone-api.workers.dev/v1/chat"
     static let aiServiceToken = "fp_XXXXXXXX"
 

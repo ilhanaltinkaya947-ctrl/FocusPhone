@@ -12,166 +12,96 @@ final class AppState {
         set { defaults.set(newValue, forKey: Constants.onboardingCompletedKey) }
     }
 
-    // MARK: - Active Mode
+    // MARK: - Restriction Profile
 
-    var activeModeID: UUID? {
-        get {
-            guard let str = defaults.string(forKey: Constants.activeModeIDKey) else { return nil }
-            return UUID(uuidString: str)
-        }
-        set {
-            defaults.set(newValue?.uuidString, forKey: Constants.activeModeIDKey)
-        }
+    var restrictionProfile: PersonalRestrictionProfile? {
+        get { load(forKey: Constants.restrictionProfileKey) }
+        set { save(newValue, forKey: Constants.restrictionProfileKey) }
     }
 
-    var activeMode: Mode? {
-        guard let id = activeModeID else { return nil }
-        return mode(for: id)
+    var isRestrictionActive: Bool {
+        get { defaults.bool(forKey: Constants.isRestrictionActiveKey) }
+        set { defaults.set(newValue, forKey: Constants.isRestrictionActiveKey) }
     }
 
-    var activeBlockEndTime: Date? {
-        get { defaults.object(forKey: Constants.activeBlockEndTimeKey) as? Date }
-        set { defaults.set(newValue, forKey: Constants.activeBlockEndTimeKey) }
+    // MARK: - Timed Window States
+
+    var timedWindowStates: [TimedWindowApp] {
+        get { load(forKey: Constants.timedWindowStatesKey) ?? [] }
+        set { save(newValue, forKey: Constants.timedWindowStatesKey) }
     }
 
-    // MARK: - Modes
-
-    var modes: [Mode] {
-        get { load(forKey: Constants.modesKey) ?? [] }
-        set { save(newValue, forKey: Constants.modesKey) }
-    }
-
-    func mode(for id: UUID) -> Mode? {
-        modes.first { $0.id == id }
-    }
-
-    // MARK: - TimeBlocks
-
-    var timeBlocks: [TimeBlock] {
-        get { load(forKey: Constants.timeBlocksKey) ?? [] }
-        set { save(newValue, forKey: Constants.timeBlocksKey) }
-    }
-
-    func timeBlocks(for modeID: UUID) -> [TimeBlock] {
-        timeBlocks.filter { $0.modeID == modeID }
-    }
-
-    func timeBlocks(forDay dayOfWeek: Int) -> [TimeBlock] {
-        timeBlocks.filter { $0.dayOfWeek == dayOfWeek }
-    }
-
-    // MARK: - WeeklySchedules
-
-    var weeklySchedules: [WeeklySchedule] {
-        get { load(forKey: Constants.weeklySchedulesKey) ?? [] }
-        set { save(newValue, forKey: Constants.weeklySchedulesKey) }
-    }
-
-    var activeSchedule: WeeklySchedule? {
-        weeklySchedules.first { $0.isActive }
-    }
-
-    // MARK: - Mode Sessions
-
-    var modeSessions: [ModeSession] {
-        get { load(forKey: Constants.modeSessionsKey) ?? [] }
-        set { save(newValue, forKey: Constants.modeSessionsKey) }
-    }
-
-    func startSession(for mode: Mode) {
-        endCurrentSession()
-        let session = ModeSession(
-            modeID: mode.id,
-            modeName: mode.name,
-            modeColorHex: mode.colorHex
-        )
-        var sessions = modeSessions
-        sessions.append(session)
-        modeSessions = sessions
-    }
-
-    func endCurrentSession() {
-        var sessions = modeSessions
-        if let lastIndex = sessions.indices.last, sessions[lastIndex].endDate == nil {
-            sessions[lastIndex].endDate = Date()
-            modeSessions = sessions
+    func updateTimedWindowState(appID: UUID, isInWindow: Bool, windowStart: Date? = nil, windowEnd: Date? = nil) {
+        var states = timedWindowStates
+        if let index = states.firstIndex(where: { $0.id == appID }) {
+            states[index].isCurrentlyInWindow = isInWindow
+            if let start = windowStart {
+                states[index].windowStartTime = start
+            }
+            if let end = windowEnd {
+                states[index].lastWindowEndTime = end
+            }
+            timedWindowStates = states
         }
     }
 
-    func sessionsToday() -> [ModeSession] {
+    // MARK: - Extension Requests
+
+    var extensionRequests: [ExtensionRequest] {
+        get { load(forKey: Constants.extensionRequestsKey) ?? [] }
+        set { save(newValue, forKey: Constants.extensionRequestsKey) }
+    }
+
+    func logExtensionRequest(_ request: ExtensionRequest) {
+        var requests = extensionRequests
+        requests.append(request)
+        extensionRequests = requests
+        updateDailyUsage { usage in
+            usage.extensionRequestsMade += 1
+            if request.wasApproved {
+                usage.extensionRequestsApproved += 1
+                usage.extensionMinutesUsed += request.grantedMinutes ?? request.requestedMinutes
+            }
+        }
+    }
+
+    // MARK: - Daily Usage
+
+    var dailyUsage: [DailyUsage] {
+        get { load(forKey: Constants.dailyUsageKey) ?? [] }
+        set { save(newValue, forKey: Constants.dailyUsageKey) }
+    }
+
+    var todayUsage: DailyUsage {
         let calendar = Calendar.current
-        let startOfDay = calendar.startOfDay(for: Date())
-        return modeSessions.filter { $0.startDate >= startOfDay }
+        return dailyUsage.first { calendar.isDateInToday($0.date) }
+            ?? DailyUsage(date: calendar.startOfDay(for: Date()))
     }
 
-    func sessionsForWeek() -> [ModeSession] {
+    var dailyExtensionMinutesUsed: Int {
+        todayUsage.extensionMinutesUsed
+    }
+
+    func updateDailyUsage(_ mutate: (inout DailyUsage) -> Void) {
         let calendar = Calendar.current
-        guard let weekAgo = calendar.date(byAdding: .day, value: -7, to: Date()) else { return [] }
-        return modeSessions.filter { $0.startDate >= weekAgo }
-    }
-
-    // MARK: - Daily Intentions
-
-    var dailyIntentions: [DailyIntention] {
-        get { load(forKey: Constants.dailyIntentionsKey) ?? [] }
-        set { save(newValue, forKey: Constants.dailyIntentionsKey) }
-    }
-
-    func intention(for date: Date) -> DailyIntention? {
-        let calendar = Calendar.current
-        return dailyIntentions.first { calendar.isDate($0.date, inSameDayAs: date) }
-    }
-
-    func setIntention(_ text: String, for date: Date) {
-        let startOfDay = Calendar.current.startOfDay(for: date)
-        var intentions = dailyIntentions
-        if let index = intentions.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: startOfDay) }) {
-            intentions[index].text = text
+        var allUsage = dailyUsage
+        if let index = allUsage.firstIndex(where: { calendar.isDateInToday($0.date) }) {
+            mutate(&allUsage[index])
         } else {
-            intentions.append(DailyIntention(date: startOfDay, text: text))
+            var newUsage = DailyUsage(date: calendar.startOfDay(for: Date()))
+            mutate(&newUsage)
+            allUsage.append(newUsage)
         }
-        dailyIntentions = intentions
+        // Keep only last 30 days
+        let cutoff = calendar.date(byAdding: .day, value: -30, to: Date()) ?? Date()
+        allUsage.removeAll { $0.date < cutoff }
+        dailyUsage = allUsage
     }
 
-    // MARK: - Daily Stats
-
-    var dailyStats: [DailyStats] {
-        get { load(forKey: Constants.dailyStatsKey) ?? [] }
-        set { save(newValue, forKey: Constants.dailyStatsKey) }
-    }
-
-    func stats(for date: Date) -> DailyStats? {
-        dailyStats.first { Calendar.current.isDate($0.date, inSameDayAs: date) }
-    }
-
-    // MARK: - AI Settings
-
-    var userProfile: UserProfile? {
-        get { load(forKey: Constants.userProfileKey) }
-        set { save(newValue, forKey: Constants.userProfileKey) }
-    }
-
-    var aiEnabled: Bool {
-        get { defaults.bool(forKey: Constants.aiEnabledKey) }
-        set { defaults.set(newValue, forKey: Constants.aiEnabledKey) }
-    }
-
-    var weeklyReviewDay: Int {
-        get {
-            let val = defaults.integer(forKey: Constants.weeklyReviewDayKey)
-            return val == 0 ? 1 : val // Default Sunday=1
+    func incrementTimedWindowsOpened() {
+        updateDailyUsage { usage in
+            usage.timedWindowsOpened += 1
         }
-        set { defaults.set(newValue, forKey: Constants.weeklyReviewDayKey) }
-    }
-
-    var lastWeeklyReview: Date? {
-        get { defaults.object(forKey: Constants.lastWeeklyReviewKey) as? Date }
-        set { defaults.set(newValue, forKey: Constants.lastWeeklyReviewKey) }
-    }
-
-    var commitmentLevel: String {
-        get { defaults.string(forKey: Constants.commitmentLevelKey) ?? "flexible" }
-        set { defaults.set(newValue, forKey: Constants.commitmentLevelKey) }
     }
 
     // MARK: - Content Filter Presets
@@ -186,64 +116,38 @@ final class AppState {
         }
     }
 
-    // MARK: - Seeding & Migration
+    // MARK: - Migration from old data model
 
-    var hasSeededDefaults: Bool {
-        get { defaults.bool(forKey: Constants.hasSeededDefaultsKey) }
-        set { defaults.set(newValue, forKey: Constants.hasSeededDefaultsKey) }
-    }
-
-    func seedDefaultsIfNeeded() {
-        if !hasSeededDefaults {
-            modes = DefaultModes.allDefaults()
-            weeklySchedules = [WeeklySchedule(name: "My Schedule", blockIDs: [], isActive: true)]
-            timeBlocks = []
-            aiEnabled = true
-            hasSeededDefaults = true
-        }
-        migrateColorsIfNeeded()
-        migrateAIEnabledIfNeeded()
-    }
-
-    /// Existing users who upgrade get AI enabled automatically
-    private func migrateAIEnabledIfNeeded() {
-        let migrationKey = "hasEnabledAIByDefault"
+    func migrateIfNeeded() {
+        let migrationKey = "hasMigratedToRestrictionProfile"
         guard !defaults.bool(forKey: migrationKey) else { return }
-        aiEnabled = true
-        defaults.set(true, forKey: migrationKey)
-    }
 
-    private func migrateColorsIfNeeded() {
-        guard !defaults.bool(forKey: Constants.hasUpdatedColorsV2Key) else { return }
-        let oldToNew: [String: String] = [
-            "#F5A623": "#E8DCC8",
-            "#4A90D9": "#A8C5A0",
-            "#7ED321": "#F0C9A6",
-            "#E74C3C": "#A0B8D0",
-            "#9B59B6": "#8EBAB8",
-            "#8E8E93": "#C4B5D4",
-            "#34C759": "#E8B8B8",
-            "#1C1C1E": "#3A3A4A",
+        // Clear old keys if they exist
+        let oldKeys = [
+            "modes", "timeBlocks", "weeklySchedules", "activeModeID",
+            "hasSeededDefaults", "modeSessions", "activeBlockEndTime",
+            "dailyIntentions", "dailyStats", "hasUpdatedColorsV2",
+            "userProfile", "aiResponseCache", "weeklyReviewDay",
+            "lastWeeklyReview", "aiEnabled", "commitmentLevel",
         ]
-        var updatedModes = modes
-        for i in updatedModes.indices where updatedModes[i].isSystem {
-            if let newHex = oldToNew[updatedModes[i].colorHex] {
-                updatedModes[i].colorHex = newHex
-            }
+        for key in oldKeys {
+            defaults.removeObject(forKey: key)
         }
-        modes = updatedModes
-        defaults.set(true, forKey: Constants.hasUpdatedColorsV2Key)
+
+        // Force re-onboarding for existing users
+        isOnboardingCompleted = false
+        defaults.set(true, forKey: migrationKey)
     }
 
     // MARK: - JSON Helpers
 
-    private func save<T: Encodable>(_ value: T, forKey key: String) {
+    func save<T: Encodable>(_ value: T, forKey key: String) {
         if let data = try? JSONEncoder().encode(value) {
             defaults.set(data, forKey: key)
         }
     }
 
-    private func load<T: Decodable>(forKey key: String) -> T? {
+    func load<T: Decodable>(forKey key: String) -> T? {
         guard let data = defaults.data(forKey: key) else { return nil }
         return try? JSONDecoder().decode(T.self, from: data)
     }

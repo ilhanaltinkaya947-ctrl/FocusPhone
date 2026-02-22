@@ -3,8 +3,8 @@ import SwiftUI
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
     @State private var showingResetAlert = false
-    @State private var aiEnabled = AppState.shared.aiEnabled
-    @State private var weeklyReviewDay = AppState.shared.weeklyReviewDay
+    @State private var showingEmergencyAlert = false
+    @State private var showingReOnboardAlert = false
     @State private var enabledPresets = AppState.shared.enabledContentFilterPresets
     @State private var isReloadingPresets = false
     @Environment(\.scenePhase) private var scenePhase
@@ -12,6 +12,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                // Safari Content Blocker
                 Section {
                     HStack(spacing: 12) {
                         settingsIcon("safari", color: .blue)
@@ -41,18 +42,6 @@ struct SettingsView: View {
                         }
                     }
                     .padding(.vertical, 2)
-
-                    if !viewModel.contentBlockerEnabled {
-                        Label {
-                            Text("Go to Settings > Safari > Extensions to enable website blocking during focus modes.")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        } icon: {
-                            Image(systemName: "info.circle")
-                                .foregroundStyle(.secondary)
-                                .font(.caption)
-                        }
-                    }
                 } header: {
                     Text("Extensions")
                 }
@@ -102,40 +91,83 @@ struct SettingsView: View {
                     Text("Allow the site but hide addictive feeds like Shorts, Reels, and Explore.")
                 }
 
-                AISettingsSection(aiEnabled: $aiEnabled, weeklyReviewDay: $weeklyReviewDay)
-
-                Section {
-                    HStack(spacing: 12) {
-                        settingsIcon("square.stack.fill", color: .purple)
-                        Text("Modes")
-                        Spacer()
-                        Text("\(viewModel.totalModes)")
-                            .foregroundStyle(.secondary)
+                // Restriction Profile Summary
+                if let profile = AppState.shared.restrictionProfile {
+                    Section {
+                        HStack(spacing: 12) {
+                            settingsIcon("shield.fill", color: .blue)
+                            Text("Restriction Status")
+                            Spacer()
+                            Text(AppState.shared.isRestrictionActive ? "Active" : "Inactive")
+                                .foregroundStyle(AppState.shared.isRestrictionActive ? .green : .red)
+                        }
+                        HStack(spacing: 12) {
+                            settingsIcon("timer", color: .orange)
+                            Text("Timed Window Apps")
+                            Spacer()
+                            Text("\(profile.timedWindowApps.count)")
+                                .foregroundStyle(.secondary)
+                        }
+                        HStack(spacing: 12) {
+                            settingsIcon("globe", color: .red)
+                            Text("Blocked Websites")
+                            Spacer()
+                            Text("\(profile.blockedWebsites.count)")
+                                .foregroundStyle(.secondary)
+                        }
+                        HStack(spacing: 12) {
+                            settingsIcon("clock.badge.checkmark", color: .green)
+                            Text("Daily Extension Cap")
+                            Spacer()
+                            Text("\(profile.dailyExtensionCapMinutes) min")
+                                .foregroundStyle(.secondary)
+                        }
+                    } header: {
+                        Text("Restriction Profile")
                     }
-                    HStack(spacing: 12) {
-                        settingsIcon("calendar.badge.clock", color: .blue)
-                        Text("Time Blocks")
-                        Spacer()
-                        Text("\(viewModel.totalTimeBlocks)")
-                            .foregroundStyle(.secondary)
-                    }
-                    HStack(spacing: 12) {
-                        settingsIcon("globe", color: .orange)
-                        Text("Blocked Websites")
-                        Spacer()
-                        Text("\(viewModel.totalBlockedWebsites)")
-                            .foregroundStyle(.secondary)
-                    }
-                } header: {
-                    Text("Schedule")
                 }
 
+                // Actions
+                Section {
+                    Button {
+                        showingReOnboardAlert = true
+                    } label: {
+                        HStack(spacing: 12) {
+                            settingsIcon("arrow.counterclockwise", color: .blue)
+                            Text("Re-run Onboarding")
+                        }
+                    }
+                    .alert("Re-run Onboarding?", isPresented: $showingReOnboardAlert) {
+                        Button("Cancel", role: .cancel) { }
+                        Button("Re-run") { viewModel.rerunOnboarding() }
+                    } message: {
+                        Text("This will disable all restrictions and take you through onboarding again.")
+                    }
+
+                    Button(role: .destructive) {
+                        showingEmergencyAlert = true
+                    } label: {
+                        HStack(spacing: 12) {
+                            settingsIcon("exclamationmark.triangle.fill", color: .orange)
+                            Text("Emergency Disable")
+                                .foregroundStyle(.orange)
+                        }
+                    }
+                    .alert("Emergency Disable?", isPresented: $showingEmergencyAlert) {
+                        Button("Cancel", role: .cancel) { }
+                        Button("Disable All", role: .destructive) { viewModel.emergencyDisable() }
+                    } message: {
+                        Text("This will immediately remove ALL restrictions. You can re-enable by re-running onboarding.")
+                    }
+                }
+
+                // Data
                 Section {
                     Button(role: .destructive) {
                         showingResetAlert = true
                     } label: {
                         HStack(spacing: 12) {
-                            settingsIcon("arrow.counterclockwise", color: .red)
+                            settingsIcon("trash.fill", color: .red)
                             Text("Reset All Data")
                                 .foregroundStyle(.red)
                         }
@@ -147,12 +179,13 @@ struct SettingsView: View {
                             enabledPresets = []
                         }
                     } message: {
-                        Text("This will delete all custom modes, time blocks, and schedules. Default modes will be restored.")
+                        Text("This will delete your restriction profile, extension history, and all settings.")
                     }
                 } header: {
                     Text("Data")
                 }
 
+                // About
                 Section {
                     HStack(spacing: 12) {
                         settingsIcon("info.circle", color: .gray)
@@ -164,13 +197,13 @@ struct SettingsView: View {
                 } header: {
                     Text("About")
                 } footer: {
-                    Text("FocusPhone — The calendar that controls your phone")
+                    Text("FocusPhone — Make your phone dumb in the right ways")
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.top, 12)
                 }
             }
             .navigationTitle("Settings")
-            .onAppear { viewModel.loadData() }
+            .onAppear { viewModel.checkContentBlockerState() }
             .onChange(of: scenePhase) {
                 if scenePhase == .active {
                     viewModel.checkContentBlockerState()
@@ -183,8 +216,7 @@ struct SettingsView: View {
         isReloadingPresets = true
         AppState.shared.enabledContentFilterPresets = enabledPresets
 
-        // Re-apply content blocker rules with current mode's domains + new presets
-        let domains = AppState.shared.activeMode?.blockedWebsites ?? []
+        let domains = AppState.shared.restrictionProfile?.blockedWebsites ?? []
         do {
             try ContentBlockerService.applyAllRules(
                 domainBlocks: domains,
@@ -194,7 +226,6 @@ struct SettingsView: View {
             print("Settings: Content blocker error: \(error.localizedDescription)")
         }
 
-        // Brief spinner feedback
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             isReloadingPresets = false
         }

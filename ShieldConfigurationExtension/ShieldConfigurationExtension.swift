@@ -34,32 +34,23 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
 
     private func makeConfiguration(blockedItemIcon: String, blockedItemLabel: String) -> ShieldConfiguration {
         let appState = AppState.shared
+        let profile = appState.restrictionProfile
+        let tintColor = UIColor(hex: "#007AFF")
 
-        let modeName: String
-        let modeColorHex: String
-        let modeIcon: String
-
-        if let activeMode = appState.activeMode {
-            modeName = activeMode.name
-            modeColorHex = activeMode.colorHex
-            modeIcon = activeMode.icon
-        } else {
-            modeName = "Focus"
-            modeColorHex = "#007AFF"
-            modeIcon = "lock.fill"
-        }
-
-        let modeColor = UIColor(hex: modeColorHex)
-        let subtitle = buildSubtitle(modeName: modeName, blockedItemLabel: blockedItemLabel, appState: appState)
+        let subtitle = buildSubtitle(
+            blockedItemLabel: blockedItemLabel,
+            windowStates: appState.timedWindowStates,
+            profile: profile
+        )
 
         return ShieldConfiguration(
             backgroundBlurStyle: .systemUltraThinMaterialDark,
-            backgroundColor: modeColor.withAlphaComponent(0.15),
-            icon: UIImage(systemName: modeIcon)?
-                .withTintColor(modeColor, renderingMode: .alwaysOriginal),
+            backgroundColor: tintColor.withAlphaComponent(0.15),
+            icon: UIImage(systemName: "lock.fill")?
+                .withTintColor(tintColor, renderingMode: .alwaysOriginal),
             title: ShieldConfiguration.Label(
-                text: modeName,
-                color: modeColor
+                text: "Restricted",
+                color: tintColor
             ),
             subtitle: ShieldConfiguration.Label(
                 text: subtitle,
@@ -69,75 +60,50 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
                 text: "OK",
                 color: .white
             ),
-            primaryButtonBackgroundColor: modeColor,
+            primaryButtonBackgroundColor: tintColor,
             secondaryButtonLabel: ShieldConfiguration.Label(
-                text: "Open FocusPhone",
-                color: modeColor
+                text: "Request Extension",
+                color: tintColor
             )
         )
     }
 
     // MARK: - Subtitle Builder
 
-    private func buildSubtitle(modeName: String, blockedItemLabel: String, appState: AppState) -> String {
+    private func buildSubtitle(
+        blockedItemLabel: String,
+        windowStates: [TimedWindowApp],
+        profile: PersonalRestrictionProfile?
+    ) -> String {
         var parts: [String] = []
-
-        // What's blocked
         parts.append(blockedItemLabel)
 
-        // Time remaining
-        if let endTime = appState.activeBlockEndTime {
-            let remaining = Int(endTime.timeIntervalSince(Date()) / 60)
-            if remaining > 0 {
-                if remaining < 60 {
-                    parts.append("Back in \(remaining) min")
-                } else {
-                    let hours = remaining / 60
-                    let mins = remaining % 60
-                    if mins == 0 {
-                        parts.append("Back in \(hours)h")
-                    } else {
-                        parts.append("Back in \(hours)h \(mins)m")
-                    }
-                }
+        // Check if this is a timed window app (show next window time)
+        if !windowStates.isEmpty {
+            // We can't know exactly which app from the shield context,
+            // so show general info
+            let openApps = windowStates.filter { $0.isCurrentlyInWindow }
+            if openApps.isEmpty {
+                parts.append("Check the dashboard for window times.")
             }
         }
 
         // Motivational nudge
-        parts.append(motivationalMessage(for: modeName))
+        parts.append(motivationalMessage())
 
         return parts.joined(separator: "\n")
     }
 
-    private func motivationalMessage(for modeName: String) -> String {
-        let name = modeName.lowercased()
-
-        if name.contains("deep work") || name.contains("work") || name.contains("study") {
-            return "Deep focus builds great things."
-        } else if name.contains("morning") || name.contains("routine") {
-            return "Win the morning, win the day."
-        } else if name.contains("exercise") || name.contains("gym") || name.contains("workout") {
-            return "Your body will thank you."
-        } else if name.contains("sleep") || name.contains("bedtime") {
-            return "Rest well. Tomorrow starts fresh."
-        } else if name.contains("wind down") || name.contains("evening") {
-            return "Let your mind slow down."
-        } else if name.contains("commute") || name.contains("drive") {
-            return "Eyes up, phone down."
-        } else if name.contains("family") || name.contains("dinner") {
-            return "Be present with the people who matter."
-        } else if name.contains("read") || name.contains("learn") {
-            return "Knowledge compounds. Keep going."
-        } else {
-            // Rotate through generic messages based on time
-            let messages = [
-                "Stay present. You chose this.",
-                "Small disciplines lead to big results.",
-                "You don't need this app right now.",
-                "Your future self will thank you.",
-            ]
-            let index = Calendar.current.component(.minute, from: Date()) % messages.count
-            return messages[index]
-        }
+    private func motivationalMessage() -> String {
+        let messages = [
+            "Stay present. You chose this.",
+            "Small disciplines lead to big results.",
+            "You don't need this app right now.",
+            "Your future self will thank you.",
+            "Be intentional with your time.",
+            "This restriction is helping you grow.",
+        ]
+        let index = Calendar.current.component(.minute, from: Date()) % messages.count
+        return messages[index]
     }
 }

@@ -12,6 +12,26 @@ enum ContentFilterPresetStore {
         allPresets.first { $0.id == id }
     }
 
+    /// Combines CSS hide rules into a JavaScript injection string for the controlled browser.
+    static func browserInjectionScript(for presetIDs: Set<String>) -> String {
+        var selectors: [String] = []
+        for presetID in presetIDs {
+            guard let preset = preset(for: presetID) else { continue }
+            for rule in preset.cssHideRules {
+                selectors.append(rule.selector)
+            }
+        }
+        guard !selectors.isEmpty else { return "" }
+        let css = selectors.map { "\($0) { display: none !important; }" }.joined(separator: "\n")
+        return """
+        (function() {
+            const style = document.createElement('style');
+            style.textContent = `\(css)`;
+            document.head.appendChild(style);
+        })();
+        """
+    }
+
     // MARK: - YouTube Focus
 
     static let youTubeFocus = ContentFilterPreset(

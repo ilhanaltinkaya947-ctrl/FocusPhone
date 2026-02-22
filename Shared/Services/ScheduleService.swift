@@ -9,34 +9,34 @@ final class ScheduleService {
         let failed: [(TimeBlock, Error)]
     }
 
+    /// Registers all timed window slots as DeviceActivity monitors.
     @discardableResult
-    static func registerAllTimeBlocks() -> RegistrationResult {
+    static func registerTimedWindows(slots: [TimeBlock]) -> RegistrationResult {
         center.stopMonitoring()
 
-        let blocks = AppState.shared.timeBlocks
         var registeredCount = 0
         var failures: [(TimeBlock, Error)] = []
 
-        for block in blocks {
+        for (index, slot) in slots.enumerated() {
             let activityName = DeviceActivityName(
-                rawValue: "mode_\(block.modeID.uuidString)_\(block.id.uuidString)"
+                rawValue: "window_\(slot.appID.uuidString)_\(index)"
             )
 
             let start = DateComponents(
-                hour: block.startHour,
-                minute: block.startMinute,
-                weekday: block.dayOfWeek
+                hour: slot.startHour,
+                minute: slot.startMinute,
+                weekday: slot.dayOfWeek
             )
             let end = DateComponents(
-                hour: block.endHour,
-                minute: block.endMinute,
-                weekday: block.dayOfWeek
+                hour: slot.endHour,
+                minute: slot.endMinute,
+                weekday: slot.dayOfWeek
             )
 
             let schedule = DeviceActivitySchedule(
                 intervalStart: start,
                 intervalEnd: end,
-                repeats: block.isRecurring
+                repeats: slot.isRecurring
             )
 
             do {
@@ -44,44 +44,41 @@ final class ScheduleService {
                 registeredCount += 1
             } catch {
                 print("Failed to monitor \(activityName.rawValue): \(error)")
-                failures.append((block, error))
+                failures.append((slot, error))
             }
         }
 
         return RegistrationResult(registered: registeredCount, failed: failures)
     }
 
-    /// Cross-references registered DeviceActivity activities with stored TimeBlocks
-    static func verifyRegistrations() -> (matched: Int, unmatched: Int) {
-        let registeredActivities = center.activities
-        let blocks = AppState.shared.timeBlocks
-
-        var matched = 0
-        var unmatched = 0
-
-        for block in blocks {
-            let expectedName = DeviceActivityName(
-                rawValue: "mode_\(block.modeID.uuidString)_\(block.id.uuidString)"
-            )
-            if registeredActivities.contains(expectedName) {
-                matched += 1
-            } else {
-                unmatched += 1
-            }
+    /// Registers timed windows from the active restriction profile.
+    @discardableResult
+    static func registerFromActiveProfile() -> RegistrationResult {
+        guard let profile = AppState.shared.restrictionProfile else {
+            return RegistrationResult(registered: 0, failed: [])
         }
-
-        return (matched: matched, unmatched: unmatched)
+        let slots = TimedWindowService.generateAllSlots(for: profile)
+        return registerTimedWindows(slots: slots)
     }
 
     static func stopAllSchedules() {
         center.stopMonitoring()
     }
 
-    static func modeID(from activityName: DeviceActivityName) -> UUID? {
+    /// Extracts the app UUID from a DeviceActivity name like "window_UUID_slotIndex".
+    static func appID(from activityName: DeviceActivityName) -> UUID? {
         let raw = activityName.rawValue
-        guard raw.hasPrefix("mode_"), raw.count > 41 else { return nil }
-        let startIndex = raw.index(raw.startIndex, offsetBy: 5)
+        guard raw.hasPrefix("window_"), raw.count > 43 else { return nil }
+        let startIndex = raw.index(raw.startIndex, offsetBy: 7) // "window_".count
         let endIndex = raw.index(startIndex, offsetBy: 36)
         return UUID(uuidString: String(raw[startIndex..<endIndex]))
+    }
+
+    /// Extracts the slot index from a DeviceActivity name.
+    static func slotIndex(from activityName: DeviceActivityName) -> Int? {
+        let raw = activityName.rawValue
+        guard let lastUnderscore = raw.lastIndex(of: "_") else { return nil }
+        let indexStr = raw[raw.index(after: lastUnderscore)...]
+        return Int(indexStr)
     }
 }
