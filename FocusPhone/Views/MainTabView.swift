@@ -7,7 +7,7 @@ struct MainDashboardView: View {
         TabView(selection: $selectedTab) {
             RestrictionDashboardView()
                 .tabItem {
-                    Label("Dashboard", systemImage: "shield.fill")
+                    Label("RawDog", systemImage: "shield.fill")
                 }
                 .tag(0)
 
@@ -23,5 +23,7 @@ struct MainDashboardView: View {
                 }
                 .tag(2)
         }
+        .tint(RawDog.Colors.accent)
+        .preferredColorScheme(.dark)
     }
 }

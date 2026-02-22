@@ -4,6 +4,10 @@ import UIKit
 
 class ShieldConfigurationExtension: ShieldConfigurationDataSource {
 
+    // RawDog accent color (ice blue)
+    private let accentColor = UIColor(red: 232/255, green: 244/255, blue: 255/255, alpha: 1.0)
+    private let bgColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+
     // MARK: - App Shielding
 
     override func configuration(shielding application: Application) -> ShieldConfiguration {
@@ -35,7 +39,6 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     private func makeConfiguration(blockedItemIcon: String, blockedItemLabel: String) -> ShieldConfiguration {
         let appState = AppState.shared
         let profile = appState.restrictionProfile
-        let tintColor = UIColor(hex: "#007AFF")
 
         let subtitle = buildSubtitle(
             blockedItemLabel: blockedItemLabel,
@@ -45,12 +48,12 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
 
         return ShieldConfiguration(
             backgroundBlurStyle: .systemUltraThinMaterialDark,
-            backgroundColor: tintColor.withAlphaComponent(0.15),
+            backgroundColor: bgColor,
             icon: UIImage(systemName: "lock.fill")?
-                .withTintColor(tintColor, renderingMode: .alwaysOriginal),
+                .withTintColor(accentColor, renderingMode: .alwaysOriginal),
             title: ShieldConfiguration.Label(
-                text: "Restricted",
-                color: tintColor
+                text: "RawDog says not yet.",
+                color: accentColor
             ),
             subtitle: ShieldConfiguration.Label(
                 text: subtitle,
@@ -58,12 +61,12 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
             ),
             primaryButtonLabel: ShieldConfiguration.Label(
                 text: "OK",
-                color: .white
+                color: .black
             ),
-            primaryButtonBackgroundColor: tintColor,
+            primaryButtonBackgroundColor: accentColor,
             secondaryButtonLabel: ShieldConfiguration.Label(
                 text: "Request Extension",
-                color: tintColor
+                color: accentColor
             )
         )
     }
@@ -78,17 +81,13 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         var parts: [String] = []
         parts.append(blockedItemLabel)
 
-        // Check if this is a timed window app (show next window time)
         if !windowStates.isEmpty {
-            // We can't know exactly which app from the shield context,
-            // so show general info
             let openApps = windowStates.filter { $0.isCurrentlyInWindow }
             if openApps.isEmpty {
                 parts.append("Check the dashboard for window times.")
             }
         }
 
-        // Motivational nudge
         parts.append(motivationalMessage())
 
         return parts.joined(separator: "\n")

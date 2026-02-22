@@ -24,6 +24,8 @@
 		33EBF83D48EF70434347E9F2 /* FocusPhoneWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA392E7299AA64DE38A6C09 /* FocusPhoneWidget.swift */; };
 		3DFC7767E81B974AF3D55800 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5FF9BDBBCEC3334409C107 /* UIColor+Hex.swift */; };
 		49DBE9DEDB07C0A06313B34A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82165BA9EC22CC77CA6C8909 /* SettingsView.swift */; };
+		F2E1D0C9B8A7F6E5D4C3B2A1 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E1F2 /* DesignSystem.swift */; };
+		C4E5F6A7B8C9D0E1F2A3B4C5 /* RawDogMascot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D4E5F6A7B8C9D0E1F2A3B4 /* RawDogMascot.swift */; };
 		4C434C7498FC79D7E9B00D8B /* TimeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D98D6620172FCA7B736765 /* TimeBlock.swift */; };
 		4C89293F10CAE0C62BE73094 /* BlockingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594B7BE104190E51B06FB01C /* BlockingService.swift */; };
 		51CDF02FEE697C3E642F6A09 /* BlockingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594B7BE104190E51B06FB01C /* BlockingService.swift */; };
@@ -198,6 +200,8 @@
 		730C68E385C90417A4E03A3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		820532D3B3E41C90DE1782D5 /* ShieldConfigurationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldConfigurationExtension.swift; sourceTree = "<group>"; };
 		82165BA9EC22CC77CA6C8909 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		B3D4E5F6A7B8C9D0E1F2A3B4 /* RawDogMascot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawDogMascot.swift; sourceTree = "<group>"; };
 		83AEF32365B0361D3B3BC800 /* ContentBlockerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlockerService.swift; sourceTree = "<group>"; };
 		941DD181E6572785AD762908 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		98226FBFCCE57E2914379AB5 /* FocusPhone.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FocusPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -303,6 +307,8 @@
 			children = (
 				53380FB50E34F4ACE6F907ED /* MainTabView.swift */,
 				82165BA9EC22CC77CA6C8909 /* SettingsView.swift */,
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* DesignSystem.swift */,
+				B3D4E5F6A7B8C9D0E1F2A3B4 /* RawDogMascot.swift */,
 				A84C37407FB65FDD18B57622 /* ExtensionRequestView.swift */,
 				9E33ECA25F59D3F4878964B5 /* ControlledBrowserView.swift */,
 				3D6F2AB5EE781A85B2DFF3D5 /* ControlledWebView.swift */,
@@ -732,6 +738,8 @@
 				02F8CD28C50F7F5BEE4B8FB6 /* MainTabView.swift in Sources */,
 				8BD6E8FF208644A0BB54263F /* ScheduleService.swift in Sources */,
 				49DBE9DEDB07C0A06313B34A /* SettingsView.swift in Sources */,
+				F2E1D0C9B8A7F6E5D4C3B2A1 /* DesignSystem.swift in Sources */,
+				C4E5F6A7B8C9D0E1F2A3B4C5 /* RawDogMascot.swift in Sources */,
 				17627C7D1669B03E37A55AF2 /* SettingsViewModel.swift in Sources */,
 				E0CA4DCEE08E2D67D28050AC /* TimeBlock.swift in Sources */,
 				1E07C691F79C0419D0E57B10 /* UIColor+Hex.swift in Sources */,

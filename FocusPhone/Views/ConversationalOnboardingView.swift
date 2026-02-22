@@ -5,44 +5,49 @@ struct ConversationalOnboardingView: View {
     @ObservedObject var authVM: AuthViewModel
     @StateObject private var chatVM = OnboardingChatViewModel()
     @State private var currentPage = 0
-    @State private var iconScale: CGFloat = 0.5
-    @State private var iconOpacity: CGFloat = 0
+    @State private var mascotScale: CGFloat = 0.5
+    @State private var mascotOpacity: CGFloat = 0
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
-        VStack(spacing: 0) {
-            // Back button
-            if currentPage > 0 && currentPage < 4 {
-                HStack {
-                    Button {
-                        withAnimation { currentPage -= 1 }
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.body.weight(.semibold))
-                            .foregroundStyle(.primary)
-                            .padding(10)
-                            .background(Color(.systemGray5), in: Circle())
+        ZStack {
+            RawDog.Colors.background.ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                // Back button
+                if currentPage > 0 && currentPage < 4 {
+                    HStack {
+                        Button {
+                            withAnimation { currentPage -= 1 }
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.body.weight(.semibold))
+                                .foregroundStyle(RawDog.Colors.textPrimary)
+                                .padding(10)
+                                .background(RawDog.Colors.surfaceElevated, in: Circle())
+                        }
+                        Spacer()
                     }
-                    Spacer()
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 8)
-            }
 
-            TabView(selection: $currentPage) {
-                welcomePage.tag(0)
-                screenTimePage.tag(1)
-                safariPage.tag(2)
-                chatPage.tag(3)
-                profileReviewPage.tag(4)
-            }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .animation(.easeInOut(duration: 0.35), value: currentPage)
+                TabView(selection: $currentPage) {
+                    welcomePage.tag(0)
+                    screenTimePage.tag(1)
+                    safariPage.tag(2)
+                    chatPage.tag(3)
+                    profileReviewPage.tag(4)
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .animation(.easeInOut(duration: 0.35), value: currentPage)
 
-            // Progress
-            progressIndicator
-                .padding(.bottom, 40)
+                // Progress
+                progressIndicator
+                    .padding(.bottom, 40)
+            }
         }
+        .preferredColorScheme(.dark)
         .onChange(of: scenePhase) {
             if scenePhase == .active {
                 authVM.checkContentBlockerState()
@@ -56,7 +61,7 @@ struct ConversationalOnboardingView: View {
         HStack(spacing: 6) {
             ForEach(0..<5, id: \.self) { index in
                 Capsule()
-                    .fill(index <= currentPage ? Color.blue : Color(.systemGray4))
+                    .fill(index <= currentPage ? RawDog.Colors.accent : RawDog.Colors.surfaceElevated)
                     .frame(width: index == currentPage ? 24 : 8, height: 8)
                     .animation(.spring(response: 0.35), value: currentPage)
             }
@@ -69,47 +74,38 @@ struct ConversationalOnboardingView: View {
         VStack(spacing: 0) {
             Spacer()
 
-            ZStack {
-                Circle()
-                    .fill(Color.blue.opacity(0.08))
-                    .frame(width: 180, height: 180)
-                Circle()
-                    .fill(Color.blue.opacity(0.05))
-                    .frame(width: 240, height: 240)
-                Image(systemName: "lock.iphone")
-                    .font(.system(size: 72, weight: .light))
-                    .foregroundStyle(.blue)
-                    .scaleEffect(iconScale)
-                    .opacity(iconOpacity)
-            }
-            .onAppear {
-                withAnimation(.spring(response: 0.8, dampingFraction: 0.6)) {
-                    iconScale = 1.0
-                    iconOpacity = 1.0
+            RawDogMascot(state: .neutral, size: 160)
+                .scaleEffect(mascotScale)
+                .opacity(mascotOpacity)
+                .onAppear {
+                    withAnimation(.spring(response: 0.8, dampingFraction: 0.6)) {
+                        mascotScale = 1.0
+                        mascotOpacity = 1.0
+                    }
                 }
-            }
 
-            Spacer().frame(height: 40)
+            Spacer().frame(height: RawDog.Spacing.xl)
 
-            Text("FocusPhone")
-                .font(.system(size: 34, weight: .bold, design: .rounded))
+            Text("RawDog")
+                .font(RawDog.Typography.largeTitle)
+                .foregroundStyle(RawDog.Colors.textPrimary)
 
-            Text("Make your phone dumb\nin exactly the right ways")
+            Text("Your phone. Disciplined.")
                 .font(.title3)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(RawDog.Colors.textSecondary)
                 .multilineTextAlignment(.center)
-                .padding(.top, 4)
+                .padding(.top, RawDog.Spacing.xs)
 
             Text("Block the apps and content that\nwaste your time. Keep the rest.")
-                .font(.subheadline)
-                .foregroundStyle(.tertiary)
+                .font(RawDog.Typography.caption)
+                .foregroundStyle(RawDog.Colors.textSecondary.opacity(0.6))
                 .multilineTextAlignment(.center)
                 .padding(.top, 12)
                 .padding(.horizontal, 40)
 
             Spacer()
 
-            onboardingButton("Get Started") {
+            RawDog.PillButton(title: "Get Started") {
                 withAnimation { currentPage = 1 }
             }
         }
@@ -121,42 +117,43 @@ struct ConversationalOnboardingView: View {
         VStack(spacing: 0) {
             Spacer()
 
-            stepBadge("1 of 2", color: .orange)
+            stepBadge("1 of 2")
 
-            permissionIcon("hourglass.badge.plus", color: .orange)
-                .padding(.top, 16)
+            permissionIcon("hourglass.badge.plus")
+                .padding(.top, RawDog.Spacing.md)
 
             Text("Screen Time Access")
-                .font(.title2.bold())
-                .padding(.top, 24)
+                .font(RawDog.Typography.title2)
+                .foregroundStyle(RawDog.Colors.textPrimary)
+                .padding(.top, RawDog.Spacing.lg)
 
-            Text("FocusPhone needs Screen Time access\nto block apps and enforce restrictions.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+            Text("RawDog needs Screen Time access\nto block apps and enforce restrictions.")
+                .font(RawDog.Typography.subheadline)
+                .foregroundStyle(RawDog.Colors.textSecondary)
                 .multilineTextAlignment(.center)
-                .padding(.top, 8)
+                .padding(.top, RawDog.Spacing.sm)
                 .padding(.horizontal, 40)
 
-            Spacer().frame(height: 24)
+            Spacer().frame(height: RawDog.Spacing.lg)
 
             if authVM.authorizationStatus == .approved {
-                statusBadge(text: "Permission Granted", icon: "checkmark.circle.fill", color: .green)
+                RawDog.StatusBadge(text: "Permission Granted", icon: "checkmark.circle.fill", color: RawDog.Colors.approved)
             } else if authVM.authorizationStatus == .denied {
-                statusBadge(text: "Permission Denied", icon: "xmark.circle.fill", color: .red)
+                RawDog.StatusBadge(text: "Permission Denied", icon: "xmark.circle.fill", color: RawDog.Colors.destructive)
                 Text("Please enable Screen Time in Settings.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .padding(.top, 4)
+                    .font(RawDog.Typography.caption)
+                    .foregroundStyle(RawDog.Colors.textSecondary)
+                    .padding(.top, RawDog.Spacing.xs)
             }
 
             Spacer()
 
             if authVM.authorizationStatus == .approved {
-                onboardingButton("Continue") {
+                RawDog.PillButton(title: "Continue") {
                     withAnimation { currentPage = 2 }
                 }
             } else {
-                onboardingButton("Allow Screen Time", color: .orange) {
+                RawDog.PillButton(title: "Allow Screen Time") {
                     authVM.requestAuthorization()
                 }
             }
@@ -176,50 +173,52 @@ struct ConversationalOnboardingView: View {
         VStack(spacing: 0) {
             Spacer()
 
-            stepBadge("2 of 2", color: .blue)
+            stepBadge("2 of 2")
 
-            permissionIcon("safari", color: .blue)
-                .padding(.top, 16)
+            permissionIcon("safari")
+                .padding(.top, RawDog.Spacing.md)
 
             Text("Safari Content Blocker")
-                .font(.title2.bold())
-                .padding(.top, 24)
+                .font(RawDog.Typography.title2)
+                .foregroundStyle(RawDog.Colors.textPrimary)
+                .padding(.top, RawDog.Spacing.lg)
 
             Text("Enable the content blocker to block\ndistracting websites in Safari.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(RawDog.Typography.subheadline)
+                .foregroundStyle(RawDog.Colors.textSecondary)
                 .multilineTextAlignment(.center)
-                .padding(.top, 8)
+                .padding(.top, RawDog.Spacing.sm)
                 .padding(.horizontal, 40)
 
-            Spacer().frame(height: 24)
+            Spacer().frame(height: RawDog.Spacing.lg)
 
             if authVM.contentBlockerEnabled {
-                statusBadge(text: "Content Blocker Enabled", icon: "checkmark.circle.fill", color: .green)
+                RawDog.StatusBadge(text: "Content Blocker Enabled", icon: "checkmark.circle.fill", color: RawDog.Colors.approved)
             } else {
                 VStack(spacing: 4) {
                     Text("Settings > Safari > Extensions")
-                        .font(.caption.weight(.medium))
+                        .font(RawDog.Typography.caption.weight(.medium))
+                        .foregroundStyle(RawDog.Colors.textPrimary)
                     Text("Enable FocusPhone")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(RawDog.Typography.caption)
+                        .foregroundStyle(RawDog.Colors.textSecondary)
                 }
                 .padding(12)
-                .background(Color(.systemGray6), in: RoundedRectangle(cornerRadius: 10))
+                .background(RawDog.Colors.surfaceElevated, in: RoundedRectangle(cornerRadius: 10))
             }
 
             Spacer()
 
             VStack(spacing: 12) {
                 if !authVM.contentBlockerEnabled {
-                    onboardingButton("Open Settings") {
+                    RawDog.PillButton(title: "Open Settings") {
                         if let url = URL(string: UIApplication.openSettingsURLString) {
                             UIApplication.shared.open(url)
                         }
                     }
                 }
-                onboardingButton(
-                    authVM.contentBlockerEnabled ? "Continue" : "Skip for Now",
+                RawDog.PillButton(
+                    title: authVM.contentBlockerEnabled ? "Continue" : "Skip for Now",
                     style: authVM.contentBlockerEnabled ? .primary : .secondary
                 ) {
                     withAnimation { currentPage = 3 }
@@ -271,7 +270,7 @@ struct ConversationalOnboardingView: View {
                     } label: {
                         Image(systemName: chatVM.speechService.isListening ? "mic.fill" : "mic")
                             .font(.title3)
-                            .foregroundStyle(chatVM.speechService.isListening ? .red : .blue)
+                            .foregroundStyle(chatVM.speechService.isListening ? RawDog.Colors.destructive : RawDog.Colors.accent)
                     }
 
                     TextField("Type your response...", text: $chatVM.inputText, axis: .vertical)
@@ -283,17 +282,17 @@ struct ConversationalOnboardingView: View {
                     } label: {
                         Image(systemName: "arrow.up.circle.fill")
                             .font(.title2)
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(RawDog.Colors.accent)
                     }
                     .disabled(chatVM.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || chatVM.isLoading)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
-                .background(.ultraThinMaterial)
+                .background(RawDog.Colors.surface)
             }
 
             if chatVM.conversationStage == .profileReady {
-                onboardingButton("Review Your Profile") {
+                RawDog.PillButton(title: "Review Your Profile") {
                     withAnimation { currentPage = 4 }
                 }
                 .padding(.vertical, 12)
@@ -301,8 +300,8 @@ struct ConversationalOnboardingView: View {
 
             if let error = chatVM.errorMessage {
                 Text(error)
-                    .font(.caption)
-                    .foregroundStyle(.red)
+                    .font(RawDog.Typography.caption)
+                    .foregroundStyle(RawDog.Colors.destructive)
                     .padding(.horizontal, 16)
                     .padding(.bottom, 4)
             }
@@ -332,9 +331,10 @@ struct ConversationalOnboardingView: View {
             } else {
                 VStack {
                     ProgressView()
+                        .tint(RawDog.Colors.accent)
                     Text("Generating profile...")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .font(RawDog.Typography.subheadline)
+                        .foregroundStyle(RawDog.Colors.textSecondary)
                 }
             }
         }
@@ -346,17 +346,22 @@ struct ConversationalOnboardingView: View {
         HStack {
             if message.role == .user { Spacer() }
 
+            if message.role == .assistant {
+                RawDogMascot(state: .neutral, size: 32)
+                    .padding(.bottom, 4)
+            }
+
             Text(message.content)
-                .font(.subheadline)
+                .font(RawDog.Typography.subheadline)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 10)
                 .background(
                     message.role == .user
-                        ? Color.blue
-                        : Color(.systemGray5)
+                        ? RawDog.Colors.accent
+                        : RawDog.Colors.surfaceElevated
                 )
-                .foregroundStyle(message.role == .user ? .white : .primary)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .foregroundStyle(message.role == .user ? RawDog.Colors.background : RawDog.Colors.textPrimary)
+                .clipShape(RoundedRectangle(cornerRadius: RawDog.Radius.card))
 
             if message.role == .assistant { Spacer() }
         }
@@ -367,7 +372,7 @@ struct ConversationalOnboardingView: View {
         HStack(spacing: 4) {
             ForEach(0..<3, id: \.self) { index in
                 Circle()
-                    .fill(Color(.systemGray3))
+                    .fill(RawDog.Colors.textSecondary)
                     .frame(width: 8, height: 8)
                     .scaleEffect(1.0)
                     .animation(
@@ -380,58 +385,25 @@ struct ConversationalOnboardingView: View {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
-        .background(Color(.systemGray5), in: RoundedRectangle(cornerRadius: 16))
+        .background(RawDog.Colors.surfaceElevated, in: RoundedRectangle(cornerRadius: RawDog.Radius.card))
     }
 
     // MARK: - Reusable Components
 
-    private func permissionIcon(_ systemName: String, color: Color) -> some View {
+    private func permissionIcon(_ systemName: String) -> some View {
         Image(systemName: systemName)
             .font(.system(size: 56, weight: .light))
-            .foregroundStyle(color)
+            .foregroundStyle(RawDog.Colors.accent)
             .frame(width: 100, height: 100)
-            .background(color.opacity(0.1), in: Circle())
+            .background(RawDog.Colors.accent.opacity(0.1), in: Circle())
     }
 
-    private func stepBadge(_ text: String, color: Color) -> some View {
+    private func stepBadge(_ text: String) -> some View {
         Text(text.uppercased())
             .font(.caption2.bold())
-            .foregroundStyle(color)
+            .foregroundStyle(RawDog.Colors.accent)
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
-            .background(color.opacity(0.12), in: Capsule())
-    }
-
-    private func statusBadge(text: String, icon: String, color: Color) -> some View {
-        Label(text, systemImage: icon)
-            .font(.subheadline.weight(.medium))
-            .foregroundStyle(color)
-            .padding(.horizontal, 14)
-            .padding(.vertical, 8)
-            .background(color.opacity(0.1), in: Capsule())
-    }
-
-    private enum ButtonStyle {
-        case primary, secondary
-    }
-
-    private func onboardingButton(_ title: String, style: ButtonStyle = .primary, color: Color = .blue, action: @escaping () -> Void) -> some View {
-        Button {
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-            action()
-        } label: {
-            Text(title)
-                .font(.headline)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .background(style == .primary ? color : Color.clear)
-                .foregroundStyle(style == .primary ? .white : color)
-                .clipShape(RoundedRectangle(cornerRadius: 14))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14)
-                        .stroke(style == .secondary ? color : Color.clear, lineWidth: 2)
-                )
-        }
-        .padding(.horizontal, 32)
+            .background(RawDog.Colors.accent.opacity(0.12), in: Capsule())
     }
 }

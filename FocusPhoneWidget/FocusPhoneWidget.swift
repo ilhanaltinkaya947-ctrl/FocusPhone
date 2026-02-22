@@ -31,7 +31,7 @@ struct FocusPhoneWidgetProvider: TimelineProvider {
             ],
             extensionMinutesUsed: 10,
             extensionMinutesCap: 30,
-            summary: "Your phone is restricted"
+            summary: "Your phone is disciplined"
         )
     }
 
@@ -41,7 +41,7 @@ struct FocusPhoneWidgetProvider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<FocusPhoneWidgetEntry>) -> Void) {
         let entry = currentEntry()
-        let refreshDate = Date.now.addingTimeInterval(5 * 60) // refresh every 5 min
+        let refreshDate = Date.now.addingTimeInterval(5 * 60)
         let timeline = Timeline(entries: [entry], policy: .after(refreshDate))
         completion(timeline)
     }
@@ -77,6 +77,17 @@ struct FocusPhoneWidgetProvider: TimelineProvider {
     }
 }
 
+// MARK: - Widget Colors (inline, no DesignSystem access in extension)
+
+private enum WidgetColors {
+    static let accent = Color(red: 232/255, green: 244/255, blue: 255/255)     // ice blue
+    static let background = Color.black
+    static let surface = Color(red: 17/255, green: 17/255, blue: 17/255)
+    static let textSecondary = Color(red: 136/255, green: 136/255, blue: 136/255)
+    static let windowOpen = Color(red: 52/255, green: 199/255, blue: 89/255)
+    static let windowClosed = Color(red: 255/255, green: 149/255, blue: 0/255)
+}
+
 // MARK: - Small Widget
 
 struct SmallWidgetView: View {
@@ -87,29 +98,30 @@ struct SmallWidgetView: View {
             HStack {
                 Image(systemName: entry.isRestricted ? "lock.fill" : "lock.open.fill")
                     .font(.title3)
-                    .foregroundStyle(entry.isRestricted ? .blue : .gray)
+                    .foregroundStyle(entry.isRestricted ? WidgetColors.accent : WidgetColors.textSecondary)
                 Spacer()
             }
 
             Spacer()
 
-            Text(entry.isRestricted ? "Restricted" : "Unrestricted")
+            Text(entry.isRestricted ? "Disciplined" : "Unrestricted")
                 .font(.headline)
+                .foregroundStyle(.white)
 
             if let app = entry.timedApps.first(where: { $0.isWindowOpen }) {
                 Text("\(app.appName): \(app.minutesRemaining ?? 0)m left")
                     .font(.caption2)
-                    .foregroundStyle(.green)
+                    .foregroundStyle(WidgetColors.windowOpen)
             } else if let app = entry.timedApps.first, let nextTime = app.nextWindowTime {
                 Text("\(app.appName) at \(nextTime)")
                     .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(WidgetColors.textSecondary)
             }
         }
         .padding()
         .widgetURL(URL(string: "focusphone://dashboard"))
         .containerBackground(for: .widget) {
-            Color.blue.opacity(entry.isRestricted ? 0.08 : 0.03)
+            WidgetColors.background
         }
     }
 }
@@ -125,38 +137,39 @@ struct MediumWidgetView: View {
                 HStack(spacing: 6) {
                     Image(systemName: entry.isRestricted ? "lock.fill" : "lock.open.fill")
                         .font(.title2)
-                        .foregroundStyle(entry.isRestricted ? .blue : .gray)
+                        .foregroundStyle(entry.isRestricted ? WidgetColors.accent : WidgetColors.textSecondary)
                 }
 
                 Spacer()
 
-                Text(entry.isRestricted ? "Restricted" : "Unrestricted")
+                Text(entry.isRestricted ? "Disciplined" : "Unrestricted")
                     .font(.headline)
+                    .foregroundStyle(.white)
 
                 Text("\(entry.extensionMinutesUsed)/\(entry.extensionMinutesCap)m extensions")
                     .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(WidgetColors.textSecondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Timed apps list
             VStack(alignment: .leading, spacing: 4) {
                 ForEach(entry.timedApps.prefix(3), id: \.appName) { app in
                     HStack(spacing: 4) {
                         Circle()
-                            .fill(app.isWindowOpen ? Color.green : Color.orange)
+                            .fill(app.isWindowOpen ? WidgetColors.windowOpen : WidgetColors.windowClosed)
                             .frame(width: 6, height: 6)
                         Text(app.appName)
                             .font(.caption2)
+                            .foregroundStyle(.white)
                         Spacer()
                         if app.isWindowOpen, let mins = app.minutesRemaining {
                             Text("\(mins)m")
                                 .font(.caption2.bold())
-                                .foregroundStyle(.green)
+                                .foregroundStyle(WidgetColors.windowOpen)
                         } else if let time = app.nextWindowTime {
                             Text(time)
                                 .font(.caption2)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(WidgetColors.textSecondary)
                         }
                     }
                 }
@@ -166,7 +179,7 @@ struct MediumWidgetView: View {
         .padding()
         .widgetURL(URL(string: "focusphone://dashboard"))
         .containerBackground(for: .widget) {
-            Color.blue.opacity(entry.isRestricted ? 0.08 : 0.03)
+            WidgetColors.background
         }
     }
 }
@@ -181,50 +194,54 @@ struct LargeWidgetView: View {
             // Header
             HStack(spacing: 8) {
                 Image(systemName: entry.isRestricted ? "lock.fill" : "lock.open.fill")
-                    .foregroundStyle(entry.isRestricted ? .blue : .gray)
-                Text(entry.isRestricted ? "Phone Restricted" : "Unrestricted")
+                    .foregroundStyle(entry.isRestricted ? WidgetColors.accent : WidgetColors.textSecondary)
+                Text(entry.isRestricted ? "Disciplined" : "Unrestricted")
                     .font(.headline)
+                    .foregroundStyle(.white)
                 Spacer()
                 Text("\(entry.extensionMinutesUsed)/\(entry.extensionMinutesCap)m")
                     .font(.caption2.weight(.bold))
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(WidgetColors.accent)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
-                    .background(Color.blue.opacity(0.15), in: Capsule())
+                    .background(WidgetColors.accent.opacity(0.15), in: Capsule())
             }
 
             if let summary = entry.summary {
                 Text(summary)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(WidgetColors.textSecondary)
             }
 
-            Divider()
+            Rectangle()
+                .fill(WidgetColors.surface)
+                .frame(height: 1)
 
             // Timed apps
             ForEach(entry.timedApps, id: \.appName) { app in
                 HStack(spacing: 8) {
                     Circle()
-                        .fill(app.isWindowOpen ? Color.green : Color.orange)
+                        .fill(app.isWindowOpen ? WidgetColors.windowOpen : WidgetColors.windowClosed)
                         .frame(width: 8, height: 8)
 
                     Text(app.appName)
                         .font(.subheadline)
+                        .foregroundStyle(.white)
 
                     Spacer()
 
                     if app.isWindowOpen, let mins = app.minutesRemaining {
                         Text("\(mins)m left")
                             .font(.caption.bold())
-                            .foregroundStyle(.green)
+                            .foregroundStyle(WidgetColors.windowOpen)
                     } else if let time = app.nextWindowTime {
                         Text("Next: \(time)")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(WidgetColors.textSecondary)
                     } else {
                         Text("Blocked")
                             .font(.caption)
-                            .foregroundStyle(.red)
+                            .foregroundStyle(WidgetColors.windowClosed)
                     }
                 }
             }
@@ -234,7 +251,7 @@ struct LargeWidgetView: View {
         .padding()
         .widgetURL(URL(string: "focusphone://dashboard"))
         .containerBackground(for: .widget) {
-            Color.blue.opacity(entry.isRestricted ? 0.05 : 0.02)
+            WidgetColors.background
         }
     }
 }
@@ -261,7 +278,7 @@ struct AccessoryRectangularView: View {
             HStack(spacing: 4) {
                 Image(systemName: "lock.fill")
                     .font(.caption)
-                Text(entry.isRestricted ? "Restricted" : "Unrestricted")
+                Text(entry.isRestricted ? "Disciplined" : "Unrestricted")
                     .font(.headline)
                     .lineLimit(1)
             }
@@ -290,7 +307,7 @@ struct AccessoryInlineView: View {
            let mins = app.minutesRemaining {
             Label("\(app.appName) \(mins)m", systemImage: "timer")
         } else {
-            Label(entry.isRestricted ? "Restricted" : "Unrestricted", systemImage: "lock.fill")
+            Label(entry.isRestricted ? "Disciplined" : "Unrestricted", systemImage: "lock.fill")
         }
     }
 }
@@ -331,7 +348,7 @@ struct FocusPhoneWidget: Widget {
         StaticConfiguration(kind: kind, provider: FocusPhoneWidgetProvider()) { entry in
             FocusPhoneWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("FocusPhone")
+        .configurationDisplayName("RawDog")
         .description("See your restriction status and timed window apps.")
         .supportedFamilies([
             .systemSmall,

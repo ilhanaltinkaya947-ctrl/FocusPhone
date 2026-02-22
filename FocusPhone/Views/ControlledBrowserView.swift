@@ -8,43 +8,49 @@ struct ControlledBrowserView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                // Domain bar
-                HStack(spacing: 8) {
-                    Image(systemName: "lock.fill")
-                        .font(.caption)
-                        .foregroundStyle(.green)
+            ZStack {
+                RawDog.Colors.background.ignoresSafeArea()
 
-                    Text(viewModel.currentURL?.host ?? "youtube.com")
-                        .font(.subheadline)
-                        .foregroundStyle(.primary)
-                        .lineLimit(1)
+                VStack(spacing: 0) {
+                    // Domain bar
+                    HStack(spacing: 8) {
+                        Image(systemName: "lock.fill")
+                            .font(.caption)
+                            .foregroundStyle(RawDog.Colors.approved)
 
-                    Spacer()
+                        Text(viewModel.currentURL?.host ?? "youtube.com")
+                            .font(RawDog.Typography.subheadline)
+                            .foregroundStyle(RawDog.Colors.textPrimary)
+                            .lineLimit(1)
 
-                    if viewModel.isLoading {
-                        ProgressView()
-                            .controlSize(.small)
+                        Spacer()
+
+                        if viewModel.isLoading {
+                            ProgressView()
+                                .controlSize(.small)
+                                .tint(RawDog.Colors.accent)
+                        }
                     }
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-                .background(Color(.systemGray6))
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(RawDog.Colors.surface)
 
-                // WebView
-                ControlledWebView(
-                    url: defaultURL,
-                    contentStrippingJS: viewModel.contentStrippingJS,
-                    isNavigationAllowed: { viewModel.isNavigationAllowed(to: $0) },
-                    isLoading: $viewModel.isLoading,
-                    canGoBack: $viewModel.canGoBack,
-                    canGoForward: $viewModel.canGoForward,
-                    currentURL: $viewModel.currentURL
-                )
-                .id(webViewID)
+                    // WebView
+                    ControlledWebView(
+                        url: defaultURL,
+                        contentStrippingJS: viewModel.contentStrippingJS,
+                        isNavigationAllowed: { viewModel.isNavigationAllowed(to: $0) },
+                        isLoading: $viewModel.isLoading,
+                        canGoBack: $viewModel.canGoBack,
+                        canGoForward: $viewModel.canGoForward,
+                        currentURL: $viewModel.currentURL
+                    )
+                    .id(webViewID)
+                }
             }
             .navigationTitle("Browser")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     // Quick navigation buttons
@@ -59,11 +65,13 @@ struct ControlledBrowserView: View {
                                 Text(link.label)
                                     .font(.caption2)
                             }
+                            .foregroundStyle(RawDog.Colors.accent)
                         }
                     }
                 }
             }
         }
+        .preferredColorScheme(.dark)
     }
 
     private struct QuickLink {
