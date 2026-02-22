@@ -17,11 +17,17 @@ struct MainDashboardView: View {
                 }
                 .tag(1)
 
+            CommitmentListView()
+                .tabItem {
+                    Label("Commit", systemImage: "checkmark.circle.fill")
+                }
+                .tag(2)
+
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape.fill")
                 }
-                .tag(2)
+                .tag(3)
         }
         .tint(RawDog.Colors.accent)
         .preferredColorScheme(.dark)

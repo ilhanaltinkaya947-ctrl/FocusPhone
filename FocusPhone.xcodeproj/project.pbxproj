@@ -130,6 +130,16 @@
 		9CAFC23DB42C5C2682134CFC /* ControlledBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC2C59B61B454C03CB1FC96 /* ControlledBrowserViewModel.swift */; };
 		72B49DCFF483691732D53DBF /* OnboardingChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D294AE7F65B81A45EF8A7412 /* OnboardingChatViewModel.swift */; };
 		8C67508A8C393A70E0800E16 /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3AB2B4B08EA97BD9D909D8 /* SpeechService.swift */; };
+		BB00000000000002A0000001 /* CommitmentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000001 /* CommitmentModels.swift */; };
+		BB00000000000002A0000002 /* CommitmentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000002 /* CommitmentStore.swift */; };
+		BB00000000000002A0000003 /* CommitmentNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000003 /* CommitmentNotificationService.swift */; };
+		BB00000000000002A0000004 /* AIVerificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000004 /* AIVerificationService.swift */; };
+		BB00000000000002A0000005 /* CommitmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000005 /* CommitmentViewModel.swift */; };
+		BB00000000000002A0000006 /* CommitmentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000006 /* CommitmentListView.swift */; };
+		BB00000000000002A0000007 /* CreateCommitmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000007 /* CreateCommitmentView.swift */; };
+		BB00000000000002A0000008 /* VerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000008 /* VerificationView.swift */; };
+		BB00000000000002A0000009 /* CameraRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000009 /* CameraRepresentable.swift */; };
+		BB00000000000002A000000A /* CommitmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A000000A /* CommitmentDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -243,6 +253,16 @@
 		AEC2C59B61B454C03CB1FC96 /* ControlledBrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlledBrowserViewModel.swift; sourceTree = "<group>"; };
 		D294AE7F65B81A45EF8A7412 /* OnboardingChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingChatViewModel.swift; sourceTree = "<group>"; };
 		3F3AB2B4B08EA97BD9D909D8 /* SpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechService.swift; sourceTree = "<group>"; };
+		BB00000000000001A0000001 /* CommitmentModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitmentModels.swift; sourceTree = "<group>"; };
+		BB00000000000001A0000002 /* CommitmentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitmentStore.swift; sourceTree = "<group>"; };
+		BB00000000000001A0000003 /* CommitmentNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitmentNotificationService.swift; sourceTree = "<group>"; };
+		BB00000000000001A0000004 /* AIVerificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIVerificationService.swift; sourceTree = "<group>"; };
+		BB00000000000001A0000005 /* CommitmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitmentViewModel.swift; sourceTree = "<group>"; };
+		BB00000000000001A0000006 /* CommitmentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitmentListView.swift; sourceTree = "<group>"; };
+		BB00000000000001A0000007 /* CreateCommitmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCommitmentView.swift; sourceTree = "<group>"; };
+		BB00000000000001A0000008 /* VerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationView.swift; sourceTree = "<group>"; };
+		BB00000000000001A0000009 /* CameraRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRepresentable.swift; sourceTree = "<group>"; };
+		BB00000000000001A000000A /* CommitmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitmentDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -315,6 +335,11 @@
 				5AF65B5CE60EB194BB6A36D5 /* ConversationalOnboardingView.swift */,
 				E2A5F41698CB446A87645BDD /* ProfileReviewView.swift */,
 				F5832B545D663AB510B32E85 /* RestrictionDashboardView.swift */,
+				BB00000000000001A0000006 /* CommitmentListView.swift */,
+				BB00000000000001A0000007 /* CreateCommitmentView.swift */,
+				BB00000000000001A0000008 /* VerificationView.swift */,
+				BB00000000000001A0000009 /* CameraRepresentable.swift */,
+				BB00000000000001A000000A /* CommitmentDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -339,6 +364,7 @@
 				2FBECC0A33BDD970F608F5A6 /* ExtensionRequestViewModel.swift */,
 				AEC2C59B61B454C03CB1FC96 /* ControlledBrowserViewModel.swift */,
 				D294AE7F65B81A45EF8A7412 /* OnboardingChatViewModel.swift */,
+				BB00000000000001A0000005 /* CommitmentViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -378,6 +404,14 @@
 			);
 			sourceTree = "<group>";
 		};
+		BB00000000000003A0000001 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BB00000000000001A0000001 /* CommitmentModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		C9C4A354B94D4B594CA621DB /* FocusPhone */ = {
 			isa = PBXGroup;
 			children = (
@@ -386,6 +420,7 @@
 				DC40D2EA0A1A8B966F3257FD /* FocusPhoneApp.swift */,
 				730C68E385C90417A4E03A3E /* Info.plist */,
 				FCBF4AD63F9C5BA4D7644512 /* Resources */,
+				BB00000000000003A0000001 /* Models */,
 				83899E3F5B717CBD02CF6EC5 /* ViewModels */,
 				56287B3F58F30444AF490B81 /* Views */,
 				7EBD98CEC340EDA9C44AE50D /* PrivacyInfo.xcprivacy */,
@@ -422,6 +457,9 @@
 			isa = PBXGroup;
 			children = (
 				3F3AB2B4B08EA97BD9D909D8 /* SpeechService.swift */,
+				BB00000000000001A0000002 /* CommitmentStore.swift */,
+				BB00000000000001A0000003 /* CommitmentNotificationService.swift */,
+				BB00000000000001A0000004 /* AIVerificationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -763,6 +801,16 @@
 				9CAFC23DB42C5C2682134CFC /* ControlledBrowserViewModel.swift in Sources */,
 				72B49DCFF483691732D53DBF /* OnboardingChatViewModel.swift in Sources */,
 				8C67508A8C393A70E0800E16 /* SpeechService.swift in Sources */,
+				BB00000000000002A0000001 /* CommitmentModels.swift in Sources */,
+				BB00000000000002A0000002 /* CommitmentStore.swift in Sources */,
+				BB00000000000002A0000003 /* CommitmentNotificationService.swift in Sources */,
+				BB00000000000002A0000004 /* AIVerificationService.swift in Sources */,
+				BB00000000000002A0000005 /* CommitmentViewModel.swift in Sources */,
+				BB00000000000002A0000006 /* CommitmentListView.swift in Sources */,
+				BB00000000000002A0000007 /* CreateCommitmentView.swift in Sources */,
+				BB00000000000002A0000008 /* VerificationView.swift in Sources */,
+				BB00000000000002A0000009 /* CameraRepresentable.swift in Sources */,
+				BB00000000000002A000000A /* CommitmentDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

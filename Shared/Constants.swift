@@ -20,6 +20,7 @@ enum Constants {
 
     // AI Backend (Cloudflare Worker proxy)
     static let aiServiceBaseURL = "https://focusphone-api.workers.dev/v1/chat"
+    static let aiVisionBaseURL = "https://focusphone-api.workers.dev/v1/vision"
     static let aiServiceToken = "fp_XXXXXXXX"
 
     static var sharedDefaults: UserDefaults {
