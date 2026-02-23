@@ -25,7 +25,8 @@ struct FocusPhoneApp: App {
         case "dashboard":    selectedTab = 0
         case "browser":      selectedTab = 1
         case "commitments":  selectedTab = 2
-        case "settings":     selectedTab = 3
+        case "receipts":     selectedTab = 3
+        case "settings":     selectedTab = 4
         case "extension":    selectedTab = 0
         case "verify":
             selectedTab = 2

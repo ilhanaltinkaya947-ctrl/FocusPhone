@@ -53,6 +53,14 @@ enum CommitmentStore {
             allLogs.append(log)
         }
         logs = allLogs
+
+        // Sync stats into UserMemory for AI context
+        let allCommitments = commitments
+        var statsDict: [String: HabitStats] = [:]
+        for commitment in allCommitments {
+            statsDict[commitment.title] = stats(for: commitment.id)
+        }
+        UserMemoryStore.shared.updateFromCommitmentLog(allLogs, stats: statsDict)
     }
 
     static func logsForCommitment(id: UUID) -> [CommitmentLog] {

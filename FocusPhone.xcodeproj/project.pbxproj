@@ -143,6 +143,7 @@
 		CC00000000000002A0000001 /* UserMemory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC00000000000001A0000001 /* UserMemory.swift */; };
 		CC00000000000002A0000002 /* JourneyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC00000000000001A0000002 /* JourneyModels.swift */; };
 		CC00000000000002A0000003 /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC00000000000001A0000003 /* GroqService.swift */; };
+		DD00000000000002A0000001 /* HabitsDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD00000000000001A0000001 /* HabitsDashboardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -269,6 +270,7 @@
 		CC00000000000001A0000001 /* UserMemory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMemory.swift; sourceTree = "<group>"; };
 		CC00000000000001A0000002 /* JourneyModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyModels.swift; sourceTree = "<group>"; };
 		CC00000000000001A0000003 /* GroqService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroqService.swift; sourceTree = "<group>"; };
+		DD00000000000001A0000001 /* HabitsDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsDashboardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -346,6 +348,7 @@
 				BB00000000000001A0000008 /* VerificationView.swift */,
 				BB00000000000001A0000009 /* CameraRepresentable.swift */,
 				BB00000000000001A000000A /* CommitmentDetailView.swift */,
+				DD00000000000001A0000001 /* HabitsDashboardView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -823,6 +826,7 @@
 				CC00000000000002A0000001 /* UserMemory.swift in Sources */,
 				CC00000000000002A0000002 /* JourneyModels.swift in Sources */,
 				CC00000000000002A0000003 /* GroqService.swift in Sources */,
+				DD00000000000002A0000001 /* HabitsDashboardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

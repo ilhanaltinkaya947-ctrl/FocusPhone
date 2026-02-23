@@ -23,11 +23,17 @@ struct MainDashboardView: View {
                 }
                 .tag(2)
 
+            HabitsDashboardView()
+                .tabItem {
+                    Label("Receipts", systemImage: "chart.bar.fill")
+                }
+                .tag(3)
+
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape.fill")
                 }
-                .tag(3)
+                .tag(4)
         }
         .tint(RawDog.Colors.accent)
         .preferredColorScheme(.dark)

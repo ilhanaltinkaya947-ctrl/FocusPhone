@@ -136,6 +136,80 @@ enum CommitmentNotificationService {
         }
     }
 
+    // MARK: - Journey Schedule Integration
+
+    static func scheduleJourneyNotifications(for journey: Journey) {
+        let center = UNUserNotificationCenter.current()
+        let idPrefix = "journey-\(journey.id.uuidString)"
+
+        // Cancel any previous journey notifications
+        center.getPendingNotificationRequests { requests in
+            let matching = requests
+                .filter { $0.identifier.hasPrefix("journey-") }
+                .map { $0.identifier }
+            center.removePendingNotificationRequests(withIdentifiers: matching)
+        }
+
+        let dayNameToWeekday: [String: Int] = [
+            "sunday": 1, "monday": 2, "tuesday": 3, "wednesday": 4,
+            "thursday": 5, "friday": 6, "saturday": 7
+        ]
+
+        for week in journey.weeks {
+            for day in week.days {
+                guard let weekday = dayNameToWeekday[day.dayName.lowercased()] else { continue }
+
+                let timeParts = day.task.scheduledTime.split(separator: ":")
+                guard timeParts.count == 2,
+                      let hour = Int(timeParts[0]),
+                      let minute = Int(timeParts[1]) else { continue }
+
+                // Pre-reminder (30 min before)
+                let preId = "\(idPrefix)-w\(week.weekNumber)-\(day.dayName)-pre"
+                let preContent = UNMutableNotificationContent()
+                preContent.title = "RawDog"
+                preContent.body = "\(day.task.title.uppercased()) IN 30. LET'S GO. \u{1F436}"
+                preContent.sound = .default
+
+                var preComponents = DateComponents()
+                preComponents.weekday = weekday
+                let preTotalMinutes = hour * 60 + minute - 30
+                preComponents.hour = ((preTotalMinutes % 1440) + 1440) % 1440 / 60
+                preComponents.minute = ((preTotalMinutes % 1440) + 1440) % 1440 % 60
+
+                let preTrigger = UNCalendarNotificationTrigger(dateMatching: preComponents, repeats: true)
+                center.add(UNNotificationRequest(identifier: preId, content: preContent, trigger: preTrigger))
+
+                // Verification prompt (30 min after)
+                let verifyId = "\(idPrefix)-w\(week.weekNumber)-\(day.dayName)-verify"
+                let verifyContent = UNMutableNotificationContent()
+                verifyContent.title = "RawDog"
+                verifyContent.body = "Did you finish \(day.task.title)? Send your proof. \u{1F436}"
+                verifyContent.sound = .default
+                verifyContent.categoryIdentifier = verificationCategoryID
+
+                var verifyComponents = DateComponents()
+                verifyComponents.weekday = weekday
+                let verifyTotalMinutes = hour * 60 + minute + 30
+                verifyComponents.hour = (verifyTotalMinutes % 1440) / 60
+                verifyComponents.minute = (verifyTotalMinutes % 1440) % 60
+
+                let verifyTrigger = UNCalendarNotificationTrigger(dateMatching: verifyComponents, repeats: true)
+                center.add(UNNotificationRequest(identifier: verifyId, content: verifyContent, trigger: verifyTrigger))
+            }
+        }
+    }
+
+    static func cancelJourneyNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.getPendingNotificationRequests { requests in
+            let matching = requests
+                .filter { $0.identifier.hasPrefix("journey-") }
+                .map { $0.identifier }
+            center.removePendingNotificationRequests(withIdentifiers: matching)
+        }
+    }
+
     // MARK: - Private Helpers
 
     private static func schedulePreReminder(
