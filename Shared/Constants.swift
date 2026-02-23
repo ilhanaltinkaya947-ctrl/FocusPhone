@@ -17,6 +17,14 @@ enum Constants {
     static let timedWindowStatesKey = "timedWindowStates"
     static let contentFilterPresetsKey = "contentFilterPresets"
     static let contentBlockerRulesFileName = "contentBlockerRules.json"
+    static let sleepScheduleKey = "sleepSchedule"
+    static let hourlyUsageKey = "hourlyUsageData"
+    static let weeklyCalendarBlocksKey = "weeklyCalendarBlocks"
+    static let activeEnhancedProfilesKey = "activeEnhancedProfiles"
+    static let retentionConfigKey = "retentionConfig"
+    static let retentionCachedMessagesKey = "retentionCachedMessages"
+    static let retentionWeeklyStatsKey = "retentionWeeklyStats"
+    static let retentionMonthlyStatsKey = "retentionMonthlyStats"
 
     // AI Backend (Cloudflare Worker proxy → Groq)
     static let aiServiceBaseURL = "https://focusphone-api.ilhanaltinkaya947.workers.dev"

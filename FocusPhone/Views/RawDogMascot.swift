@@ -2,10 +2,14 @@ import SwiftUI
 
 // MARK: - Mascot States
 
-enum MascotState {
-    case neutral   // default, watching
-    case sideeye   // judging you (extension request, trying to cheat)
-    case proud     // you completed a good streak, restrictions active
+enum MascotState: Equatable {
+    case neutral    // default, watching
+    case sideeye    // judging you (extension request, trying to cheat)
+    case proud      // you completed a good streak, restrictions active
+    case listening  // pupil shifted right, ear perked — user is typing/speaking
+    case thinking   // eyes up-left, slight squint — processing
+    case concerned  // raised inner brows, widened eyes — empathy
+    case amused     // asymmetric eyes, smirk — playful reaction
 }
 
 // MARK: - RawDogMascot View
@@ -39,6 +43,10 @@ struct RawDogMascot: View {
         case .neutral: RawDog.Colors.accent
         case .sideeye: RawDog.Colors.windowClosed
         case .proud: RawDog.Colors.approved
+        case .listening: RawDog.Colors.accent
+        case .thinking: RawDog.Colors.accentGlow
+        case .concerned: RawDog.Colors.windowClosed
+        case .amused: RawDog.Colors.approved
         }
     }
 }
@@ -123,14 +131,15 @@ private struct ShibaShape: View {
         let eyeY = h * 0.48
         let eyeSpacing = w * 0.13
         let eyeSize = w * 0.07
+        let dark = Color(hex: "2C2C2E")
 
         switch state {
         case .neutral:
             // Round eyes
             let leftEye = CGRect(x: cx - eyeSpacing - eyeSize / 2, y: eyeY, width: eyeSize, height: eyeSize)
             let rightEye = CGRect(x: cx + eyeSpacing - eyeSize / 2, y: eyeY, width: eyeSize, height: eyeSize)
-            context.fill(Path(ellipseIn: leftEye), with: .color(Color(hex: "2C2C2E")))
-            context.fill(Path(ellipseIn: rightEye), with: .color(Color(hex: "2C2C2E")))
+            context.fill(Path(ellipseIn: leftEye), with: .color(dark))
+            context.fill(Path(ellipseIn: rightEye), with: .color(dark))
 
             // Eye shine
             let shineSize = eyeSize * 0.35
@@ -142,11 +151,11 @@ private struct ShibaShape: View {
         case .sideeye:
             // Left eye: half-lid skeptical, pupil shifted right
             let leftEye = CGRect(x: cx - eyeSpacing - eyeSize / 2, y: eyeY + eyeSize * 0.2, width: eyeSize, height: eyeSize * 0.6)
-            context.fill(Path(ellipseIn: leftEye), with: .color(Color(hex: "2C2C2E")))
+            context.fill(Path(ellipseIn: leftEye), with: .color(dark))
 
             // Right eye: normal but pupil shifted right (looking sideways)
             let rightEye = CGRect(x: cx + eyeSpacing - eyeSize / 2 + eyeSize * 0.15, y: eyeY, width: eyeSize, height: eyeSize)
-            context.fill(Path(ellipseIn: rightEye), with: .color(Color(hex: "2C2C2E")))
+            context.fill(Path(ellipseIn: rightEye), with: .color(dark))
 
             let shineSize = eyeSize * 0.3
             let rightShine = CGRect(x: cx + eyeSpacing + eyeSize * 0.1, y: eyeY + eyeSize * 0.15, width: shineSize, height: shineSize)
@@ -164,7 +173,7 @@ private struct ShibaShape: View {
                 endAngle: .degrees(340),
                 clockwise: false
             )
-            context.stroke(leftArc, with: .color(Color(hex: "2C2C2E")), style: strokeStyle)
+            context.stroke(leftArc, with: .color(dark), style: strokeStyle)
 
             var rightArc = Path()
             rightArc.addArc(
@@ -174,16 +183,94 @@ private struct ShibaShape: View {
                 endAngle: .degrees(340),
                 clockwise: false
             )
-            context.stroke(rightArc, with: .color(Color(hex: "2C2C2E")), style: strokeStyle)
+            context.stroke(rightArc, with: .color(dark), style: strokeStyle)
+
+        case .listening:
+            // Pupils shifted right, attentive
+            let leftEye = CGRect(x: cx - eyeSpacing - eyeSize / 2 + eyeSize * 0.15, y: eyeY, width: eyeSize, height: eyeSize)
+            let rightEye = CGRect(x: cx + eyeSpacing - eyeSize / 2 + eyeSize * 0.15, y: eyeY, width: eyeSize, height: eyeSize)
+            context.fill(Path(ellipseIn: leftEye), with: .color(dark))
+            context.fill(Path(ellipseIn: rightEye), with: .color(dark))
+
+            let shineSize = eyeSize * 0.35
+            let leftShine = CGRect(x: cx - eyeSpacing + eyeSize * 0.1, y: eyeY + eyeSize * 0.1, width: shineSize, height: shineSize)
+            let rightShine = CGRect(x: cx + eyeSpacing + eyeSize * 0.1, y: eyeY + eyeSize * 0.1, width: shineSize, height: shineSize)
+            context.fill(Path(ellipseIn: leftShine), with: .color(.white.opacity(0.8)))
+            context.fill(Path(ellipseIn: rightShine), with: .color(.white.opacity(0.8)))
+
+        case .thinking:
+            // Eyes looking up-left, slight squint
+            let squintH = eyeSize * 0.8
+            let leftEye = CGRect(x: cx - eyeSpacing - eyeSize / 2 - eyeSize * 0.1, y: eyeY - eyeSize * 0.1, width: eyeSize, height: squintH)
+            let rightEye = CGRect(x: cx + eyeSpacing - eyeSize / 2 - eyeSize * 0.1, y: eyeY - eyeSize * 0.1, width: eyeSize, height: squintH)
+            context.fill(Path(ellipseIn: leftEye), with: .color(dark))
+            context.fill(Path(ellipseIn: rightEye), with: .color(dark))
+
+            let shineSize = eyeSize * 0.3
+            let leftShine = CGRect(x: cx - eyeSpacing - eyeSize * 0.3, y: eyeY - eyeSize * 0.05, width: shineSize, height: shineSize)
+            let rightShine = CGRect(x: cx + eyeSpacing - eyeSize * 0.15, y: eyeY - eyeSize * 0.05, width: shineSize, height: shineSize)
+            context.fill(Path(ellipseIn: leftShine), with: .color(.white.opacity(0.7)))
+            context.fill(Path(ellipseIn: rightShine), with: .color(.white.opacity(0.7)))
+
+        case .concerned:
+            // Widened eyes with inner brow angles
+            let wideH = eyeSize * 1.1
+            let leftEye = CGRect(x: cx - eyeSpacing - eyeSize / 2, y: eyeY - eyeSize * 0.05, width: eyeSize, height: wideH)
+            let rightEye = CGRect(x: cx + eyeSpacing - eyeSize / 2, y: eyeY - eyeSize * 0.05, width: eyeSize, height: wideH)
+            context.fill(Path(ellipseIn: leftEye), with: .color(dark))
+            context.fill(Path(ellipseIn: rightEye), with: .color(dark))
+
+            let shineSize = eyeSize * 0.35
+            let leftShine = CGRect(x: cx - eyeSpacing - eyeSize / 2 + eyeSize * 0.2, y: eyeY, width: shineSize, height: shineSize)
+            let rightShine = CGRect(x: cx + eyeSpacing - eyeSize / 2 + eyeSize * 0.2, y: eyeY, width: shineSize, height: shineSize)
+            context.fill(Path(ellipseIn: leftShine), with: .color(.white.opacity(0.8)))
+            context.fill(Path(ellipseIn: rightShine), with: .color(.white.opacity(0.8)))
+
+            // Inner eyebrows — angled lines above inner eye edges
+            let browStyle = StrokeStyle(lineWidth: w * 0.02, lineCap: .round)
+            var leftBrow = Path()
+            leftBrow.move(to: CGPoint(x: cx - eyeSpacing + eyeSize * 0.3, y: eyeY - eyeSize * 0.5))
+            leftBrow.addLine(to: CGPoint(x: cx - eyeSpacing - eyeSize * 0.3, y: eyeY - eyeSize * 0.3))
+            context.stroke(leftBrow, with: .color(dark), style: browStyle)
+
+            var rightBrow = Path()
+            rightBrow.move(to: CGPoint(x: cx + eyeSpacing - eyeSize * 0.3, y: eyeY - eyeSize * 0.5))
+            rightBrow.addLine(to: CGPoint(x: cx + eyeSpacing + eyeSize * 0.3, y: eyeY - eyeSize * 0.3))
+            context.stroke(rightBrow, with: .color(dark), style: browStyle)
+
+        case .amused:
+            // Left eye normal, right eye squinted
+            let leftEye = CGRect(x: cx - eyeSpacing - eyeSize / 2, y: eyeY, width: eyeSize, height: eyeSize)
+            context.fill(Path(ellipseIn: leftEye), with: .color(dark))
+
+            let rightEye = CGRect(x: cx + eyeSpacing - eyeSize / 2, y: eyeY + eyeSize * 0.15, width: eyeSize, height: eyeSize * 0.55)
+            context.fill(Path(ellipseIn: rightEye), with: .color(dark))
+
+            let shineSize = eyeSize * 0.35
+            let leftShine = CGRect(x: cx - eyeSpacing - eyeSize / 2 + eyeSize * 0.2, y: eyeY + eyeSize * 0.15, width: shineSize, height: shineSize)
+            context.fill(Path(ellipseIn: leftShine), with: .color(.white.opacity(0.8)))
+
+            // Raised right eyebrow
+            let browStyle = StrokeStyle(lineWidth: w * 0.018, lineCap: .round)
+            var rightBrow = Path()
+            rightBrow.addArc(
+                center: CGPoint(x: cx + eyeSpacing, y: eyeY - eyeSize * 0.3),
+                radius: eyeSize * 0.45,
+                startAngle: .degrees(200),
+                endAngle: .degrees(340),
+                clockwise: false
+            )
+            context.stroke(rightBrow, with: .color(dark), style: browStyle)
         }
     }
 
     private func drawMouth(context: GraphicsContext, cx: CGFloat, w: CGFloat, h: CGFloat) {
         let mouthY = h * 0.67
         let strokeStyle = StrokeStyle(lineWidth: w * 0.018, lineCap: .round)
+        let dark = Color(hex: "2C2C2E")
 
         switch state {
-        case .neutral:
+        case .neutral, .listening:
             // Small "w" mouth
             var mouth = Path()
             mouth.move(to: CGPoint(x: cx - w * 0.06, y: mouthY))
@@ -195,14 +282,14 @@ private struct ShibaShape: View {
                 to: CGPoint(x: cx + w * 0.06, y: mouthY),
                 control: CGPoint(x: cx + w * 0.03, y: mouthY + h * 0.03)
             )
-            context.stroke(mouth, with: .color(Color(hex: "2C2C2E")), style: strokeStyle)
+            context.stroke(mouth, with: .color(dark), style: strokeStyle)
 
         case .sideeye:
             // Flat line, slightly disapproving
             var mouth = Path()
             mouth.move(to: CGPoint(x: cx - w * 0.06, y: mouthY))
             mouth.addLine(to: CGPoint(x: cx + w * 0.06, y: mouthY - h * 0.005))
-            context.stroke(mouth, with: .color(Color(hex: "2C2C2E")), style: strokeStyle)
+            context.stroke(mouth, with: .color(dark), style: strokeStyle)
 
         case .proud:
             // Big smile
@@ -214,7 +301,35 @@ private struct ShibaShape: View {
                 endAngle: .degrees(170),
                 clockwise: false
             )
-            context.stroke(mouth, with: .color(Color(hex: "2C2C2E")), style: strokeStyle)
+            context.stroke(mouth, with: .color(dark), style: strokeStyle)
+
+        case .thinking:
+            // Small "hmm" — offset circle mouth
+            var mouth = Path()
+            mouth.addEllipse(in: CGRect(x: cx - w * 0.02, y: mouthY - h * 0.005, width: w * 0.04, height: h * 0.025))
+            context.fill(mouth, with: .color(dark))
+
+        case .concerned:
+            // Slight downward curve
+            var mouth = Path()
+            mouth.addArc(
+                center: CGPoint(x: cx, y: mouthY + h * 0.03),
+                radius: w * 0.05,
+                startAngle: .degrees(200),
+                endAngle: .degrees(340),
+                clockwise: false
+            )
+            context.stroke(mouth, with: .color(dark), style: strokeStyle)
+
+        case .amused:
+            // Diagonal smirk — asymmetric smile
+            var mouth = Path()
+            mouth.move(to: CGPoint(x: cx - w * 0.04, y: mouthY + h * 0.005))
+            mouth.addQuadCurve(
+                to: CGPoint(x: cx + w * 0.06, y: mouthY - h * 0.015),
+                control: CGPoint(x: cx + w * 0.02, y: mouthY + h * 0.025)
+            )
+            context.stroke(mouth, with: .color(dark), style: strokeStyle)
         }
     }
 }
@@ -222,21 +337,28 @@ private struct ShibaShape: View {
 // MARK: - Preview
 
 #Preview("Mascot States") {
-    HStack(spacing: 32) {
-        VStack {
-            RawDogMascot(state: .neutral)
-            Text("Neutral").font(.caption)
+    ScrollView(.horizontal) {
+        HStack(spacing: 24) {
+            ForEach(
+                [
+                    ("Neutral", MascotState.neutral),
+                    ("Side-eye", MascotState.sideeye),
+                    ("Proud", MascotState.proud),
+                    ("Listening", MascotState.listening),
+                    ("Thinking", MascotState.thinking),
+                    ("Concerned", MascotState.concerned),
+                    ("Amused", MascotState.amused),
+                ],
+                id: \.0
+            ) { name, state in
+                VStack {
+                    RawDogMascot(state: state, size: 90)
+                    Text(name).font(.caption)
+                }
+            }
         }
-        VStack {
-            RawDogMascot(state: .sideeye)
-            Text("Side-eye").font(.caption)
-        }
-        VStack {
-            RawDogMascot(state: .proud)
-            Text("Proud").font(.caption)
-        }
+        .padding()
     }
-    .padding()
     .background(Color.black)
     .foregroundStyle(.white)
 }

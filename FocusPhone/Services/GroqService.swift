@@ -243,3 +243,139 @@ extension GroqService {
         return try await call(system: system, user: question, maxTokens: 150)
     }
 }
+
+// MARK: - Calendar Builder
+
+extension GroqService {
+
+    struct CalendarBuilderInput {
+        let goals: [String]
+        let commitments: [String]
+        let sleepSchedule: SleepSchedule?
+        let strictnessLevel: String
+    }
+
+    func generateWeeklySchedule(input: CalendarBuilderInput) async throws -> [CalendarBlock] {
+        let memory = UserMemoryStore.shared.memory
+
+        let sleepContext: String
+        if let sleep = input.sleepSchedule {
+            sleepContext = """
+            Sleep schedule: bed at \(sleep.bedtime.formatted), wake at \(sleep.wakeTime.formatted)
+            Morning no-phone: \(sleep.morningNoPhoneMinutes) minutes
+            Evening wind-down: \(sleep.nightNoPhoneMinutes) minutes before bed
+            """
+        } else {
+            sleepContext = "No sleep schedule set."
+        }
+
+        let system = """
+        You are RawDog's schedule architect. Build a realistic weekly schedule.
+
+        \(memory.toContextString())
+
+        Rules:
+        - Block distraction apps during commitment windows (type: commitment, restrictionLevel: locked)
+        - Schedule 2-3 free time blocks per day, 30-60 min each (type: freeTime, restrictionLevel: limited)
+        - Free time: social apps have hourly limits, browser filters always active
+        - Include morning routine block after wake time (type: morning, restrictionLevel: locked)
+        - Include wind-down block before bed (type: windDown, restrictionLevel: locked)
+        - Include sleep block (type: sleep, restrictionLevel: locked)
+        - Be realistic — not a perfect productivity robot schedule
+        - Include buffer time between activities
+        - Working hours (9-17) should be protected if they have a job
+        - Weekends can be slightly more relaxed
+
+        \(sleepContext)
+
+        Also generate sleep-related fields:
+        - wakeTime: "HH:MM"
+        - sleepTime: "HH:MM"
+        - morningNoPhoneMinutes: int (phone-free after wake)
+        - nightNoPhoneMinutes: int (phone-free before sleep)
+
+        Return ONLY valid JSON:
+        {
+          "wakeTime": "06:00",
+          "sleepTime": "22:30",
+          "morningNoPhoneMinutes": 30,
+          "nightNoPhoneMinutes": 30,
+          "blocks": [
+            {
+              "type": "commitment|freeTime|sleep|morning|windDown",
+              "title": "string",
+              "startTime": "HH:MM",
+              "days": ["monday","tuesday"],
+              "restrictionLevel": "locked|limited|free",
+              "notes": "optional string"
+            }
+          ]
+        }
+        """
+
+        let userPrompt = """
+        Goals: \(input.goals.joined(separator: ", "))
+        Commitments: \(input.commitments.joined(separator: ", "))
+        Strictness: \(input.strictnessLevel)
+        """
+
+        let raw = try await call(system: system, user: userPrompt, maxTokens: 2000)
+        let jsonString = extractJSON(from: raw)
+
+        guard let data = jsonString.data(using: .utf8) else {
+            throw GroqError.parseError
+        }
+
+        let result = try JSONDecoder().decode(CalendarBuilderResult.self, from: data)
+
+        return result.blocks.map { block in
+            CalendarBlock(
+                type: CalendarBlock.BlockType(rawValue: block.type) ?? .existing,
+                title: block.title,
+                startTime: block.startTime,
+                days: block.days,
+                restrictionLevel: CalendarBlock.RestrictionLevel(rawValue: block.restrictionLevel) ?? .limited,
+                notes: block.notes
+            )
+        }
+    }
+
+    func generateDailySummary(completedCount: Int, totalCount: Int, streak: Int) async throws -> String {
+        let memory = UserMemoryStore.shared.memory
+
+        let system = """
+        You are RawDog. Generate a bedtime summary notification.
+        One line. Honest. No fluff. Include commitment stats and streak.
+        End with bed countdown. Max 2 sentences.
+
+        \(memory.toContextString())
+        """
+
+        let prompt = """
+        Today: \(completedCount)/\(totalCount) commitments completed.
+        Current streak: \(streak) days.
+        Generate the wind-down notification.
+        """
+
+        return try await call(system: system, user: prompt, maxTokens: 80)
+    }
+}
+
+// MARK: - Calendar Builder DTO
+
+private struct CalendarBuilderResult: Decodable {
+    let wakeTime: String?
+    let sleepTime: String?
+    let morningNoPhoneMinutes: Int?
+    let nightNoPhoneMinutes: Int?
+    let blocks: [CalendarBlockDTO]
+}
+
+private struct CalendarBlockDTO: Decodable {
+    let type: String
+    let title: String
+    let startTime: String
+    let days: [String]
+    let restrictionLevel: String
+    let notes: String?
+}

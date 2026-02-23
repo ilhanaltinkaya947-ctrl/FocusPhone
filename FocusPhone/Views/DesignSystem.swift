@@ -154,4 +154,47 @@ extension RawDog {
                 .background(color.opacity(0.15), in: Capsule())
         }
     }
+
+    /// Card with subtle accent border glow
+    struct GlowCard<Content: View>: View {
+        var accentColor: Color = Colors.accent
+        @ViewBuilder let content: () -> Content
+
+        var body: some View {
+            VStack(alignment: .leading, spacing: Spacing.sm) {
+                content()
+            }
+            .padding(Spacing.md)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Colors.surface, in: RoundedRectangle(cornerRadius: Radius.card))
+            .overlay(
+                RoundedRectangle(cornerRadius: Radius.card)
+                    .strokeBorder(accentColor.opacity(0.12), lineWidth: 1)
+            )
+        }
+    }
+}
+
+// MARK: - Tab Bar Appearance
+
+extension RawDog {
+    static func configureTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+        appearance.backgroundColor = UIColor(Colors.surface).withAlphaComponent(0.85)
+        appearance.backgroundEffect = UIBlurEffect(style: .systemMaterialDark)
+
+        let itemAppearance = UITabBarItemAppearance()
+        itemAppearance.normal.iconColor = UIColor(Colors.textSecondary)
+        itemAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(Colors.textSecondary)]
+        itemAppearance.selected.iconColor = UIColor(Colors.accent)
+        itemAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(Colors.accent)]
+
+        appearance.stackedLayoutAppearance = itemAppearance
+        appearance.inlineLayoutAppearance = itemAppearance
+        appearance.compactInlineLayoutAppearance = itemAppearance
+
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
+    }
 }

@@ -121,13 +121,10 @@
 		6CB6DE592EF470BFACDD5616 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13194DF1950A1CFDFCF126E0 /* NotificationService.swift */; };
 		7B21E0C80CFFE01C78FF6B98 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13194DF1950A1CFDFCF126E0 /* NotificationService.swift */; };
 		D1C9DEFB5A7EC7136BD77489 /* ExtensionRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84C37407FB65FDD18B57622 /* ExtensionRequestView.swift */; };
-		8849BA549909A865AF2B647E /* ControlledBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E33ECA25F59D3F4878964B5 /* ControlledBrowserView.swift */; };
-		2F5F8A259D9194FE79A4305F /* ControlledWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6F2AB5EE781A85B2DFF3D5 /* ControlledWebView.swift */; };
 		CA79E6D1DA17FEA587BA241A /* ConversationalOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF65B5CE60EB194BB6A36D5 /* ConversationalOnboardingView.swift */; };
 		2554714AAD1F2469750A4917 /* ProfileReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A5F41698CB446A87645BDD /* ProfileReviewView.swift */; };
 		FCA0C67FA356C235DBCE41CB /* RestrictionDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5832B545D663AB510B32E85 /* RestrictionDashboardView.swift */; };
 		525234AEF4659900A7E5582A /* ExtensionRequestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBECC0A33BDD970F608F5A6 /* ExtensionRequestViewModel.swift */; };
-		9CAFC23DB42C5C2682134CFC /* ControlledBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC2C59B61B454C03CB1FC96 /* ControlledBrowserViewModel.swift */; };
 		72B49DCFF483691732D53DBF /* OnboardingChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D294AE7F65B81A45EF8A7412 /* OnboardingChatViewModel.swift */; };
 		8C67508A8C393A70E0800E16 /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3AB2B4B08EA97BD9D909D8 /* SpeechService.swift */; };
 		BB00000000000002A0000001 /* CommitmentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000001 /* CommitmentModels.swift */; };
@@ -145,6 +142,36 @@
 		CC00000000000002A0000003 /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC00000000000001A0000003 /* GroqService.swift */; };
 		DD00000000000002A0000001 /* HabitsDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD00000000000001A0000001 /* HabitsDashboardView.swift */; };
 		DD00000000000002A0000002 /* NotificationCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD00000000000001A0000002 /* NotificationCopy.swift */; };
+		EE00000000000002A0000001 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00000000000001A0000001 /* ScheduleView.swift */; };
+		FF00000000000002A0000001 /* ResponsiveGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000001 /* ResponsiveGeometry.swift */; };
+		FF00000000000002A0000002 /* RawDogLiveAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000002 /* RawDogLiveAnimations.swift */; };
+		FF00000000000002A0000003 /* SuggestionChipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000003 /* SuggestionChipsView.swift */; };
+		FF00000000000002A0000004 /* VoiceChatOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000004 /* VoiceChatOverlay.swift */; };
+		FF00000000000002A0000005 /* DataShockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000005 /* DataShockView.swift */; };
+		FF00000000000002A0000006 /* GoalSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000006 /* GoalSelectionView.swift */; };
+		FF00000000000002A0000007 /* CommitmentPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000007 /* CommitmentPickerView.swift */; };
+		FF00000000000002A0000008 /* StrictnessPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000008 /* StrictnessPickerView.swift */; };
+		AB00000000000002A0000001 /* AlarmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000001 /* AlarmService.swift */; };
+		AB00000000000002A0000002 /* SleepScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000002 /* SleepScheduleService.swift */; };
+		AB00000000000002A0000003 /* HourlyTimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000003 /* HourlyTimerService.swift */; };
+		AB00000000000002A0000004 /* BrowserContentFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000004 /* BrowserContentFilter.swift */; };
+		AB00000000000002A0000005 /* PrebuiltProfiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000005 /* PrebuiltProfiles.swift */; };
+		AB00000000000002A0000006 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000006 /* CalendarService.swift */; };
+		AB00000000000002A0000007 /* ProfileSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000007 /* ProfileSelectionView.swift */; };
+		AB00000000000002A0000008 /* SleepSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000008 /* SleepSetupView.swift */; };
+		AC00000000000002A0000001 /* SleepModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00000000000001A0000001 /* SleepModels.swift */; };
+		AC00000000000002A0000002 /* SleepModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00000000000001A0000001 /* SleepModels.swift */; };
+		AC00000000000002A0000003 /* SleepModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00000000000001A0000001 /* SleepModels.swift */; };
+		AC00000000000002A0000004 /* SleepModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00000000000001A0000001 /* SleepModels.swift */; };
+		AC00000000000002A0000005 /* SleepModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00000000000001A0000001 /* SleepModels.swift */; };
+		AD00000000000002A0000001 /* RetentionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD00000000000001A0000001 /* RetentionService.swift */; };
+		AE00000000000002A0000001 /* StreakService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00000000000001A0000001 /* StreakService.swift */; };
+		AE00000000000002A0000002 /* HabitStackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00000000000001A0000002 /* HabitStackingService.swift */; };
+		AE00000000000002A0000003 /* ComebackMechanicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00000000000001A0000003 /* ComebackMechanicService.swift */; };
+		AE00000000000002A0000004 /* NotificationIntelligenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00000000000001A0000004 /* NotificationIntelligenceService.swift */; };
+		AE00000000000002A0000005 /* WeeklyReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00000000000001A0000005 /* WeeklyReceiptView.swift */; };
+		AE00000000000002A0000006 /* MonthlyReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00000000000001A0000006 /* MonthlyReportView.swift */; };
+		AE00000000000002A0000007 /* MentorChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00000000000001A0000007 /* MentorChatView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -249,13 +276,10 @@
 		53ED6F6C17BA684C9DD59763 /* GeminiPrompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiPrompts.swift; sourceTree = "<group>"; };
 		13194DF1950A1CFDFCF126E0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A84C37407FB65FDD18B57622 /* ExtensionRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionRequestView.swift; sourceTree = "<group>"; };
-		9E33ECA25F59D3F4878964B5 /* ControlledBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlledBrowserView.swift; sourceTree = "<group>"; };
-		3D6F2AB5EE781A85B2DFF3D5 /* ControlledWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlledWebView.swift; sourceTree = "<group>"; };
 		5AF65B5CE60EB194BB6A36D5 /* ConversationalOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationalOnboardingView.swift; sourceTree = "<group>"; };
 		E2A5F41698CB446A87645BDD /* ProfileReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileReviewView.swift; sourceTree = "<group>"; };
 		F5832B545D663AB510B32E85 /* RestrictionDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionDashboardView.swift; sourceTree = "<group>"; };
 		2FBECC0A33BDD970F608F5A6 /* ExtensionRequestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionRequestViewModel.swift; sourceTree = "<group>"; };
-		AEC2C59B61B454C03CB1FC96 /* ControlledBrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlledBrowserViewModel.swift; sourceTree = "<group>"; };
 		D294AE7F65B81A45EF8A7412 /* OnboardingChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingChatViewModel.swift; sourceTree = "<group>"; };
 		3F3AB2B4B08EA97BD9D909D8 /* SpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechService.swift; sourceTree = "<group>"; };
 		BB00000000000001A0000001 /* CommitmentModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitmentModels.swift; sourceTree = "<group>"; };
@@ -273,6 +297,32 @@
 		CC00000000000001A0000003 /* GroqService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroqService.swift; sourceTree = "<group>"; };
 		DD00000000000001A0000001 /* HabitsDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsDashboardView.swift; sourceTree = "<group>"; };
 		DD00000000000001A0000002 /* NotificationCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCopy.swift; sourceTree = "<group>"; };
+		EE00000000000001A0000001 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
+		FF00000000000001A0000001 /* ResponsiveGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveGeometry.swift; sourceTree = "<group>"; };
+		FF00000000000001A0000002 /* RawDogLiveAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawDogLiveAnimations.swift; sourceTree = "<group>"; };
+		FF00000000000001A0000003 /* SuggestionChipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionChipsView.swift; sourceTree = "<group>"; };
+		FF00000000000001A0000004 /* VoiceChatOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceChatOverlay.swift; sourceTree = "<group>"; };
+		FF00000000000001A0000005 /* DataShockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataShockView.swift; sourceTree = "<group>"; };
+		FF00000000000001A0000006 /* GoalSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSelectionView.swift; sourceTree = "<group>"; };
+		FF00000000000001A0000007 /* CommitmentPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitmentPickerView.swift; sourceTree = "<group>"; };
+		FF00000000000001A0000008 /* StrictnessPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrictnessPickerView.swift; sourceTree = "<group>"; };
+		AB00000000000001A0000001 /* AlarmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmService.swift; sourceTree = "<group>"; };
+		AB00000000000001A0000002 /* SleepScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepScheduleService.swift; sourceTree = "<group>"; };
+		AB00000000000001A0000003 /* HourlyTimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyTimerService.swift; sourceTree = "<group>"; };
+		AB00000000000001A0000004 /* BrowserContentFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserContentFilter.swift; sourceTree = "<group>"; };
+		AB00000000000001A0000005 /* PrebuiltProfiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrebuiltProfiles.swift; sourceTree = "<group>"; };
+		AB00000000000001A0000006 /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
+		AB00000000000001A0000007 /* ProfileSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSelectionView.swift; sourceTree = "<group>"; };
+		AB00000000000001A0000008 /* SleepSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepSetupView.swift; sourceTree = "<group>"; };
+		AC00000000000001A0000001 /* SleepModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepModels.swift; sourceTree = "<group>"; };
+		AD00000000000001A0000001 /* RetentionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionService.swift; sourceTree = "<group>"; };
+		AE00000000000001A0000001 /* StreakService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakService.swift; sourceTree = "<group>"; };
+		AE00000000000001A0000002 /* HabitStackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitStackingService.swift; sourceTree = "<group>"; };
+		AE00000000000001A0000003 /* ComebackMechanicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComebackMechanicService.swift; sourceTree = "<group>"; };
+		AE00000000000001A0000004 /* NotificationIntelligenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationIntelligenceService.swift; sourceTree = "<group>"; };
+		AE00000000000001A0000005 /* WeeklyReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReceiptView.swift; sourceTree = "<group>"; };
+		AE00000000000001A0000006 /* MonthlyReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyReportView.swift; sourceTree = "<group>"; };
+		AE00000000000001A0000007 /* MentorChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MentorChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -285,6 +335,7 @@
 				6FCF8B39415404120F6BC359 /* RestrictionProfile.swift */,
 				C3915C7D20AF27D07E5AA3D5 /* RestrictionPreset.swift */,
 				0491D04361741678F11CA1CB /* ExtensionRequest.swift */,
+				AC00000000000001A0000001 /* SleepModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -340,8 +391,6 @@
 				A1B2C3D4E5F6A7B8C9D0E1F2 /* DesignSystem.swift */,
 				B3D4E5F6A7B8C9D0E1F2A3B4 /* RawDogMascot.swift */,
 				A84C37407FB65FDD18B57622 /* ExtensionRequestView.swift */,
-				9E33ECA25F59D3F4878964B5 /* ControlledBrowserView.swift */,
-				3D6F2AB5EE781A85B2DFF3D5 /* ControlledWebView.swift */,
 				5AF65B5CE60EB194BB6A36D5 /* ConversationalOnboardingView.swift */,
 				E2A5F41698CB446A87645BDD /* ProfileReviewView.swift */,
 				F5832B545D663AB510B32E85 /* RestrictionDashboardView.swift */,
@@ -351,6 +400,20 @@
 				BB00000000000001A0000009 /* CameraRepresentable.swift */,
 				BB00000000000001A000000A /* CommitmentDetailView.swift */,
 				DD00000000000001A0000001 /* HabitsDashboardView.swift */,
+				EE00000000000001A0000001 /* ScheduleView.swift */,
+				FF00000000000001A0000001 /* ResponsiveGeometry.swift */,
+				FF00000000000001A0000002 /* RawDogLiveAnimations.swift */,
+				FF00000000000001A0000003 /* SuggestionChipsView.swift */,
+				FF00000000000001A0000004 /* VoiceChatOverlay.swift */,
+				FF00000000000001A0000005 /* DataShockView.swift */,
+				FF00000000000001A0000006 /* GoalSelectionView.swift */,
+				FF00000000000001A0000007 /* CommitmentPickerView.swift */,
+				FF00000000000001A0000008 /* StrictnessPickerView.swift */,
+				AB00000000000001A0000007 /* ProfileSelectionView.swift */,
+				AB00000000000001A0000008 /* SleepSetupView.swift */,
+				AE00000000000001A0000005 /* WeeklyReceiptView.swift */,
+				AE00000000000001A0000006 /* MonthlyReportView.swift */,
+				AE00000000000001A0000007 /* MentorChatView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -373,7 +436,6 @@
 				FF71488AB8CBE9EAA91406A7 /* AuthViewModel.swift */,
 				B1EA15BFADFA42D3D6A31F2E /* SettingsViewModel.swift */,
 				2FBECC0A33BDD970F608F5A6 /* ExtensionRequestViewModel.swift */,
-				AEC2C59B61B454C03CB1FC96 /* ControlledBrowserViewModel.swift */,
 				D294AE7F65B81A45EF8A7412 /* OnboardingChatViewModel.swift */,
 				BB00000000000001A0000005 /* CommitmentViewModel.swift */,
 			);
@@ -475,6 +537,17 @@
 				BB00000000000001A0000004 /* AIVerificationService.swift */,
 				CC00000000000001A0000003 /* GroqService.swift */,
 				DD00000000000001A0000002 /* NotificationCopy.swift */,
+				AB00000000000001A0000001 /* AlarmService.swift */,
+				AB00000000000001A0000002 /* SleepScheduleService.swift */,
+				AB00000000000001A0000003 /* HourlyTimerService.swift */,
+				AB00000000000001A0000004 /* BrowserContentFilter.swift */,
+				AB00000000000001A0000005 /* PrebuiltProfiles.swift */,
+				AB00000000000001A0000006 /* CalendarService.swift */,
+				AD00000000000001A0000001 /* RetentionService.swift */,
+				AE00000000000001A0000001 /* StreakService.swift */,
+				AE00000000000001A0000002 /* HabitStackingService.swift */,
+				AE00000000000001A0000003 /* ComebackMechanicService.swift */,
+				AE00000000000001A0000004 /* NotificationIntelligenceService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -695,6 +768,7 @@
 				3D1B43CBCE9EADAF7A14D689 /* TimedWindowService.swift in Sources */,
 				D6E6669DF91AF669231C8D4F /* GeminiPrompts.swift in Sources */,
 				DC2850B71A96E0C3E0ECEF23 /* NotificationService.swift in Sources */,
+				AC00000000000002A0000001 /* SleepModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,6 +795,7 @@
 				63EE790E99322DE0C4FC2DCC /* TimedWindowService.swift in Sources */,
 				41A5EAE25C4781A0F3CEF201 /* GeminiPrompts.swift in Sources */,
 				5E4FD5AE407230AEC80C3E14 /* NotificationService.swift in Sources */,
+				AC00000000000002A0000002 /* SleepModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -747,6 +822,7 @@
 				993B286A59A3EAC3D49C1ED3 /* TimedWindowService.swift in Sources */,
 				C4BC58BBA6C8FFBB46BD8FD3 /* GeminiPrompts.swift in Sources */,
 				6CB6DE592EF470BFACDD5616 /* NotificationService.swift in Sources */,
+				AC00000000000002A0000003 /* SleepModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -773,6 +849,7 @@
 				E93D2304279F54034CD7F584 /* TimedWindowService.swift in Sources */,
 				9043918E5CCB640F16C9D1B5 /* GeminiPrompts.swift in Sources */,
 				7B21E0C80CFFE01C78FF6B98 /* NotificationService.swift in Sources */,
+				AC00000000000002A0000004 /* SleepModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -807,13 +884,10 @@
 				3706C5DEE5ED7F70A7F94635 /* GeminiPrompts.swift in Sources */,
 				A43D6A265E7EE4D712FD66AA /* NotificationService.swift in Sources */,
 				D1C9DEFB5A7EC7136BD77489 /* ExtensionRequestView.swift in Sources */,
-				8849BA549909A865AF2B647E /* ControlledBrowserView.swift in Sources */,
-				2F5F8A259D9194FE79A4305F /* ControlledWebView.swift in Sources */,
 				CA79E6D1DA17FEA587BA241A /* ConversationalOnboardingView.swift in Sources */,
 				2554714AAD1F2469750A4917 /* ProfileReviewView.swift in Sources */,
 				FCA0C67FA356C235DBCE41CB /* RestrictionDashboardView.swift in Sources */,
 				525234AEF4659900A7E5582A /* ExtensionRequestViewModel.swift in Sources */,
-				9CAFC23DB42C5C2682134CFC /* ControlledBrowserViewModel.swift in Sources */,
 				72B49DCFF483691732D53DBF /* OnboardingChatViewModel.swift in Sources */,
 				8C67508A8C393A70E0800E16 /* SpeechService.swift in Sources */,
 				BB00000000000002A0000001 /* CommitmentModels.swift in Sources */,
@@ -831,6 +905,32 @@
 				CC00000000000002A0000003 /* GroqService.swift in Sources */,
 				DD00000000000002A0000001 /* HabitsDashboardView.swift in Sources */,
 				DD00000000000002A0000002 /* NotificationCopy.swift in Sources */,
+				EE00000000000002A0000001 /* ScheduleView.swift in Sources */,
+				FF00000000000002A0000001 /* ResponsiveGeometry.swift in Sources */,
+				FF00000000000002A0000002 /* RawDogLiveAnimations.swift in Sources */,
+				FF00000000000002A0000003 /* SuggestionChipsView.swift in Sources */,
+				FF00000000000002A0000004 /* VoiceChatOverlay.swift in Sources */,
+				FF00000000000002A0000005 /* DataShockView.swift in Sources */,
+				FF00000000000002A0000006 /* GoalSelectionView.swift in Sources */,
+				FF00000000000002A0000007 /* CommitmentPickerView.swift in Sources */,
+				FF00000000000002A0000008 /* StrictnessPickerView.swift in Sources */,
+				AB00000000000002A0000001 /* AlarmService.swift in Sources */,
+				AB00000000000002A0000002 /* SleepScheduleService.swift in Sources */,
+				AB00000000000002A0000003 /* HourlyTimerService.swift in Sources */,
+				AB00000000000002A0000004 /* BrowserContentFilter.swift in Sources */,
+				AB00000000000002A0000005 /* PrebuiltProfiles.swift in Sources */,
+				AB00000000000002A0000006 /* CalendarService.swift in Sources */,
+				AB00000000000002A0000007 /* ProfileSelectionView.swift in Sources */,
+				AB00000000000002A0000008 /* SleepSetupView.swift in Sources */,
+				AC00000000000002A0000005 /* SleepModels.swift in Sources */,
+				AD00000000000002A0000001 /* RetentionService.swift in Sources */,
+				AE00000000000002A0000001 /* StreakService.swift in Sources */,
+				AE00000000000002A0000002 /* HabitStackingService.swift in Sources */,
+				AE00000000000002A0000003 /* ComebackMechanicService.swift in Sources */,
+				AE00000000000002A0000004 /* NotificationIntelligenceService.swift in Sources */,
+				AE00000000000002A0000005 /* WeeklyReceiptView.swift in Sources */,
+				AE00000000000002A0000006 /* MonthlyReportView.swift in Sources */,
+				AE00000000000002A0000007 /* MentorChatView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

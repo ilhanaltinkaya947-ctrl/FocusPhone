@@ -5,35 +5,29 @@ struct MainDashboardView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            RestrictionDashboardView()
+            ScheduleView()
                 .tabItem {
-                    Label("RawDog", systemImage: "shield.fill")
+                    Label("RawDog", systemImage: "house.fill")
                 }
                 .tag(0)
-
-            ControlledBrowserView()
-                .tabItem {
-                    Label("Browser", systemImage: "globe")
-                }
-                .tag(1)
 
             CommitmentListView()
                 .tabItem {
                     Label("Commit", systemImage: "checkmark.circle.fill")
                 }
-                .tag(2)
+                .tag(1)
 
             HabitsDashboardView()
                 .tabItem {
                     Label("Receipts", systemImage: "chart.bar.fill")
                 }
-                .tag(3)
+                .tag(2)
 
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape.fill")
                 }
-                .tag(4)
+                .tag(3)
         }
         .tint(RawDog.Colors.accent)
         .preferredColorScheme(.dark)

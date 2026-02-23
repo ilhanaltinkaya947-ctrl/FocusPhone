@@ -104,6 +104,20 @@ final class AppState {
         }
     }
 
+    // MARK: - Sleep Schedule
+
+    var sleepSchedule: SleepSchedule? {
+        get { load(forKey: Constants.sleepScheduleKey) }
+        set { save(newValue, forKey: Constants.sleepScheduleKey) }
+    }
+
+    // MARK: - Active Enhanced Profiles
+
+    var activeEnhancedProfileIDs: [String] {
+        get { load(forKey: Constants.activeEnhancedProfilesKey) ?? [] }
+        set { save(newValue, forKey: Constants.activeEnhancedProfilesKey) }
+    }
+
     // MARK: - Content Filter Presets
 
     var enabledContentFilterPresets: Set<String> {

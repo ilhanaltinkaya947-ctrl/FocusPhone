@@ -63,13 +63,13 @@ struct CommitmentListView: View {
     private var mascotMessage: some View {
         Group {
             switch viewModel.mascotState {
-            case .proud:
+            case .proud, .amused:
                 Text("All verified today. Good boy.")
                     .foregroundStyle(RawDog.Colors.approved)
-            case .sideeye:
+            case .sideeye, .concerned:
                 Text("You missed something today...")
                     .foregroundStyle(RawDog.Colors.windowClosed)
-            case .neutral:
+            case .neutral, .listening, .thinking:
                 Text("What are you committing to?")
                     .foregroundStyle(RawDog.Colors.textSecondary)
             }
@@ -96,7 +96,9 @@ struct CommitmentListView: View {
     }
 
     private func commitmentRow(_ commitment: Commitment) -> some View {
-        RawDog.Card {
+        let isVerified = viewModel.todayStatus(for: commitment) == .verified
+
+        return RawDog.GlowCard(accentColor: isVerified ? RawDog.Colors.approved : RawDog.Colors.accent) {
             HStack(spacing: RawDog.Spacing.md) {
                 // Emoji
                 Text(commitment.emoji)
@@ -109,9 +111,18 @@ struct CommitmentListView: View {
                         .foregroundStyle(RawDog.Colors.textPrimary)
                         .lineLimit(1)
 
-                    Text(timeString(commitment))
-                        .font(RawDog.Typography.caption)
-                        .foregroundStyle(RawDog.Colors.textSecondary)
+                    HStack(spacing: 6) {
+                        Text(timeString(commitment))
+                            .font(RawDog.Typography.caption)
+                            .foregroundStyle(RawDog.Colors.textSecondary)
+
+                        let streak = viewModel.statsFor(commitment).currentStreak
+                        if streak > 0 {
+                            Text("\(streak)d")
+                                .font(RawDog.Typography.caption2)
+                                .foregroundStyle(RawDog.Colors.accent)
+                        }
+                    }
                 }
 
                 Spacer()
