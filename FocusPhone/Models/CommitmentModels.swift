@@ -63,6 +63,7 @@ enum CommitmentCategory: String, Codable, CaseIterable, Identifiable {
     case study
     case work
     case outdoor
+    case meditation
     case custom
 
     var id: String { rawValue }
@@ -73,6 +74,7 @@ enum CommitmentCategory: String, Codable, CaseIterable, Identifiable {
         case .study: return "📚"
         case .work: return "💻"
         case .outdoor: return "🌿"
+        case .meditation: return "🧘"
         case .custom: return "🎯"
         }
     }
@@ -83,6 +85,7 @@ enum CommitmentCategory: String, Codable, CaseIterable, Identifiable {
         case .study: return "Study"
         case .work: return "Deep Work"
         case .outdoor: return "Outdoor"
+        case .meditation: return "Meditation"
         case .custom: return "Custom"
         }
     }

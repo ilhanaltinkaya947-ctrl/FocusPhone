@@ -46,6 +46,12 @@ actor AIVerificationService {
             "beach", "river", "lake", "forest", "garden",
             "sidewalk", "trail", "path", "road", "landscape",
             "flower", "plant", "hill", "field", "ocean"
+        ],
+        .meditation: [
+            "candle", "mat", "yoga", "meditation", "cushion",
+            "incense", "calm", "sitting", "floor", "rug",
+            "pillow", "blanket", "peaceful", "room", "quiet",
+            "zen", "temple", "mindfulness", "breathing", "relaxation"
         ]
     ]
 

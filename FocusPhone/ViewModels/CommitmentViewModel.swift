@@ -169,6 +169,14 @@ class CommitmentViewModel: ObservableObject {
         CommitmentStore.saveLog(log)
 
         CommitmentNotificationService.cancelFailureFollowUp(for: commitment.id)
+
+        // Streak milestone notifications (7, 14, 21, 30, 50, 100...)
+        let streak = CommitmentStore.stats(for: commitment.id).currentStreak
+        let milestones = [7, 14, 21, 30, 50, 75, 100, 150, 200, 365]
+        if milestones.contains(streak) {
+            CommitmentNotificationService.scheduleStreakMilestone(for: commitment, streak: streak)
+        }
+
         grantFreedomWindow()
         loadCommitments()
     }

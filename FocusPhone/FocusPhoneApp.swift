@@ -48,6 +48,9 @@ struct FocusPhoneApp: App {
     private func setupCommitmentNotifications() {
         CommitmentNotificationService.registerCategories()
         CommitmentNotificationService.rescheduleAll()
+        CommitmentNotificationService.scheduleDailySummary()
+        CommitmentNotificationService.scheduleStreakAtRiskNotifications()
+        CommitmentNotificationService.scheduleWeeklyMondayMessage()
     }
 }
 

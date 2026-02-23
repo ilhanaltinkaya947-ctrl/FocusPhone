@@ -17,8 +17,8 @@ enum NotificationService {
         guard warningTime > 0 else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = "Window Closing Soon"
-        content.body = "\(appName) window closes in 1 minute."
+        content.title = "RawDog"
+        content.body = "\(appName) window closes in 1 min. Use it or lose it. ⏰🐕"
         content.sound = .default
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: warningTime, repeats: false)
@@ -36,8 +36,8 @@ enum NotificationService {
         guard interval > 0 else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = "Window Open"
-        content.body = "\(appName) is now available for a limited time."
+        content.title = "RawDog"
+        content.body = "\(appName) is unlocked. Clock's ticking. ⏰🐕"
         content.sound = .default
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
@@ -52,8 +52,8 @@ enum NotificationService {
     /// Notify when daily extension cap is reached.
     static func notifyDailyCapReached() {
         let content = UNMutableNotificationContent()
-        content.title = "Daily Cap Reached"
-        content.body = "You've used all your extension time for today. Stay strong."
+        content.title = "RawDog"
+        content.body = "Extension time's up for today. Stay strong. 😤🐕"
         content.sound = .default
 
         let request = UNNotificationRequest(
