@@ -36,7 +36,7 @@ actor AIService {
 
     private let baseURL = URL(string: Constants.aiServiceBaseURL)!
     private let primaryModel = "llama-3.1-8b-instant"
-    private let fallbackModel = "llama-3.1-70b-versatile"
+    private let fallbackModel = "llama-3.3-70b-versatile"
     private let maxRetries = 2
 
     struct Message: Codable {
