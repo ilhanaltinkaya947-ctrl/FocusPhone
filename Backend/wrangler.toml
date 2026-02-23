@@ -4,4 +4,5 @@ compatibility_date = "2024-01-01"
 
 # Secrets (set via `wrangler secret put`):
 #   GEMINI_API_KEY — Google Gemini API key
+#   GROQ_API_KEY   — Groq API key (for /v1/groq journey + mentor)
 #   APP_SECRET     — shared secret the iOS app sends as Bearer token

@@ -140,6 +140,9 @@
 		BB00000000000002A0000008 /* VerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000008 /* VerificationView.swift */; };
 		BB00000000000002A0000009 /* CameraRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A0000009 /* CameraRepresentable.swift */; };
 		BB00000000000002A000000A /* CommitmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB00000000000001A000000A /* CommitmentDetailView.swift */; };
+		CC00000000000002A0000001 /* UserMemory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC00000000000001A0000001 /* UserMemory.swift */; };
+		CC00000000000002A0000002 /* JourneyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC00000000000001A0000002 /* JourneyModels.swift */; };
+		CC00000000000002A0000003 /* GroqService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC00000000000001A0000003 /* GroqService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -263,6 +266,9 @@
 		BB00000000000001A0000008 /* VerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationView.swift; sourceTree = "<group>"; };
 		BB00000000000001A0000009 /* CameraRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRepresentable.swift; sourceTree = "<group>"; };
 		BB00000000000001A000000A /* CommitmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitmentDetailView.swift; sourceTree = "<group>"; };
+		CC00000000000001A0000001 /* UserMemory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMemory.swift; sourceTree = "<group>"; };
+		CC00000000000001A0000002 /* JourneyModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyModels.swift; sourceTree = "<group>"; };
+		CC00000000000001A0000003 /* GroqService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroqService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -408,6 +414,8 @@
 			isa = PBXGroup;
 			children = (
 				BB00000000000001A0000001 /* CommitmentModels.swift */,
+				CC00000000000001A0000001 /* UserMemory.swift */,
+				CC00000000000001A0000002 /* JourneyModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -460,6 +468,7 @@
 				BB00000000000001A0000002 /* CommitmentStore.swift */,
 				BB00000000000001A0000003 /* CommitmentNotificationService.swift */,
 				BB00000000000001A0000004 /* AIVerificationService.swift */,
+				CC00000000000001A0000003 /* GroqService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -811,6 +820,9 @@
 				BB00000000000002A0000008 /* VerificationView.swift in Sources */,
 				BB00000000000002A0000009 /* CameraRepresentable.swift in Sources */,
 				BB00000000000002A000000A /* CommitmentDetailView.swift in Sources */,
+				CC00000000000002A0000001 /* UserMemory.swift in Sources */,
+				CC00000000000002A0000002 /* JourneyModels.swift in Sources */,
+				CC00000000000002A0000003 /* GroqService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
