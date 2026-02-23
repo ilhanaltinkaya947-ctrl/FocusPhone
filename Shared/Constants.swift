@@ -18,10 +18,10 @@ enum Constants {
     static let contentFilterPresetsKey = "contentFilterPresets"
     static let contentBlockerRulesFileName = "contentBlockerRules.json"
 
-    // AI Backend (Cloudflare Worker proxy)
-    static let aiServiceBaseURL = "https://focusphone-api.ilhanaltinkaya947.workers.dev/v1/chat"
-    static let groqServiceBaseURL = "https://focusphone-api.ilhanaltinkaya947.workers.dev/v1/groq"
-static let aiServiceToken = "fp_XXXXXXXX"
+    // AI Backend (Cloudflare Worker proxy → Groq)
+    static let aiServiceBaseURL = "https://focusphone-api.ilhanaltinkaya947.workers.dev"
+    static let groqServiceBaseURL = "https://focusphone-api.ilhanaltinkaya947.workers.dev"
+    static let aiServiceToken = "fp_97e6c19ad4e5aab3bc821074f82c213836121b5d"
 
     static var sharedDefaults: UserDefaults {
         UserDefaults(suiteName: appGroupID) ?? .standard
