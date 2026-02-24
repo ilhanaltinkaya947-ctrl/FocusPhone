@@ -35,7 +35,7 @@
 				<string>rawdog</string>
 			</array>
 			<key>CFBundleURLName</key>
-			<string>com.ilhan.rawdog</string>
+			<string>com.axon.focus-phone</string>
 		</dict>
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>

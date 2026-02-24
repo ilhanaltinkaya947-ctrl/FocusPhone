@@ -1,12 +1,12 @@
 import Foundation
 
 enum Constants {
-    static let appGroupID = "group.com.ilhan.rawdog"
-    static let mainAppBundleID = "com.ilhan.rawdog"
-    static let deviceActivityMonitorBundleID = "com.ilhan.rawdog.dam"
-    static let shieldConfigurationBundleID = "com.ilhan.rawdog.shield"
-    static let contentBlockerBundleID = "com.ilhan.rawdog.contentblocker"
-    static let widgetBundleID = "com.ilhan.rawdog.wgt"
+    static let appGroupID = "group.com.axon.focusphone"
+    static let mainAppBundleID = "com.axon.focus-phone"
+    static let deviceActivityMonitorBundleID = "com.axon.focus-phone.dam"
+    static let shieldConfigurationBundleID = "com.axon.focus-phone.shield"
+    static let contentBlockerBundleID = "com.axon.focus-phone.contentblocker"
+    static let widgetBundleID = "com.axon.focus-phone.wgt"
 
     // UserDefaults keys
     static let onboardingCompletedKey = "onboardingCompleted"

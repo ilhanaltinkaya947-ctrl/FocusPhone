@@ -1,6 +1,6 @@
 name: FocusPhone
 options:
-  bundleIdPrefix: com.ilhan
+  bundleIdPrefix: com.axon
   deploymentTarget:
     iOS: "18.0"
   xcodeVersion: "16.2"
@@ -48,7 +48,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.ilhan.rawdog
+        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone
         PRODUCT_NAME: RawDog
         INFOPLIST_FILE: FocusPhone/Info.plist
         CODE_SIGN_ENTITLEMENTS: FocusPhone/FocusPhone.entitlements
@@ -68,7 +68,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.ilhan.rawdog.dam
+        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.dam
         PRODUCT_NAME: DeviceActivityMonitorExtension
         INFOPLIST_FILE: DeviceActivityMonitorExtension/Info.plist
         CODE_SIGN_ENTITLEMENTS: DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements
@@ -82,7 +82,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.ilhan.rawdog.shield
+        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.shield
         PRODUCT_NAME: ShieldConfigurationExtension
         INFOPLIST_FILE: ShieldConfigurationExtension/Info.plist
         CODE_SIGN_ENTITLEMENTS: ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements
@@ -96,7 +96,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.ilhan.rawdog.contentblocker
+        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.contentblocker
         PRODUCT_NAME: ContentBlockerExtension
         INFOPLIST_FILE: ContentBlockerExtension/Info.plist
         CODE_SIGN_ENTITLEMENTS: ContentBlockerExtension/ContentBlockerExtension.entitlements
@@ -110,7 +110,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.ilhan.rawdog.wgt
+        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.wgt
         PRODUCT_NAME: RawDogWidget
         INFOPLIST_FILE: FocusPhoneWidget/Info.plist
         CODE_SIGN_ENTITLEMENTS: FocusPhoneWidget/FocusPhoneWidget.entitlements

@@ -978,7 +978,7 @@
 				CODE_SIGN_ENTITLEMENTS = ContentBlockerExtension/ContentBlockerExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ContentBlockerExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.contentblocker";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.contentblocker";
 				PRODUCT_NAME = ContentBlockerExtension;
 			};
 			name = Release;
@@ -990,7 +990,7 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhone/FocusPhone.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhone/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone";
 				PRODUCT_NAME = RawDog;
 			};
 			name = Debug;
@@ -1001,7 +1001,7 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhoneWidget/FocusPhoneWidget.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhoneWidget/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.wgt";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.wgt";
 				PRODUCT_NAME = RawDogWidget;
 			};
 			name = Debug;
@@ -1051,7 +1051,7 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhoneWidget/FocusPhoneWidget.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhoneWidget/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.wgt";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.wgt";
 				PRODUCT_NAME = RawDogWidget;
 			};
 			name = Release;
@@ -1062,7 +1062,7 @@
 				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.shield";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.shield";
 				PRODUCT_NAME = ShieldConfigurationExtension;
 			};
 			name = Release;
@@ -1113,7 +1113,7 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhone/FocusPhone.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhone/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone";
 				PRODUCT_NAME = RawDog;
 			};
 			name = Release;
@@ -1124,7 +1124,7 @@
 				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.dam";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.dam";
 				PRODUCT_NAME = DeviceActivityMonitorExtension;
 			};
 			name = Release;
@@ -1135,7 +1135,7 @@
 				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.shield";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.shield";
 				PRODUCT_NAME = ShieldConfigurationExtension;
 			};
 			name = Debug;
@@ -1146,7 +1146,7 @@
 				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.dam";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.dam";
 				PRODUCT_NAME = DeviceActivityMonitorExtension;
 			};
 			name = Debug;
@@ -1157,7 +1157,7 @@
 				CODE_SIGN_ENTITLEMENTS = ContentBlockerExtension/ContentBlockerExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ContentBlockerExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.contentblocker";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.contentblocker";
 				PRODUCT_NAME = ContentBlockerExtension;
 			};
 			name = Debug;
