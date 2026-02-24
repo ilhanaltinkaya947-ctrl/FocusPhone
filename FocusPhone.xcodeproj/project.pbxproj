@@ -53,7 +53,7 @@
 		C64870FA12F415AA0F80C15A /* ShieldConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820532D3B3E41C90DE1782D5 /* ShieldConfigurationExtension.swift */; };
 		D2AE3DAA3EA0FC0295A77D59 /* ContentBlockerRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5128A93B3568851821870CD6 /* ContentBlockerRequestHandler.swift */; };
 		DC8C62856813C10EEF94621C /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D615F496A73FD46E0C3BB7 /* ScheduleService.swift */; };
-		DE9137CED88C4D1F3B874AE0 /* FocusPhoneWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 56B7E1F0F0D9FA5EF4D24CEB /* FocusPhoneWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DE9137CED88C4D1F3B874AE0 /* RawDogWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 56B7E1F0F0D9FA5EF4D24CEB /* RawDogWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E04945AF563533F9D57BCA64 /* TimeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D98D6620172FCA7B736765 /* TimeBlock.swift */; };
 		E0CA4DCEE08E2D67D28050AC /* TimeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D98D6620172FCA7B736765 /* TimeBlock.swift */; };
 		E6866B55EF474F44AD61ACCB /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC5EECC93A9D82CDC2F27BE /* AppState.swift */; };
@@ -183,7 +183,7 @@
 			containerPortal = 8817A21E292F75017FD7A5EC /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 3B87F3B1EE7717621692D815;
-			remoteInfo = FocusPhoneWidget;
+			remoteInfo = RawDogWidget;
 		};
 		74982FE3E86D2C50DFA1035B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -218,7 +218,7 @@
 				21F3326787BF9DAADCC006A1 /* DeviceActivityMonitorExtension.appex in Embed Foundation Extensions */,
 				82E6A99F1AC9F10730CDD00A /* ShieldConfigurationExtension.appex in Embed Foundation Extensions */,
 				891B3ECFA838962FCDA19B62 /* ContentBlockerExtension.appex in Embed Foundation Extensions */,
-				DE9137CED88C4D1F3B874AE0 /* FocusPhoneWidget.appex in Embed Foundation Extensions */,
+				DE9137CED88C4D1F3B874AE0 /* RawDogWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -236,7 +236,7 @@
 		5128A93B3568851821870CD6 /* ContentBlockerRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlockerRequestHandler.swift; sourceTree = "<group>"; };
 		53380FB50E34F4ACE6F907ED /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		564950C6AEB834EF17207C26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		56B7E1F0F0D9FA5EF4D24CEB /* FocusPhoneWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = FocusPhoneWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		56B7E1F0F0D9FA5EF4D24CEB /* RawDogWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = RawDogWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		594B7BE104190E51B06FB01C /* BlockingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingService.swift; sourceTree = "<group>"; };
 		65730AC4F38218C542ECB4D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6720BCE6425B9138CD73DFD3 /* DeviceActivityMonitorExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DeviceActivityMonitorExtension.entitlements; sourceTree = "<group>"; };
@@ -249,7 +249,7 @@
 		B3D4E5F6A7B8C9D0E1F2A3B4 /* RawDogMascot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawDogMascot.swift; sourceTree = "<group>"; };
 		83AEF32365B0361D3B3BC800 /* ContentBlockerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlockerService.swift; sourceTree = "<group>"; };
 		941DD181E6572785AD762908 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		98226FBFCCE57E2914379AB5 /* FocusPhone.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FocusPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		98226FBFCCE57E2914379AB5 /* RawDog.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RawDog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A9396186130BD0BAB302602 /* ContentBlockerExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ContentBlockerExtension.entitlements; sourceTree = "<group>"; };
 		ABA9E32158914313B6846D91 /* ShieldConfigurationExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ShieldConfigurationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1EA15BFADFA42D3D6A31F2E /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -431,8 +431,8 @@
 			children = (
 				13ABA97AE6030D3314E5B0DE /* ContentBlockerExtension.appex */,
 				13A32D2DA50D72D17181FC51 /* DeviceActivityMonitorExtension.appex */,
-				98226FBFCCE57E2914379AB5 /* FocusPhone.app */,
-				56B7E1F0F0D9FA5EF4D24CEB /* FocusPhoneWidget.appex */,
+				98226FBFCCE57E2914379AB5 /* RawDog.app */,
+				56B7E1F0F0D9FA5EF4D24CEB /* RawDogWidget.appex */,
 				ABA9E32158914313B6846D91 /* ShieldConfigurationExtension.appex */,
 			);
 			name = Products;
@@ -611,11 +611,11 @@
 			);
 			dependencies = (
 			);
-			name = FocusPhoneWidget;
+			name = RawDogWidget;
 			packageProductDependencies = (
 			);
-			productName = FocusPhoneWidget;
-			productReference = 56B7E1F0F0D9FA5EF4D24CEB /* FocusPhoneWidget.appex */;
+			productName = RawDogWidget;
+			productReference = 56B7E1F0F0D9FA5EF4D24CEB /* RawDogWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		52F48AA1EDC0E57494388C57 /* ShieldConfigurationExtension */ = {
@@ -652,11 +652,11 @@
 				A0ACCED2CDD7658857E1246C /* PBXTargetDependency */,
 				CD04F56ECEEFE5DCF7782411 /* PBXTargetDependency */,
 			);
-			name = FocusPhone;
+			name = RawDog;
 			packageProductDependencies = (
 			);
-			productName = FocusPhone;
-			productReference = 98226FBFCCE57E2914379AB5 /* FocusPhone.app */;
+			productName = RawDog;
+			productReference = 98226FBFCCE57E2914379AB5 /* RawDog.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -978,7 +978,7 @@
 				CODE_SIGN_ENTITLEMENTS = ContentBlockerExtension/ContentBlockerExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ContentBlockerExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.contentblocker";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.contentblocker";
 				PRODUCT_NAME = ContentBlockerExtension;
 			};
 			name = Release;
@@ -990,8 +990,8 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhone/FocusPhone.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhone/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone";
-				PRODUCT_NAME = FocusPhone;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog";
+				PRODUCT_NAME = RawDog;
 			};
 			name = Debug;
 		};
@@ -1001,8 +1001,8 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhoneWidget/FocusPhoneWidget.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhoneWidget/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.wgt";
-				PRODUCT_NAME = FocusPhoneWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.wgt";
+				PRODUCT_NAME = RawDogWidget;
 			};
 			name = Debug;
 		};
@@ -1051,8 +1051,8 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhoneWidget/FocusPhoneWidget.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhoneWidget/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.wgt";
-				PRODUCT_NAME = FocusPhoneWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.wgt";
+				PRODUCT_NAME = RawDogWidget;
 			};
 			name = Release;
 		};
@@ -1062,7 +1062,7 @@
 				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.shield";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.shield";
 				PRODUCT_NAME = ShieldConfigurationExtension;
 			};
 			name = Release;
@@ -1113,8 +1113,8 @@
 				CODE_SIGN_ENTITLEMENTS = FocusPhone/FocusPhone.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FocusPhone/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone";
-				PRODUCT_NAME = FocusPhone;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog";
+				PRODUCT_NAME = RawDog;
 			};
 			name = Release;
 		};
@@ -1124,7 +1124,7 @@
 				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.dam";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.dam";
 				PRODUCT_NAME = DeviceActivityMonitorExtension;
 			};
 			name = Release;
@@ -1135,7 +1135,7 @@
 				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.shield";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.shield";
 				PRODUCT_NAME = ShieldConfigurationExtension;
 			};
 			name = Debug;
@@ -1146,7 +1146,7 @@
 				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.dam";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.dam";
 				PRODUCT_NAME = DeviceActivityMonitorExtension;
 			};
 			name = Debug;
@@ -1157,7 +1157,7 @@
 				CODE_SIGN_ENTITLEMENTS = ContentBlockerExtension/ContentBlockerExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ContentBlockerExtension/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.axon.focus-phone.contentblocker";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ilhan.rawdog.contentblocker";
 				PRODUCT_NAME = ContentBlockerExtension;
 			};
 			name = Debug;

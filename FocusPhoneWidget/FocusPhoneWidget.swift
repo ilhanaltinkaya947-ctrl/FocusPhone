@@ -10,7 +10,7 @@ struct WidgetTimedApp {
     let nextWindowTime: String?
 }
 
-struct FocusPhoneWidgetEntry: TimelineEntry {
+struct RawDogWidgetEntry: TimelineEntry {
     let date: Date
     let isRestricted: Bool
     let timedApps: [WidgetTimedApp]
@@ -21,9 +21,9 @@ struct FocusPhoneWidgetEntry: TimelineEntry {
 
 // MARK: - Provider
 
-struct FocusPhoneWidgetProvider: TimelineProvider {
-    func placeholder(in context: Context) -> FocusPhoneWidgetEntry {
-        FocusPhoneWidgetEntry(
+struct RawDogWidgetProvider: TimelineProvider {
+    func placeholder(in context: Context) -> RawDogWidgetEntry {
+        RawDogWidgetEntry(
             date: .now,
             isRestricted: true,
             timedApps: [
@@ -35,18 +35,18 @@ struct FocusPhoneWidgetProvider: TimelineProvider {
         )
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (FocusPhoneWidgetEntry) -> Void) {
+    func getSnapshot(in context: Context, completion: @escaping (RawDogWidgetEntry) -> Void) {
         completion(currentEntry())
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<FocusPhoneWidgetEntry>) -> Void) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<RawDogWidgetEntry>) -> Void) {
         let entry = currentEntry()
         let refreshDate = Date.now.addingTimeInterval(5 * 60)
         let timeline = Timeline(entries: [entry], policy: .after(refreshDate))
         completion(timeline)
     }
 
-    private func currentEntry() -> FocusPhoneWidgetEntry {
+    private func currentEntry() -> RawDogWidgetEntry {
         let appState = AppState.shared
         let profile = appState.restrictionProfile
         let windowStates = appState.timedWindowStates
@@ -66,7 +66,7 @@ struct FocusPhoneWidgetProvider: TimelineProvider {
             )
         }
 
-        return FocusPhoneWidgetEntry(
+        return RawDogWidgetEntry(
             date: .now,
             isRestricted: appState.isRestrictionActive,
             timedApps: timedApps,
@@ -91,7 +91,7 @@ private enum WidgetColors {
 // MARK: - Small Widget
 
 struct SmallWidgetView: View {
-    var entry: FocusPhoneWidgetEntry
+    var entry: RawDogWidgetEntry
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -119,7 +119,7 @@ struct SmallWidgetView: View {
             }
         }
         .padding()
-        .widgetURL(URL(string: "focusphone://dashboard"))
+        .widgetURL(URL(string: "rawdog://dashboard"))
         .containerBackground(for: .widget) {
             WidgetColors.background
         }
@@ -129,7 +129,7 @@ struct SmallWidgetView: View {
 // MARK: - Medium Widget
 
 struct MediumWidgetView: View {
-    var entry: FocusPhoneWidgetEntry
+    var entry: RawDogWidgetEntry
 
     var body: some View {
         HStack(spacing: 12) {
@@ -177,7 +177,7 @@ struct MediumWidgetView: View {
             .frame(maxWidth: .infinity)
         }
         .padding()
-        .widgetURL(URL(string: "focusphone://dashboard"))
+        .widgetURL(URL(string: "rawdog://dashboard"))
         .containerBackground(for: .widget) {
             WidgetColors.background
         }
@@ -187,7 +187,7 @@ struct MediumWidgetView: View {
 // MARK: - Large Widget
 
 struct LargeWidgetView: View {
-    var entry: FocusPhoneWidgetEntry
+    var entry: RawDogWidgetEntry
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -249,7 +249,7 @@ struct LargeWidgetView: View {
             Spacer()
         }
         .padding()
-        .widgetURL(URL(string: "focusphone://dashboard"))
+        .widgetURL(URL(string: "rawdog://dashboard"))
         .containerBackground(for: .widget) {
             WidgetColors.background
         }
@@ -259,7 +259,7 @@ struct LargeWidgetView: View {
 // MARK: - Lock Screen Widgets
 
 struct AccessoryCircularView: View {
-    var entry: FocusPhoneWidgetEntry
+    var entry: RawDogWidgetEntry
 
     var body: some View {
         ZStack {
@@ -271,7 +271,7 @@ struct AccessoryCircularView: View {
 }
 
 struct AccessoryRectangularView: View {
-    var entry: FocusPhoneWidgetEntry
+    var entry: RawDogWidgetEntry
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -295,12 +295,12 @@ struct AccessoryRectangularView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .widgetURL(URL(string: "focusphone://dashboard"))
+        .widgetURL(URL(string: "rawdog://dashboard"))
     }
 }
 
 struct AccessoryInlineView: View {
-    var entry: FocusPhoneWidgetEntry
+    var entry: RawDogWidgetEntry
 
     var body: some View {
         if let app = entry.timedApps.first(where: { $0.isWindowOpen }),
@@ -314,9 +314,9 @@ struct AccessoryInlineView: View {
 
 // MARK: - Entry View Router
 
-struct FocusPhoneWidgetEntryView: View {
+struct RawDogWidgetEntryView: View {
     @Environment(\.widgetFamily) var family
-    var entry: FocusPhoneWidgetEntry
+    var entry: RawDogWidgetEntry
 
     var body: some View {
         switch family {
@@ -341,15 +341,15 @@ struct FocusPhoneWidgetEntryView: View {
 // MARK: - Widget
 
 @main
-struct FocusPhoneWidget: Widget {
-    let kind = "FocusPhoneWidget"
+struct RawDogWidget: Widget {
+    let kind = "RawDogWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: FocusPhoneWidgetProvider()) { entry in
-            FocusPhoneWidgetEntryView(entry: entry)
+        StaticConfiguration(kind: kind, provider: RawDogWidgetProvider()) { entry in
+            RawDogWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("RawDog")
-        .description("See your restriction status and timed window apps.")
+        .description("Your commitments. Your proof.")
         .supportedFamilies([
             .systemSmall,
             .systemMedium,

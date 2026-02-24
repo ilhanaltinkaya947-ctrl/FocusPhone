@@ -3,7 +3,7 @@ import FamilyControls
 import UserNotifications
 
 @main
-struct FocusPhoneApp: App {
+struct RawDogApp: App {
     @State private var selectedTab = 0
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
@@ -20,7 +20,7 @@ struct FocusPhoneApp: App {
     }
 
     private func handleDeepLink(_ url: URL) {
-        guard url.scheme == "focusphone" else { return }
+        guard url.scheme == "rawdog" else { return }
         switch url.host {
         case "dashboard":    selectedTab = 0
         case "commitments":  selectedTab = 1

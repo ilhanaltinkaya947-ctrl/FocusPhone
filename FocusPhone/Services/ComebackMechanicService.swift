@@ -100,7 +100,7 @@ final class ComebackMechanicService {
                 id: "rawdog_comeback_day14",
                 at: day14,
                 body: day14Message(),
-                deepLink: "focusphone://dashboard"
+                deepLink: "rawdog://dashboard"
             )
         }
     }

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>FocusPhone</string>
+	<string>RawDog</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -32,10 +32,10 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>focusphone</string>
+				<string>rawdog</string>
 			</array>
 			<key>CFBundleURLName</key>
-			<string>com.axon.focus-phone</string>
+			<string>com.ilhan.rawdog</string>
 		</dict>
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -48,9 +48,9 @@
 		<string>AppIcon</string>
 	</dict>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>FocusPhone uses speech recognition to let you speak your answers during onboarding setup.</string>
+	<string>RawDog uses speech recognition to let you speak your answers during onboarding setup.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>FocusPhone needs microphone access for voice input during onboarding.</string>
+	<string>RawDog needs microphone access for voice input during onboarding.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>RawDog needs camera access to verify your commitment photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

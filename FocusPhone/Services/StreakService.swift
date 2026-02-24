@@ -220,7 +220,7 @@ final class StreakService {
         content.userInfo = [
             "type": "streak_broken",
             "commitmentId": commitment.id.uuidString,
-            "deepLink": "focusphone://commitments",
+            "deepLink": "rawdog://commitments",
         ]
 
         let request = UNNotificationRequest(

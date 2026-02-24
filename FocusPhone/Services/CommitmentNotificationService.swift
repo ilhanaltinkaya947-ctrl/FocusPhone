@@ -356,7 +356,7 @@ enum CommitmentNotificationService {
         content.categoryIdentifier = verificationCategoryID
         content.userInfo = [
             "commitmentId": commitment.id.uuidString,
-            "deepLink": "focusphone://verify?id=\(commitment.id.uuidString)"
+            "deepLink": "rawdog://verify?id=\(commitment.id.uuidString)"
         ]
 
         var components = DateComponents()

@@ -1,6 +1,6 @@
 name: FocusPhone
 options:
-  bundleIdPrefix: com.axon
+  bundleIdPrefix: com.ilhan
   deploymentTarget:
     iOS: "18.0"
   xcodeVersion: "16.2"
@@ -40,7 +40,7 @@ settings:
     GCC_WARN_UNUSED_VARIABLE: YES
 
 targets:
-  FocusPhone:
+  RawDog:
     type: application
     platform: iOS
     sources:
@@ -48,8 +48,8 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone
-        PRODUCT_NAME: FocusPhone
+        PRODUCT_BUNDLE_IDENTIFIER: com.ilhan.rawdog
+        PRODUCT_NAME: RawDog
         INFOPLIST_FILE: FocusPhone/Info.plist
         CODE_SIGN_ENTITLEMENTS: FocusPhone/FocusPhone.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
@@ -58,7 +58,7 @@ targets:
       - target: DeviceActivityMonitorExtension
       - target: ShieldConfigurationExtension
       - target: ContentBlockerExtension
-      - target: FocusPhoneWidget
+      - target: RawDogWidget
 
   DeviceActivityMonitorExtension:
     type: app-extension
@@ -68,7 +68,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.dam
+        PRODUCT_BUNDLE_IDENTIFIER: com.ilhan.rawdog.dam
         PRODUCT_NAME: DeviceActivityMonitorExtension
         INFOPLIST_FILE: DeviceActivityMonitorExtension/Info.plist
         CODE_SIGN_ENTITLEMENTS: DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements
@@ -82,7 +82,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.shield
+        PRODUCT_BUNDLE_IDENTIFIER: com.ilhan.rawdog.shield
         PRODUCT_NAME: ShieldConfigurationExtension
         INFOPLIST_FILE: ShieldConfigurationExtension/Info.plist
         CODE_SIGN_ENTITLEMENTS: ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements
@@ -96,13 +96,13 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.contentblocker
+        PRODUCT_BUNDLE_IDENTIFIER: com.ilhan.rawdog.contentblocker
         PRODUCT_NAME: ContentBlockerExtension
         INFOPLIST_FILE: ContentBlockerExtension/Info.plist
         CODE_SIGN_ENTITLEMENTS: ContentBlockerExtension/ContentBlockerExtension.entitlements
         GENERATE_INFOPLIST_FILE: false
 
-  FocusPhoneWidget:
+  RawDogWidget:
     type: app-extension
     platform: iOS
     sources:
@@ -110,8 +110,8 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.axon.focus-phone.wgt
-        PRODUCT_NAME: FocusPhoneWidget
+        PRODUCT_BUNDLE_IDENTIFIER: com.ilhan.rawdog.wgt
+        PRODUCT_NAME: RawDogWidget
         INFOPLIST_FILE: FocusPhoneWidget/Info.plist
         CODE_SIGN_ENTITLEMENTS: FocusPhoneWidget/FocusPhoneWidget.entitlements
         GENERATE_INFOPLIST_FILE: false

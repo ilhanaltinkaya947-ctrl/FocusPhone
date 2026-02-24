@@ -6,7 +6,7 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.axon.focusphone</string>
+		<string>group.com.ilhan.rawdog</string>
 	</array>
 </dict>
 </plist>

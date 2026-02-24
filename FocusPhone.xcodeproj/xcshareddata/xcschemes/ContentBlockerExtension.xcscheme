@@ -30,8 +30,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B6F2E2B5DE289F40BA8E0798"
-               BuildableName = "FocusPhone.app"
-               BlueprintName = "FocusPhone"
+               BuildableName = "RawDog.app"
+               BlueprintName = "RawDog"
                ReferencedContainer = "container:FocusPhone.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -61,8 +61,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B6F2E2B5DE289F40BA8E0798"
-            BuildableName = "FocusPhone.app"
-            BlueprintName = "FocusPhone"
+            BuildableName = "RawDog.app"
+            BlueprintName = "RawDog"
             ReferencedContainer = "container:FocusPhone.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -80,8 +80,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B6F2E2B5DE289F40BA8E0798"
-            BuildableName = "FocusPhone.app"
-            BlueprintName = "FocusPhone"
+            BuildableName = "RawDog.app"
+            BlueprintName = "RawDog"
             ReferencedContainer = "container:FocusPhone.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
