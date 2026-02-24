@@ -226,7 +226,7 @@ struct MentorChatView: View {
                     .padding(.horizontal, RawDog.Spacing.md)
                     .padding(.vertical, RawDog.Spacing.sm)
                 }
-                .onChange(of: viewModel.messages.count) { _ in
+                .onChange(of: viewModel.messages.count) {
                     if let last = viewModel.messages.last {
                         withAnimation {
                             proxy.scrollTo(last.id, anchor: .bottom)
