@@ -3,36 +3,40 @@ import FamilyControls
 
 struct ConversationalOnboardingView: View {
     @ObservedObject var authVM: AuthViewModel
-    @StateObject private var chatVM = OnboardingChatViewModel()
     @State private var currentPage = 0
+    @State private var selections = OnboardingSelections()
     @State private var mascotScale: CGFloat = 0.5
     @State private var mascotOpacity: CGFloat = 0
     @Environment(\.scenePhase) private var scenePhase
 
-    private let totalPages = 11 // 0-10
+    private let totalPages = 12 // 0-11
 
     var body: some View {
         ZStack {
             RawDog.Colors.background.ignoresSafeArea()
 
+            // Particle background
+            ParticleBackgroundView()
+
             VStack(spacing: 0) {
-                // Top bar: back + progress (pages 1-7)
-                if currentPage > 0 {
+                // Progress bar (screens 1-10)
+                if currentPage > 0 && currentPage < 11 {
                     topBar
                 }
 
                 TabView(selection: $currentPage) {
-                    welcomePage.tag(0)
-                    dataShockPage.tag(1)
-                    screenTimePage.tag(2)
-                    safariPage.tag(3)
-                    goalPage.tag(4)
-                    profileSelectionPage.tag(5)
-                    commitmentPage.tag(6)
-                    strictnessPage.tag(7)
-                    sleepSetupPage.tag(8)
-                    chatPage.tag(9)
-                    profileReviewPage.tag(10)
+                    welcomePage.tag(0)           // Screen 1: Welcome
+                    shockPage.tag(1)             // Screen 2: Shock moment
+                    whatRawDogDoesPage.tag(2)    // Screen 3: What RawDog does
+                    agePage.tag(3)               // Screen 4: Age selection
+                    occupationPage.tag(4)        // Screen 5: Occupation
+                    problemsPage.tag(5)          // Screen 6: Problems (multi-select)
+                    goalsPage.tag(6)             // Screen 7: Goals (multi-select)
+                    loadingPage.tag(7)           // Screen 8: Cinematic loading
+                    goalsRevealPage.tag(8)       // Screen 9: Goals reveal
+                    firstWinPage.tag(9)          // Screen 10: First win
+                    permissionsPage.tag(10)      // Screen 11: Permissions
+                    applyPage.tag(11)            // Screen 12: Apply
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(.easeInOut(duration: 0.35), value: currentPage)
@@ -52,32 +56,11 @@ struct ConversationalOnboardingView: View {
 
     private var topBar: some View {
         HStack(spacing: 12) {
-            if currentPage < 9 {
-                Button {
-                    withAnimation { currentPage -= 1 }
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(RawDog.Colors.textPrimary)
-                        .frame(width: 36, height: 36)
-                        .background(RawDog.Colors.surfaceElevated, in: Circle())
-                }
+            RawDog.OnboardingBackButton {
+                withAnimation { currentPage -= 1 }
             }
 
-            // Thin progress bar
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    Capsule()
-                        .fill(RawDog.Colors.surfaceElevated)
-                        .frame(height: 3)
-
-                    Capsule()
-                        .fill(RawDog.Colors.accent)
-                        .frame(width: geo.size.width * progressFraction, height: 3)
-                        .animation(.spring(response: 0.4), value: currentPage)
-                }
-            }
-            .frame(height: 3)
+            RawDog.ThinProgressBar(progress: progressFraction)
         }
         .padding(.horizontal, 20)
         .padding(.top, 12)
@@ -85,10 +68,10 @@ struct ConversationalOnboardingView: View {
     }
 
     private var progressFraction: CGFloat {
-        CGFloat(currentPage) / CGFloat(totalPages)
+        CGFloat(currentPage) / CGFloat(totalPages - 1)
     }
 
-    // MARK: - Page 0: Welcome
+    // MARK: - Screen 1: Welcome
 
     private var welcomePage: some View {
         VStack(spacing: 0) {
@@ -116,476 +99,290 @@ struct ConversationalOnboardingView: View {
                 .multilineTextAlignment(.center)
                 .padding(.top, RawDog.Spacing.xs)
 
-            Text("Block the apps and content that\nwaste your time. Keep the rest.")
-                .font(RawDog.Typography.caption)
-                .foregroundStyle(RawDog.Colors.textSecondary.opacity(0.6))
-                .multilineTextAlignment(.center)
-                .padding(.top, 12)
-                .padding(.horizontal, 40)
-
             Spacer()
 
-            RawDog.PillButton(title: "Get Started") {
+            RawDog.OnboardingButton(title: "Get Started") {
                 withAnimation { currentPage = 1 }
             }
             .padding(.bottom, 40)
         }
     }
 
-    // MARK: - Page 1: Data Shock
+    // MARK: - Screen 2: Shock Moment
 
-    private var dataShockPage: some View {
+    private var shockPage: some View {
         DataShockView(
-            onReactionSelected: { reaction in
-                chatVM.onboardingAnswers.dataShockReaction = reaction
-            },
+            yearsToLose: selections.yearsPhoneWillSteal(),
             onContinue: {
                 withAnimation { currentPage = 2 }
             }
         )
     }
 
-    // MARK: - Page 2: Screen Time Permission
+    // MARK: - Screen 3: What RawDog Does
 
-    private var screenTimePage: some View {
-        VStack(spacing: 0) {
-            Spacer()
-
-            stepBadge("1 of 2")
-
-            permissionIcon("hourglass.badge.plus")
-                .padding(.top, RawDog.Spacing.md)
-
-            Text("Screen Time Access")
-                .font(RawDog.Typography.title2)
-                .foregroundStyle(RawDog.Colors.textPrimary)
-                .padding(.top, RawDog.Spacing.lg)
-
-            Text("RawDog needs Screen Time access\nto block apps and enforce restrictions.")
-                .font(RawDog.Typography.subheadline)
-                .foregroundStyle(RawDog.Colors.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.top, RawDog.Spacing.sm)
-                .padding(.horizontal, 40)
-
-            Spacer().frame(height: RawDog.Spacing.lg)
-
-            if authVM.authorizationStatus == .approved {
-                RawDog.StatusBadge(text: "Permission Granted", icon: "checkmark.circle.fill", color: RawDog.Colors.approved)
-            } else if authVM.authorizationStatus == .denied {
-                RawDog.StatusBadge(text: "Permission Denied", icon: "xmark.circle.fill", color: RawDog.Colors.destructive)
-                Text("Please enable Screen Time in Settings.")
-                    .font(RawDog.Typography.caption)
-                    .foregroundStyle(RawDog.Colors.textSecondary)
-                    .padding(.top, RawDog.Spacing.xs)
-            }
-
-            Spacer()
-
-            Group {
-                if authVM.authorizationStatus == .approved {
-                    RawDog.PillButton(title: "Continue") {
-                        withAnimation { currentPage = 3 }
-                    }
-                } else {
-                    RawDog.PillButton(title: "Allow Screen Time") {
-                        authVM.requestAuthorization()
-                    }
-                }
-            }
-            .padding(.bottom, 40)
-        }
-        .onChange(of: authVM.authorizationStatus) {
-            if authVM.authorizationStatus == .approved {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                    withAnimation { currentPage = 3 }
-                }
-            }
+    private var whatRawDogDoesPage: some View {
+        WhatRawDogDoesView {
+            withAnimation { currentPage = 3 }
         }
     }
 
-    // MARK: - Page 3: Safari Content Blocker
+    // MARK: - Screen 4: Age
 
-    private var safariPage: some View {
+    private var agePage: some View {
+        AgeSelectionView(selectedAge: $selections.age) {
+            withAnimation { currentPage = 4 }
+        }
+    }
+
+    // MARK: - Screen 5: Occupation
+
+    private var occupationPage: some View {
+        OccupationView(selectedOccupation: $selections.occupation) {
+            withAnimation { currentPage = 5 }
+        }
+    }
+
+    // MARK: - Screen 6: Problems
+
+    private var problemsPage: some View {
+        ProblemSelectionView(selectedProblems: $selections.problems) {
+            withAnimation { currentPage = 6 }
+        }
+    }
+
+    // MARK: - Screen 7: Goals
+
+    private var goalsPage: some View {
+        GoalSelectionView(selectedGoals: $selections.goals) {
+            withAnimation { currentPage = 7 }
+        }
+    }
+
+    // MARK: - Screen 8: Cinematic Loading
+
+    private var loadingPage: some View {
+        CinematicLoadingView {
+            withAnimation { currentPage = 8 }
+        }
+    }
+
+    // MARK: - Screen 9: Goals Reveal
+
+    private var goalsRevealPage: some View {
+        GoalsRevealView(selections: selections) {
+            withAnimation { currentPage = 9 }
+        }
+    }
+
+    // MARK: - Screen 10: First Win
+
+    private var firstWinPage: some View {
+        FirstWinView(
+            selections: selections,
+            firstCommitment: $selections.firstCommitment
+        ) {
+            withAnimation { currentPage = 10 }
+        }
+    }
+
+    // MARK: - Screen 11: Permissions
+
+    private var permissionsPage: some View {
         VStack(spacing: 0) {
             Spacer()
 
-            stepBadge("2 of 2")
-
-            permissionIcon("safari")
-                .padding(.top, RawDog.Spacing.md)
-
-            Text("Safari Content Blocker")
-                .font(RawDog.Typography.title2)
+            Text("One More Thing")
+                .font(RawDog.Typography.title)
                 .foregroundStyle(RawDog.Colors.textPrimary)
-                .padding(.top, RawDog.Spacing.lg)
 
-            Text("Enable the content blocker to block\ndistracting websites in Safari.")
+            Text("RawDog needs a few permissions")
                 .font(RawDog.Typography.subheadline)
                 .foregroundStyle(RawDog.Colors.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.top, RawDog.Spacing.sm)
-                .padding(.horizontal, 40)
-
-            Spacer().frame(height: RawDog.Spacing.lg)
-
-            if authVM.contentBlockerEnabled {
-                RawDog.StatusBadge(text: "Content Blocker Enabled", icon: "checkmark.circle.fill", color: RawDog.Colors.approved)
-            } else {
-                VStack(spacing: 4) {
-                    Text("Settings > Safari > Extensions")
-                        .font(RawDog.Typography.caption.weight(.medium))
-                        .foregroundStyle(RawDog.Colors.textPrimary)
-                    Text("Enable FocusPhone")
-                        .font(RawDog.Typography.caption)
-                        .foregroundStyle(RawDog.Colors.textSecondary)
-                }
-                .padding(12)
-                .background(RawDog.Colors.surfaceElevated, in: RoundedRectangle(cornerRadius: 10))
-            }
-
-            Spacer()
+                .padding(.top, 4)
 
             VStack(spacing: 12) {
-                if !authVM.contentBlockerEnabled {
-                    RawDog.PillButton(title: "Open Settings") {
-                        if let url = URL(string: UIApplication.openSettingsURLString) {
-                            UIApplication.shared.open(url)
-                        }
+                // Notifications
+                permissionRow(
+                    icon: "bell.fill",
+                    title: "Notifications",
+                    subtitle: "Daily accountability check-ins",
+                    isGranted: true // We'll request on tap
+                ) {
+                    Task {
+                        try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
                     }
                 }
-                RawDog.PillButton(
-                    title: authVM.contentBlockerEnabled ? "Continue" : "Skip for Now",
-                    style: authVM.contentBlockerEnabled ? .primary : .secondary
+
+                // Screen Time
+                permissionRow(
+                    icon: "hourglass.badge.plus",
+                    title: "Screen Time",
+                    subtitle: "Block apps & enforce restrictions",
+                    isGranted: authVM.authorizationStatus == .approved
                 ) {
-                    withAnimation { currentPage = 4 }
+                    authVM.requestAuthorization()
                 }
+
+                // Safari Extension
+                permissionRow(
+                    icon: "safari",
+                    title: "Safari Extension",
+                    subtitle: "Block distracting websites",
+                    isGranted: authVM.contentBlockerEnabled
+                ) {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            }
+            .padding(.horizontal, 32)
+            .padding(.top, 32)
+
+            Spacer()
+
+            RawDog.OnboardingButton(
+                title: "Continue",
+                isEnabled: authVM.authorizationStatus == .approved
+            ) {
+                withAnimation { currentPage = 11 }
             }
             .padding(.bottom, 40)
         }
     }
 
-    // MARK: - Page 4: Goal Selection
+    private func permissionRow(
+        icon: String,
+        title: String,
+        subtitle: String,
+        isGranted: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            HStack(spacing: 14) {
+                Image(systemName: icon)
+                    .font(.system(size: 22))
+                    .foregroundStyle(RawDog.Colors.accentIce)
+                    .frame(width: 40)
 
-    private var goalPage: some View {
-        GoalSelectionView(
-            onGoalSelected: { goalID in
-                chatVM.onboardingAnswers.selectedGoalID = goalID
-            },
-            onContinue: {
-                withAnimation { currentPage = 5 }
-            }
-        )
-    }
-
-    // MARK: - Page 5: Profile Selection
-
-    private var profileSelectionPage: some View {
-        ProfileSelectionView(
-            onProfilesSelected: { profileIDs in
-                chatVM.onboardingAnswers.selectedProfileIDs = profileIDs
-            },
-            onContinue: {
-                withAnimation { currentPage = 6 }
-            }
-        )
-    }
-
-    // MARK: - Page 6: Commitment
-
-    private var commitmentPage: some View {
-        CommitmentPickerView(
-            onCommitmentSet: { days in
-                chatVM.onboardingAnswers.commitmentDays = days
-            },
-            onContinue: {
-                withAnimation { currentPage = 7 }
-            }
-        )
-    }
-
-    // MARK: - Page 7: Strictness
-
-    private var strictnessPage: some View {
-        StrictnessPickerView(
-            onStrictnessSelected: { level in
-                chatVM.onboardingAnswers.strictnessLevel = level
-            },
-            onContinue: {
-                withAnimation { currentPage = 8 }
-            }
-        )
-    }
-
-    // MARK: - Page 8: Sleep Setup
-
-    private var sleepSetupPage: some View {
-        SleepSetupView(
-            onSleepSet: { wake, bed in
-                chatVM.onboardingAnswers.wakeTime = wake
-                chatVM.onboardingAnswers.bedTime = bed
-            },
-            onContinue: {
-                chatVM.startConversation()
-                withAnimation { currentPage = 9 }
-            }
-        )
-    }
-
-    // MARK: - Page 7: Chat
-
-    private var chatPage: some View {
-        ZStack {
-            VStack(spacing: 0) {
-                // Chat header with animated mascot
-                HStack(spacing: 10) {
-                    AnimatedMascot(state: chatVM.mascotState, size: 28)
-                    Text("RawDog")
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
                         .font(RawDog.Typography.headline)
                         .foregroundStyle(RawDog.Colors.textPrimary)
-                    Spacer()
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 10)
-
-                Divider()
-                    .overlay(RawDog.Colors.surfaceElevated)
-
-                // Messages
-                ScrollViewReader { proxy in
-                    ScrollView {
-                        LazyVStack(spacing: 6) {
-                            ForEach(chatVM.messages) { message in
-                                VStack(alignment: .leading, spacing: 8) {
-                                    chatBubble(message)
-                                        .transition(
-                                            .asymmetric(
-                                                insertion: .opacity
-                                                    .combined(with: .move(edge: .bottom))
-                                                    .combined(with: .scale(scale: 0.95)),
-                                                removal: .opacity
-                                            )
-                                        )
-
-                                    // Chips below assistant message
-                                    if message.role == .assistant,
-                                       let chips = message.suggestionChips,
-                                       message.id == chatVM.messages.last(where: { $0.role == .assistant })?.id {
-                                        SuggestionChipsView(chips: chips) { chip in
-                                            chatVM.inputText = chip
-                                            chatVM.sendMessage()
-                                        }
-                                    }
-                                }
-                                .id(message.id)
-                            }
-
-                            if chatVM.isLoading {
-                                HStack {
-                                    typingIndicator
-                                    Spacer()
-                                }
-                                .padding(.horizontal, 16)
-                                .id("loading")
-                            }
-                        }
-                        .padding(.vertical, 12)
-                    }
-                    .onChange(of: chatVM.messages.count) {
-                        withAnimation {
-                            if let lastID = chatVM.messages.last?.id {
-                                proxy.scrollTo(lastID, anchor: .bottom)
-                            } else {
-                                proxy.scrollTo("loading", anchor: .bottom)
-                            }
-                        }
-                    }
-                }
-
-                // Input / Actions
-                if chatVM.conversationStage == .chatting {
-                    chatInputBar
-                }
-
-                if chatVM.conversationStage == .profileReady {
-                    RawDog.PillButton(title: "Review Your Profile") {
-                        withAnimation { currentPage = 10 }
-                    }
-                    .padding(.horizontal, 32)
-                    .padding(.vertical, 12)
-                }
-
-                if let error = chatVM.errorMessage {
-                    Text(error)
+                    Text(subtitle)
                         .font(RawDog.Typography.caption)
-                        .foregroundStyle(RawDog.Colors.destructive)
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 4)
-                }
-            }
-
-            // Voice overlay
-            if chatVM.isVoiceMode {
-                VoiceChatOverlay(
-                    speechService: chatVM.speechService,
-                    onSend: { text in
-                        chatVM.sendVoiceMessage(text)
-                    },
-                    onCancel: {
-                        chatVM.exitVoiceMode()
-                    }
-                )
-                .transition(.opacity)
-            }
-        }
-        .onChange(of: chatVM.inputText) {
-            if !chatVM.inputText.isEmpty && !chatVM.isVoiceMode {
-                chatVM.mascotState = .listening
-            }
-        }
-    }
-
-    // MARK: - Chat Input Bar
-
-    private var chatInputBar: some View {
-        HStack(spacing: 10) {
-            // Mic button — opens full voice overlay
-            Button {
-                chatVM.enterVoiceMode()
-            } label: {
-                Image(systemName: "mic")
-                    .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(RawDog.Colors.textSecondary)
-                    .frame(width: 36, height: 36)
-            }
-
-            // Text field
-            TextField("Type your response...", text: $chatVM.inputText, axis: .vertical)
-                .lineLimit(1...4)
-                .font(RawDog.Typography.subheadline)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 10)
-                .background(RawDog.Colors.surfaceElevated, in: RoundedRectangle(cornerRadius: 20))
-                .foregroundStyle(RawDog.Colors.textPrimary)
-
-            // Send button
-            Button {
-                chatVM.sendMessage()
-            } label: {
-                Image(systemName: "arrow.up")
-                    .font(.system(size: 15, weight: .bold))
-                    .foregroundStyle(RawDog.Colors.background)
-                    .frame(width: 32, height: 32)
-                    .background(
-                        canSend ? RawDog.Colors.accent : RawDog.Colors.surfaceElevated,
-                        in: Circle()
-                    )
-            }
-            .disabled(!canSend)
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(RawDog.Colors.surface)
-    }
-
-    private var canSend: Bool {
-        !chatVM.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !chatVM.isLoading
-    }
-
-    // MARK: - Page 8: Profile Review
-
-    private var profileReviewPage: some View {
-        Group {
-            if let profile = chatVM.generatedProfile {
-                ProfileReviewView(
-                    profile: profile,
-                    onAccept: {
-                        chatVM.applyProfile()
-                    },
-                    onBack: {
-                        withAnimation { currentPage = 9 }
-                    }
-                )
-            } else {
-                VStack {
-                    ProgressView()
-                        .tint(RawDog.Colors.accent)
-                    Text("Generating profile...")
-                        .font(RawDog.Typography.subheadline)
                         .foregroundStyle(RawDog.Colors.textSecondary)
                 }
+
+                Spacer()
+
+                if isGranted {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 22))
+                        .foregroundStyle(RawDog.Colors.approved)
+                } else {
+                    Text("Enable")
+                        .font(RawDog.Typography.caption.weight(.semibold))
+                        .foregroundStyle(RawDog.Colors.accentIce)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(RawDog.Colors.accentIce.opacity(0.15), in: Capsule())
+                }
             }
+            .padding(14)
+            .background(RawDog.Colors.cardBackground, in: RoundedRectangle(cornerRadius: 14))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .strokeBorder(RawDog.Colors.borderSubtle, lineWidth: 1)
+            )
         }
     }
 
-    // MARK: - Chat Bubble
+    // MARK: - Screen 12: Apply
 
-    private func chatBubble(_ message: ChatMessage) -> some View {
-        HStack(alignment: .bottom, spacing: 8) {
-            if message.role == .user { Spacer(minLength: 60) }
+    private var applyPage: some View {
+        let profile = selections.toProfile()
 
-            if message.role == .assistant {
-                AnimatedMascot(state: chatVM.mascotState, size: 26)
-                    .padding(.bottom, 2)
+        return VStack(spacing: 0) {
+            Spacer()
+
+            AnimatedMascot(state: .proud, size: 120)
+
+            Text("Ready to Go")
+                .font(RawDog.Typography.title)
+                .foregroundStyle(RawDog.Colors.textPrimary)
+                .padding(.top, RawDog.Spacing.lg)
+
+            // Summary
+            VStack(alignment: .leading, spacing: 10) {
+                if !selections.problems.isEmpty {
+                    summaryRow(icon: "lock.fill", text: "Blocking: \(selections.problems.count) categories")
+                }
+                if !profile.activePresetIDs.isEmpty {
+                    summaryRow(icon: "shield.fill", text: "\(profile.activePresetIDs.count) restriction presets active")
+                }
+                if !profile.blockedWebsites.isEmpty {
+                    summaryRow(icon: "globe", text: "\(profile.blockedWebsites.count) websites blocked")
+                }
+                if let commitment = selections.firstCommitment {
+                    summaryRow(icon: "checkmark.circle.fill", text: "First commitment: \(commitment.title)")
+                }
+                summaryRow(icon: "clock.fill", text: "\(profile.dailyExtensionCapMinutes)m daily extension cap")
             }
+            .padding(20)
+            .background(RawDog.Colors.cardBackground, in: RoundedRectangle(cornerRadius: 14))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .strokeBorder(RawDog.Colors.borderSubtle, lineWidth: 1)
+            )
+            .padding(.horizontal, 32)
+            .padding(.top, RawDog.Spacing.lg)
 
-            Text(message.content)
+            Spacer()
+
+            RawDog.OnboardingButton(title: "Apply Restrictions") {
+                applyAndFinish()
+            }
+            .padding(.bottom, 40)
+        }
+    }
+
+    private func summaryRow(icon: String, text: String) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: icon)
+                .font(.system(size: 14))
+                .foregroundStyle(RawDog.Colors.accentIce)
+                .frame(width: 20)
+            Text(text)
                 .font(RawDog.Typography.subheadline)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 10)
-                .foregroundStyle(
-                    message.role == .user ? RawDog.Colors.background : RawDog.Colors.textPrimary
-                )
-                .background(
-                    message.role == .user
-                        ? RawDog.Colors.accent
-                        : Color(hex: "1A1A1A")
-                )
-                .clipShape(
-                    RoundedRectangle(cornerRadius: 18)
-                )
-
-            if message.role == .assistant { Spacer(minLength: 60) }
+                .foregroundStyle(RawDog.Colors.textPrimary)
         }
-        .padding(.horizontal, 12)
     }
 
-    private var typingIndicator: some View {
-        HStack(spacing: 5) {
-            ForEach(0..<3, id: \.self) { index in
-                Circle()
-                    .fill(RawDog.Colors.textSecondary.opacity(0.6))
-                    .frame(width: 7, height: 7)
-                    .scaleEffect(1.0)
-                    .animation(
-                        .easeInOut(duration: 0.6)
-                        .repeatForever()
-                        .delay(Double(index) * 0.2),
-                        value: chatVM.isLoading
-                    )
-            }
+    // MARK: - Apply
+
+    private func applyAndFinish() {
+        let profile = selections.toProfile()
+
+        // Activate restriction profile
+        RestrictionEngine.activateProfile(profile)
+
+        // Save first commitment if selected
+        if let commitment = selections.firstCommitment {
+            CommitmentStore.addCommitment(commitment)
+            CommitmentNotificationService.scheduleNotifications(for: commitment)
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 12)
-        .background(Color(hex: "1A1A1A"), in: RoundedRectangle(cornerRadius: 18))
-    }
 
-    // MARK: - Reusable Components
+        // Save user memory
+        var memory = UserMemoryStore.shared.memory
+        if let occupation = selections.occupation {
+            memory.occupation = occupation
+        }
+        memory.goals = selections.goals
+        memory.memberSinceDate = Date()
+        UserMemoryStore.shared.memory = memory
 
-    private func permissionIcon(_ systemName: String) -> some View {
-        Image(systemName: systemName)
-            .font(.system(size: 56, weight: .light))
-            .foregroundStyle(RawDog.Colors.accent)
-            .frame(width: 100, height: 100)
-            .background(RawDog.Colors.accent.opacity(0.1), in: Circle())
-    }
-
-    private func stepBadge(_ text: String) -> some View {
-        Text(text.uppercased())
-            .font(.caption2.bold())
-            .foregroundStyle(RawDog.Colors.accent)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 4)
-            .background(RawDog.Colors.accent.opacity(0.12), in: Capsule())
+        // Mark onboarding complete
+        AppState.shared.isOnboardingCompleted = true
     }
 }

@@ -1,51 +1,51 @@
 import SwiftUI
 
-struct GoalSelectionView: View {
-    @Binding var selectedGoals: [String]
+struct ProblemSelectionView: View {
+    @Binding var selectedProblems: [String]
     let onContinue: () -> Void
 
-    private let goals: [(id: String, emoji: String, label: String)] = [
-        ("gym", "💪", "Hit the gym regularly"),
-        ("study", "📚", "Study & learn more"),
-        ("business", "🚀", "Build a business/career"),
-        ("heal", "🧘", "Heal & recover"),
-        ("skill", "🎯", "Learn a new skill"),
-        ("present", "🌿", "Be more present"),
-        ("sleep", "😴", "Fix my sleep"),
+    private let options: [(id: String, label: String, emoji: String)] = [
+        ("social_media", "Social Media", "📱"),
+        ("youtube", "YouTube", "📺"),
+        ("porn", "Porn", "🔞"),
+        ("doom_scrolling", "Doom Scrolling", "📰"),
+        ("messaging", "Messaging", "💬"),
+        ("gaming", "Gaming", "🎮"),
+        ("shopping", "Shopping", "🛒"),
     ]
 
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
 
-            Text("What do you want instead?")
+            Text("What's eating your time?")
                 .font(RawDog.Typography.title)
                 .foregroundStyle(RawDog.Colors.textPrimary)
 
-            Text("Select all that resonate")
+            Text("Select all that apply")
                 .font(RawDog.Typography.subheadline)
                 .foregroundStyle(RawDog.Colors.textSecondary)
                 .padding(.top, 4)
 
             VStack(spacing: 10) {
-                ForEach(goals, id: \.id) { goal in
-                    let isSelected = selectedGoals.contains(goal.id)
+                ForEach(options, id: \.id) { option in
+                    let isSelected = selectedProblems.contains(option.id)
 
                     Button {
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         withAnimation(.spring(response: 0.3)) {
                             if isSelected {
-                                selectedGoals.removeAll { $0 == goal.id }
+                                selectedProblems.removeAll { $0 == option.id }
                             } else {
-                                selectedGoals.append(goal.id)
+                                selectedProblems.append(option.id)
                             }
                         }
                     } label: {
                         HStack(spacing: 12) {
-                            Text(goal.emoji)
+                            Text(option.emoji)
                                 .font(.title3)
 
-                            Text(goal.label)
+                            Text(option.label)
                                 .font(RawDog.Typography.headline)
                                 .foregroundStyle(isSelected ? .black : RawDog.Colors.textPrimary)
 
@@ -74,13 +74,13 @@ struct GoalSelectionView: View {
                 }
             }
             .padding(.horizontal, 32)
-            .padding(.top, 24)
+            .padding(.top, 32)
 
             Spacer()
 
             RawDog.OnboardingButton(
                 title: "Continue",
-                isEnabled: !selectedGoals.isEmpty
+                isEnabled: !selectedProblems.isEmpty
             ) {
                 onContinue()
             }

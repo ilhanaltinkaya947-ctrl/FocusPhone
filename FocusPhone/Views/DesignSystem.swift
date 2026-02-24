@@ -20,6 +20,13 @@ enum RawDog {
         static let denied = Color(hex: "FF3B30")
         static let windowOpen = Color(hex: "34C759")
         static let windowClosed = Color(hex: "FF9500")
+
+        // New design tokens (v2)
+        static let cardBackground = Color(hex: "0D0D0D")
+        static let borderSubtle = Color.white.opacity(0.08)
+        static let accentIce = Color(hex: "C8E6FF")
+        static let textTertiary = Color(hex: "666666")
+        static let trackBackground = Color(hex: "333333")
     }
 
     // MARK: - Typography
@@ -171,6 +178,71 @@ extension RawDog {
                 RoundedRectangle(cornerRadius: Radius.card)
                     .strokeBorder(accentColor.opacity(0.12), lineWidth: 1)
             )
+        }
+    }
+
+    // MARK: - Onboarding Button (white bg, black text, 56pt, 28pt radius)
+
+    struct OnboardingButton: View {
+        let title: String
+        var isEnabled: Bool = true
+        let action: () -> Void
+
+        var body: some View {
+            Button {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                action()
+            } label: {
+                Text(title)
+                    .font(Typography.headline)
+                    .foregroundStyle(.black)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+                    .background(Color.white, in: RoundedRectangle(cornerRadius: 28))
+                    .opacity(isEnabled ? 1 : 0.4)
+            }
+            .disabled(!isEnabled)
+            .padding(.horizontal, 32)
+        }
+    }
+
+    // MARK: - Thin Progress Bar (2pt, ice blue fill, #333 track)
+
+    struct ThinProgressBar: View {
+        let progress: CGFloat // 0...1
+
+        var body: some View {
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(Colors.trackBackground)
+                        .frame(height: 2)
+
+                    Capsule()
+                        .fill(Colors.accentIce)
+                        .frame(width: geo.size.width * min(max(progress, 0), 1), height: 2)
+                        .animation(.spring(response: 0.4), value: progress)
+                }
+            }
+            .frame(height: 2)
+        }
+    }
+
+    // MARK: - Onboarding Back Button (grey chevron, #1A1A1A circle)
+
+    struct OnboardingBackButton: View {
+        let action: () -> Void
+
+        var body: some View {
+            Button {
+                action()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(Colors.textSecondary)
+                    .frame(width: 36, height: 36)
+                    .background(Colors.surfaceElevated, in: Circle())
+            }
         }
     }
 }

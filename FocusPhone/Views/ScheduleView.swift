@@ -3,140 +3,352 @@ import SwiftUI
 struct ScheduleView: View {
     @StateObject private var commitmentVM = CommitmentViewModel()
     @State private var todayCommitments: [Commitment] = []
-    @State private var timedWindowApps: [TimedWindowApp] = []
-    @State private var showingExtensionRequest = false
-    @State private var selectedAppForExtension = ""
-    @State private var dailyUsed = 0
-    @State private var dailyCap = 30
     @State private var showingCreateCommitment = false
+    @State private var selectedCommitment: Commitment?
+    @State private var showMentorChat = false
+    @State private var screenTimeInsight: String?
+    @State private var weeklyVerifications: [Int] = Array(repeating: 0, count: 7)
+    @State private var weeklyTotals: [Int] = Array(repeating: 0, count: 7)
 
     private let calendar = Calendar.current
 
+    private var greeting: String {
+        let hour = calendar.component(.hour, from: Date())
+        let name = UserMemoryStore.shared.memory.name
+        let displayName = name.isEmpty ? "" : ", \(name)"
+        if hour < 12 { return "Good morning\(displayName)" }
+        if hour < 17 { return "Good afternoon\(displayName)" }
+        return "Good evening\(displayName)"
+    }
+
+    private var todayDone: Int {
+        todayCommitments.filter { todayStatus(for: $0) == .verified }.count
+    }
+
+    private var todayTotal: Int {
+        todayCommitments.count
+    }
+
+    private var focusProgress: Double {
+        guard todayTotal > 0 else { return 0 }
+        return Double(todayDone) / Double(todayTotal)
+    }
+
     var body: some View {
-        NavigationStack {
-            ZStack {
-                RawDog.Colors.background.ignoresSafeArea()
+        ZStack {
+            RawDog.Colors.background.ignoresSafeArea()
 
-                ScrollView {
-                    VStack(spacing: RawDog.Spacing.md) {
-                        // Hero card
-                        heroCard
+            ScrollView {
+                VStack(spacing: RawDog.Spacing.lg) {
+                    // Greeting header
+                    greetingHeader
 
-                        // Today's commitment timeline
-                        if !todayCommitments.isEmpty {
-                            timelineSection
-                        }
+                    // Focus ring
+                    focusRing
 
-                        // Timed windows
-                        if !timedWindowApps.isEmpty {
-                            timedWindowsSection
-                        }
+                    // Stat cards
+                    statCards
 
-                        // Extension cap
-                        extensionCapCard
-
-                        // Tomorrow preview
-                        tomorrowPreview
-
-                        Spacer().frame(height: 20)
+                    // Session cards
+                    if !todayCommitments.isEmpty {
+                        sessionCards
                     }
-                    .padding(.vertical, RawDog.Spacing.md)
+
+                    // Screen time insight
+                    insightCard
+
+                    // Weekly chart
+                    weeklyChart
+
+                    // Mentor card
+                    mentorCard
+
+                    Spacer().frame(height: 20)
+                }
+                .padding(.top, RawDog.Spacing.md)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingCreateCommitment = true
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(RawDog.Colors.accentIce)
                 }
             }
-            .navigationTitle(dateHeader)
-            .toolbarColorScheme(.dark, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingCreateCommitment = true
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title3)
-                            .foregroundStyle(RawDog.Colors.accent)
-                    }
-                }
-            }
-            .onAppear { refreshData() }
-            .sheet(isPresented: $showingExtensionRequest) {
-                ExtensionRequestView(appName: selectedAppForExtension)
-            }
-            .sheet(isPresented: $showingCreateCommitment) {
-                CreateCommitmentView(viewModel: commitmentVM)
-            }
-            .onChange(of: showingCreateCommitment) {
-                if !showingCreateCommitment { refreshData() }
-            }
+        }
+        .onAppear { refreshData() }
+        .sheet(isPresented: $showingCreateCommitment) {
+            CreateCommitmentView(viewModel: commitmentVM)
+        }
+        .sheet(item: $selectedCommitment) { commitment in
+            CommitmentDetailView(commitment: commitment, viewModel: commitmentVM)
+        }
+        .fullScreenCover(isPresented: $showMentorChat) {
+            MentorChatView()
+        }
+        .onChange(of: showingCreateCommitment) {
+            if !showingCreateCommitment { refreshData() }
         }
         .preferredColorScheme(.dark)
     }
 
-    // MARK: - Date Header
+    // MARK: - Greeting Header
 
-    private var dateHeader: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE, MMM d"
-        return formatter.string(from: Date())
-    }
+    private var greetingHeader: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(greeting)
+                .font(RawDog.Typography.title)
+                .foregroundStyle(RawDog.Colors.textPrimary)
 
-    // MARK: - Hero Card
-
-    private var heroCard: some View {
-        let total = todayCommitments.count
-        let done = todayCommitments.filter { todayStatus(for: $0) == .verified }.count
-        let allDone = total > 0 && done == total
-
-        return VStack(spacing: RawDog.Spacing.sm) {
-            RawDogMascot(
-                state: allDone ? .proud : (AppState.shared.isRestrictionActive ? .neutral : .sideeye),
-                size: 80
-            )
-
-            if total == 0 {
-                Text("No commitments today")
-                    .font(RawDog.Typography.headline)
-                    .foregroundStyle(RawDog.Colors.textPrimary)
-                Text("Tap + to add one")
-                    .font(RawDog.Typography.caption)
-                    .foregroundStyle(RawDog.Colors.textSecondary)
-            } else if allDone {
-                Text("All done. You earned it.")
-                    .font(RawDog.Typography.headline)
-                    .foregroundStyle(RawDog.Colors.approved)
-            } else {
-                Text("\(done)/\(total) verified today")
-                    .font(RawDog.Typography.headline)
-                    .foregroundStyle(RawDog.Colors.textPrimary)
-
-                // Progress ring
-                ProgressView(value: total > 0 ? Double(done) / Double(total) : 0)
-                    .tint(RawDog.Colors.accent)
-                    .padding(.horizontal, 40)
-            }
+            Text("Let's stay focused today")
+                .font(RawDog.Typography.subheadline)
+                .foregroundStyle(RawDog.Colors.textSecondary)
         }
-        .frame(maxWidth: .infinity)
-        .padding(20)
-        .background(RawDog.Colors.surface, in: RoundedRectangle(cornerRadius: RawDog.Radius.card))
-        .overlay(
-            allDone
-                ? RoundedRectangle(cornerRadius: RawDog.Radius.card)
-                    .strokeBorder(RawDog.Colors.approved.opacity(0.3), lineWidth: 1)
-                : nil
-        )
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)
     }
 
-    // MARK: - Timeline Section
+    // MARK: - Focus Ring
 
-    private var timelineSection: some View {
+    private var focusRing: some View {
+        VStack(spacing: RawDog.Spacing.sm) {
+            ZStack {
+                // Track
+                Circle()
+                    .stroke(RawDog.Colors.trackBackground, lineWidth: 8)
+                    .frame(width: 200, height: 200)
+
+                // Progress
+                Circle()
+                    .trim(from: 0, to: focusProgress)
+                    .stroke(
+                        RawDog.Colors.accentIce,
+                        style: StrokeStyle(lineWidth: 8, lineCap: .round)
+                    )
+                    .frame(width: 200, height: 200)
+                    .rotationEffect(.degrees(-90))
+                    .animation(.spring(response: 0.6), value: focusProgress)
+
+                // Mascot inside
+                AnimatedMascot(
+                    state: todayDone == todayTotal && todayTotal > 0 ? .proud : .neutral,
+                    size: 80
+                )
+            }
+
+            // Fraction label
+            if todayTotal > 0 {
+                Text("\(todayDone) of \(todayTotal) done")
+                    .font(RawDog.Typography.headline)
+                    .foregroundStyle(RawDog.Colors.textPrimary)
+            } else {
+                Text("No commitments today")
+                    .font(RawDog.Typography.headline)
+                    .foregroundStyle(RawDog.Colors.textSecondary)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, RawDog.Spacing.sm)
+    }
+
+    // MARK: - Stat Cards
+
+    private var statCards: some View {
+        let memory = UserMemoryStore.shared.memory
+        let topStreak = memory.currentStreaks.values.max() ?? 0
+        let hoursRecovered = String(format: "%.1f", Double(memory.totalVerifiedSessions) * 0.5)
+        let commitments = CommitmentStore.commitments.filter(\.isActive)
+        let avgRate: Int = {
+            guard !commitments.isEmpty else { return 0 }
+            let total = commitments.map { CommitmentStore.stats(for: $0.id).completionRate }.reduce(0, +)
+            return Int(total / Double(commitments.count) * 100)
+        }()
+
+        return HStack(spacing: RawDog.Spacing.sm) {
+            statCard(value: "\(topStreak)", label: "Streak", icon: "flame.fill")
+            statCard(value: "\(hoursRecovered)h", label: "Recovered", icon: "clock.fill")
+            statCard(value: "\(avgRate)%", label: "Rate", icon: "chart.bar.fill")
+        }
+        .padding(.horizontal)
+    }
+
+    private func statCard(value: String, label: String, icon: String) -> some View {
+        VStack(spacing: 6) {
+            Image(systemName: icon)
+                .font(.system(size: 14))
+                .foregroundStyle(RawDog.Colors.accentIce)
+
+            Text(value)
+                .font(RawDog.Typography.title2)
+                .foregroundStyle(RawDog.Colors.textPrimary)
+
+            Text(label)
+                .font(RawDog.Typography.caption2)
+                .foregroundStyle(RawDog.Colors.textSecondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 14)
+        .background(RawDog.Colors.cardBackground, in: RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .strokeBorder(RawDog.Colors.borderSubtle, lineWidth: 1)
+        )
+    }
+
+    // MARK: - Session Cards
+
+    private var sessionCards: some View {
         VStack(alignment: .leading, spacing: RawDog.Spacing.sm) {
-            RawDog.SectionHeader(title: "Today's Schedule", icon: "calendar")
+            RawDog.SectionHeader(title: "Today", icon: "calendar")
                 .padding(.horizontal)
 
-            ForEach(sortedCommitments) { commitment in
-                timelineRow(commitment)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(sortedCommitments) { commitment in
+                        sessionCard(commitment)
+                            .onTapGesture {
+                                selectedCommitment = commitment
+                            }
+                    }
+                }
+                .padding(.horizontal)
             }
         }
     }
+
+    private func sessionCard(_ commitment: Commitment) -> some View {
+        let status = todayStatus(for: commitment)
+
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(commitment.emoji)
+                    .font(.title2)
+                Spacer()
+                statusBadge(status)
+            }
+
+            Text(commitment.title)
+                .font(RawDog.Typography.subheadline.weight(.medium))
+                .foregroundStyle(RawDog.Colors.textPrimary)
+                .lineLimit(1)
+
+            Text(timeString(for: commitment))
+                .font(RawDog.Typography.caption)
+                .foregroundStyle(RawDog.Colors.textSecondary)
+        }
+        .padding(14)
+        .frame(width: 160)
+        .background(RawDog.Colors.cardBackground, in: RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .strokeBorder(RawDog.Colors.borderSubtle, lineWidth: 1)
+        )
+    }
+
+    // MARK: - Insight Card
+
+    private var insightCard: some View {
+        Group {
+            if let insight = screenTimeInsight {
+                HStack(spacing: 12) {
+                    Image(systemName: "brain.head.profile")
+                        .font(.system(size: 16))
+                        .foregroundStyle(RawDog.Colors.accentIce)
+
+                    Text(insight)
+                        .font(RawDog.Typography.subheadline)
+                        .foregroundStyle(RawDog.Colors.textPrimary)
+                        .lineLimit(2)
+                }
+                .padding(RawDog.Spacing.md)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(RawDog.Colors.cardBackground, in: RoundedRectangle(cornerRadius: 12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .strokeBorder(RawDog.Colors.borderSubtle, lineWidth: 1)
+                )
+                .padding(.horizontal)
+            }
+        }
+    }
+
+    // MARK: - Weekly Chart
+
+    private var weeklyChart: some View {
+        VStack(alignment: .leading, spacing: RawDog.Spacing.sm) {
+            RawDog.SectionHeader(title: "This Week", icon: "chart.bar")
+                .padding(.horizontal)
+
+            HStack(alignment: .bottom, spacing: RawDog.Spacing.sm) {
+                let dayLabels = ["M", "T", "W", "T", "F", "S", "S"]
+
+                ForEach(0..<7, id: \.self) { i in
+                    VStack(spacing: 4) {
+                        let verified = weeklyVerifications[i]
+                        let total = weeklyTotals[i]
+                        let height: CGFloat = total > 0 ? CGFloat(verified) / CGFloat(max(total, 1)) * 60 : 4
+                        let allDone = total > 0 && verified >= total
+
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(allDone ? RawDog.Colors.accentIce : RawDog.Colors.trackBackground)
+                            .frame(height: max(4, height))
+
+                        Text(dayLabels[i])
+                            .font(RawDog.Typography.caption2)
+                            .foregroundStyle(RawDog.Colors.textSecondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
+            .frame(height: 80, alignment: .bottom)
+            .padding(RawDog.Spacing.md)
+            .background(RawDog.Colors.cardBackground, in: RoundedRectangle(cornerRadius: 12))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(RawDog.Colors.borderSubtle, lineWidth: 1)
+            )
+            .padding(.horizontal)
+        }
+    }
+
+    // MARK: - Mentor Card
+
+    private var mentorCard: some View {
+        Button {
+            showMentorChat = true
+        } label: {
+            HStack(spacing: 12) {
+                AnimatedMascot(state: .neutral, size: 40)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Talk to RawDog")
+                        .font(RawDog.Typography.headline)
+                        .foregroundStyle(RawDog.Colors.textPrimary)
+                    Text("Your accountability coach")
+                        .font(RawDog.Typography.caption)
+                        .foregroundStyle(RawDog.Colors.textSecondary)
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(RawDog.Colors.textSecondary)
+            }
+            .padding(RawDog.Spacing.md)
+            .background(RawDog.Colors.cardBackground, in: RoundedRectangle(cornerRadius: 12))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(RawDog.Colors.borderSubtle, lineWidth: 1)
+            )
+            .padding(.horizontal)
+        }
+    }
+
+    // MARK: - Helpers
 
     private var sortedCommitments: [Commitment] {
         todayCommitments.sorted {
@@ -146,201 +358,8 @@ struct ScheduleView: View {
         }
     }
 
-    private func timelineRow(_ commitment: Commitment) -> some View {
-        let status = todayStatus(for: commitment)
-        let isNow = isActiveNow(commitment)
-
-        return HStack(spacing: 12) {
-            // Time column
-            VStack(spacing: 2) {
-                Text(timeString(for: commitment))
-                    .font(RawDog.Typography.caption.weight(.semibold).monospacedDigit())
-                    .foregroundStyle(isNow ? RawDog.Colors.accent : RawDog.Colors.textSecondary)
-            }
-            .frame(width: 50)
-
-            // Status indicator line
-            VStack(spacing: 0) {
-                Circle()
-                    .fill(statusColor(status, isNow: isNow))
-                    .frame(width: 10, height: 10)
-                    .overlay(
-                        isNow
-                            ? Circle()
-                                .stroke(RawDog.Colors.accent.opacity(0.4), lineWidth: 3)
-                                .frame(width: 18, height: 18)
-                            : nil
-                    )
-            }
-
-            // Content
-            VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: 6) {
-                    Text(commitment.emoji)
-                        .font(.callout)
-                    Text(commitment.title)
-                        .font(RawDog.Typography.subheadline.weight(.medium))
-                        .foregroundStyle(RawDog.Colors.textPrimary)
-                    Spacer()
-                    statusBadge(status)
-                }
-
-                // Photo thumbnail if verified
-                if status == .verified,
-                   let log = CommitmentStore.todayLog(for: commitment.id),
-                   let filename = log.photoFilename,
-                   let image = CommitmentStore.loadPhoto(filename: filename) {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 48, height: 48)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                }
-
-                // Streak info
-                let streak = CommitmentStore.stats(for: commitment.id).currentStreak
-                if streak > 0 {
-                    Text("\(streak) day streak")
-                        .font(RawDog.Typography.caption2)
-                        .foregroundStyle(RawDog.Colors.textSecondary)
-                }
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background(
-            isNow
-                ? RawDog.Colors.accent.opacity(0.05)
-                : Color.clear
-        )
-        .background(RawDog.Colors.surface, in: RoundedRectangle(cornerRadius: RawDog.Radius.small))
-        .overlay(
-            isNow
-                ? RoundedRectangle(cornerRadius: RawDog.Radius.small)
-                    .strokeBorder(RawDog.Colors.accent.opacity(0.2), lineWidth: 1)
-                : nil
-        )
-        .padding(.horizontal)
-    }
-
-    // MARK: - Timed Windows
-
-    private var timedWindowsSection: some View {
-        VStack(alignment: .leading, spacing: RawDog.Spacing.sm) {
-            RawDog.SectionHeader(title: "App Windows", icon: "timer")
-                .padding(.horizontal)
-
-            ForEach(timedWindowApps) { app in
-                timedWindowRow(app)
-            }
-        }
-    }
-
-    private func timedWindowRow(_ app: TimedWindowApp) -> some View {
-        let profile = AppState.shared.restrictionProfile
-        let slots = profile.map { TimedWindowService.generateAllSlots(for: $0) } ?? []
-        let isOpen = TimedWindowService.isWindowOpen(for: app.id, in: slots)
-        let remaining = TimedWindowService.remainingTime(for: app.id, in: slots)
-
-        return HStack(spacing: 12) {
-            Circle()
-                .fill(isOpen ? RawDog.Colors.windowOpen : RawDog.Colors.windowClosed)
-                .frame(width: 8, height: 8)
-
-            Text(app.appName)
-                .font(RawDog.Typography.subheadline.weight(.medium))
-                .foregroundStyle(RawDog.Colors.textPrimary)
-
-            Spacer()
-
-            if isOpen, let mins = remaining {
-                Text("\(mins)m left")
-                    .font(RawDog.Typography.caption.weight(.medium))
-                    .foregroundStyle(RawDog.Colors.windowOpen)
-            } else {
-                Button {
-                    selectedAppForExtension = app.appName
-                    showingExtensionRequest = true
-                } label: {
-                    Text("Request")
-                        .font(RawDog.Typography.caption2)
-                        .foregroundStyle(RawDog.Colors.accent)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 4)
-                        .background(RawDog.Colors.accent.opacity(0.1), in: Capsule())
-                }
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background(RawDog.Colors.surface, in: RoundedRectangle(cornerRadius: RawDog.Radius.small))
-        .padding(.horizontal)
-    }
-
-    // MARK: - Extension Cap
-
-    private var extensionCapCard: some View {
-        HStack {
-            RawDog.SectionHeader(title: "Extensions", icon: "clock.fill")
-            Spacer()
-            Text("\(dailyUsed)/\(dailyCap)m")
-                .font(RawDog.Typography.caption.weight(.medium).monospacedDigit())
-                .foregroundStyle(dailyUsed >= dailyCap ? RawDog.Colors.destructive : RawDog.Colors.textSecondary)
-        }
-        .padding(RawDog.Spacing.md)
-        .background(RawDog.Colors.surface, in: RoundedRectangle(cornerRadius: RawDog.Radius.card))
-        .padding(.horizontal)
-    }
-
-    // MARK: - Tomorrow Preview
-
-    private var tomorrowPreview: some View {
-        let tomorrow = calendar.date(byAdding: .day, value: 1, to: Date()) ?? Date()
-        let tomorrowWeekday = calendar.component(.weekday, from: tomorrow)
-        let tomorrowCommitments = CommitmentStore.commitments
-            .filter { $0.isActive && $0.scheduledDays.contains(tomorrowWeekday) }
-            .sorted { $0.scheduledHour * 60 + $0.scheduledMinute < $1.scheduledHour * 60 + $1.scheduledMinute }
-
-        return Group {
-            if !tomorrowCommitments.isEmpty {
-                VStack(alignment: .leading, spacing: RawDog.Spacing.sm) {
-                    RawDog.SectionHeader(title: "Tomorrow", icon: "arrow.right.circle")
-                        .padding(.horizontal)
-
-                    HStack(spacing: 10) {
-                        ForEach(tomorrowCommitments) { c in
-                            HStack(spacing: 4) {
-                                Text(c.emoji)
-                                    .font(.caption2)
-                                Text(timeString(for: c))
-                                    .font(RawDog.Typography.caption2)
-                                    .foregroundStyle(RawDog.Colors.textSecondary)
-                            }
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 6)
-                            .background(RawDog.Colors.surfaceElevated, in: Capsule())
-                        }
-                    }
-                    .padding(.horizontal)
-                }
-            }
-        }
-    }
-
-    // MARK: - Helpers
-
     private func todayStatus(for commitment: Commitment) -> CommitmentLogStatus? {
         CommitmentStore.todayLog(for: commitment.id)?.status
-    }
-
-    private func isActiveNow(_ commitment: Commitment) -> Bool {
-        let now = Date()
-        let hour = calendar.component(.hour, from: now)
-        let minute = calendar.component(.minute, from: now)
-        let currentMinutes = hour * 60 + minute
-        let commitMinutes = commitment.scheduledHour * 60 + commitment.scheduledMinute
-        // Active window: 30 min before to 30 min after
-        return currentMinutes >= (commitMinutes - 30) && currentMinutes <= (commitMinutes + 30)
     }
 
     private func timeString(for commitment: Commitment) -> String {
@@ -349,42 +368,89 @@ struct ScheduleView: View {
         return formatter.string(from: commitment.scheduledTime)
     }
 
-    private func statusColor(_ status: CommitmentLogStatus?, isNow: Bool) -> Color {
-        switch status {
-        case .verified: return RawDog.Colors.approved
-        case .failed: return RawDog.Colors.destructive
-        case .pending, .skipped, nil:
-            return isNow ? RawDog.Colors.accent : RawDog.Colors.surfaceElevated
-        }
-    }
-
     @ViewBuilder
     private func statusBadge(_ status: CommitmentLogStatus?) -> some View {
         switch status {
         case .verified:
-            Label("Done", systemImage: "checkmark")
-                .font(RawDog.Typography.caption2)
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 16))
                 .foregroundStyle(RawDog.Colors.approved)
         case .failed:
-            Label("Missed", systemImage: "xmark")
-                .font(RawDog.Typography.caption2)
+            Image(systemName: "xmark.circle.fill")
+                .font(.system(size: 16))
                 .foregroundStyle(RawDog.Colors.destructive)
         case .pending:
-            Text("Pending")
-                .font(RawDog.Typography.caption2)
-                .foregroundStyle(RawDog.Colors.textSecondary)
+            Image(systemName: "clock")
+                .font(.system(size: 16))
+                .foregroundStyle(RawDog.Colors.windowClosed)
         default:
             EmptyView()
         }
     }
 
     private func refreshData() {
-        let appState = AppState.shared
         let todayWeekday = calendar.component(.weekday, from: Date())
         todayCommitments = CommitmentStore.commitments
             .filter { $0.isActive && $0.scheduledDays.contains(todayWeekday) }
-        timedWindowApps = appState.timedWindowStates
-        dailyUsed = appState.dailyExtensionMinutesUsed
-        dailyCap = appState.restrictionProfile?.dailyExtensionCapMinutes ?? 30
+
+        // Load weekly data
+        loadWeeklyData()
+
+        // Load AI insight
+        loadInsight()
+    }
+
+    private func loadWeeklyData() {
+        let today = calendar.startOfDay(for: Date())
+        // Find Monday of this week
+        let weekday = calendar.component(.weekday, from: today)
+        let daysFromMonday = (weekday + 5) % 7 // Mon=0, Tue=1, ... Sun=6
+        guard let monday = calendar.date(byAdding: .day, value: -daysFromMonday, to: today) else { return }
+
+        let allCommitments = CommitmentStore.commitments.filter(\.isActive)
+        let allLogs = CommitmentStore.logs
+
+        var verifications = Array(repeating: 0, count: 7)
+        var totals = Array(repeating: 0, count: 7)
+
+        for i in 0..<7 {
+            guard let day = calendar.date(byAdding: .day, value: i, to: monday),
+                  day <= today else { continue }
+            let dayWeekday = calendar.component(.weekday, from: day)
+            let dayStart = calendar.startOfDay(for: day)
+
+            let scheduled = allCommitments.filter { $0.scheduledDays.contains(dayWeekday) }.count
+            let verified = allLogs.filter {
+                calendar.startOfDay(for: $0.date) == dayStart && $0.status == .verified
+            }.count
+
+            verifications[i] = verified
+            totals[i] = scheduled
+        }
+
+        weeklyVerifications = verifications
+        weeklyTotals = totals
+    }
+
+    private func loadInsight() {
+        let done = RetentionService.shared.todayCompletedCount()
+        let total = RetentionService.shared.todayScheduledCount()
+
+        Task {
+            do {
+                let memory = UserMemoryStore.shared.memory
+                let system = """
+                You are RawDog, a Shiba Inu coach. One-line screen time insight. \
+                Reference their actual data. Max 1 sentence. Casual. \(memory.toContextString())
+                """
+                let prompt = "Today: \(done)/\(total) done. Generate a one-liner insight about their focus today."
+                let response = try await GroqService.shared.callRetention(system: system, user: prompt, maxTokens: 50)
+                await MainActor.run {
+                    screenTimeInsight = response
+                }
+            } catch {
+                // Silent fail - insight is optional
+            }
+        }
     }
 }

@@ -54,10 +54,8 @@ class MentorChatViewModel: ObservableObject {
     // MARK: - Pre-warm (call on app open)
 
     func preWarm() {
-        // Load cached greeting
         preWarmedGreeting = Constants.sharedDefaults.string(forKey: Self.greetingKey)
 
-        // Generate fresh greeting in background
         Task {
             do {
                 let memory = UserMemoryStore.shared.memory
@@ -77,9 +75,8 @@ class MentorChatViewModel: ObservableObject {
                 preWarmedGreeting = greeting
                 Constants.sharedDefaults.set(greeting, forKey: Self.greetingKey)
             } catch {
-                // Use fallback
                 if preWarmedGreeting == nil {
-                    preWarmedGreeting = "What's on your mind? 🐕"
+                    preWarmedGreeting = "What's on your mind?"
                 }
             }
         }
@@ -102,13 +99,11 @@ class MentorChatViewModel: ObservableObject {
                 let memory = UserMemoryStore.shared.memory
                 let system = mentorSystemPrompt(memory: memory)
 
-                // Build conversation context (last 6 messages)
                 let recentMessages = messages.suffix(6)
                 var conversationContext = recentMessages.map { msg in
                     "\(msg.role == .user ? "User" : "RawDog"): \(msg.content)"
                 }.joined(separator: "\n")
 
-                // Add current stats
                 let done = RetentionService.shared.todayCompletedCount()
                 let total = RetentionService.shared.todayScheduledCount()
                 conversationContext += "\n\n[Today: \(done)/\(total) commitments done]"
@@ -126,7 +121,7 @@ class MentorChatViewModel: ObservableObject {
             } catch {
                 let errorMessage = MentorMessage(
                     role: .rawdog,
-                    content: "Can't connect right now. Try again in a sec. 🐕"
+                    content: "Can't connect right now. Try again in a sec."
                 )
                 messages.append(errorMessage)
                 isLoading = false
@@ -135,10 +130,14 @@ class MentorChatViewModel: ObservableObject {
         }
     }
 
+    func sendQuickPrompt(_ prompt: String) {
+        inputText = prompt
+        send()
+    }
+
     // MARK: - System Prompt
 
     private func mentorSystemPrompt(memory: UserMemory) -> String {
-        // Build 30-day log summary
         let calendar = Calendar.current
         let thirtyDaysAgo = calendar.date(byAdding: .day, value: -30, to: Date()) ?? Date()
         let recentLogs = CommitmentStore.logs.filter { $0.date >= thirtyDaysAgo }
@@ -186,6 +185,13 @@ struct MentorChatView: View {
     @StateObject private var viewModel = MentorChatViewModel()
     @Environment(\.dismiss) private var dismiss
 
+    private let quickPrompts = [
+        "How am I doing?",
+        "What should I focus on?",
+        "Motivate me",
+        "Analyze my week",
+    ]
+
     var body: some View {
         VStack(spacing: 0) {
             // Header
@@ -195,10 +201,14 @@ struct MentorChatView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: RawDog.Spacing.sm) {
-                        // Pre-warmed greeting
-                        if messages.isEmpty, let greeting = viewModel.preWarmedGreeting {
-                            rawdogBubble(text: greeting)
-                                .id("greeting")
+                        // Quick prompts when empty
+                        if viewModel.messages.isEmpty {
+                            if let greeting = viewModel.preWarmedGreeting {
+                                rawdogBubble(text: greeting)
+                                    .id("greeting")
+                            }
+
+                            quickPromptPills
                         }
 
                         ForEach(viewModel.messages) { message in
@@ -246,13 +256,12 @@ struct MentorChatView: View {
 
             Spacer()
 
-            VStack(spacing: 2) {
+            HStack(spacing: 8) {
+                AnimatedMascot(state: .neutral, size: 40)
+
                 Text("RawDog")
                     .font(RawDog.Typography.headline)
                     .foregroundStyle(RawDog.Colors.textPrimary)
-                Text("Your mentor")
-                    .font(RawDog.Typography.caption2)
-                    .foregroundStyle(RawDog.Colors.textSecondary)
             }
 
             Spacer()
@@ -263,7 +272,32 @@ struct MentorChatView: View {
         }
         .padding(.horizontal, RawDog.Spacing.md)
         .padding(.vertical, RawDog.Spacing.sm)
-        .background(RawDog.Colors.surface)
+        .background(RawDog.Colors.cardBackground)
+    }
+
+    // MARK: - Quick Prompts
+
+    private var quickPromptPills: some View {
+        VStack(spacing: RawDog.Spacing.sm) {
+            ForEach(quickPrompts, id: \.self) { prompt in
+                Button {
+                    viewModel.sendQuickPrompt(prompt)
+                } label: {
+                    Text(prompt)
+                        .font(RawDog.Typography.subheadline)
+                        .foregroundStyle(RawDog.Colors.accentIce)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(RawDog.Colors.cardBackground, in: RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .strokeBorder(RawDog.Colors.borderSubtle, lineWidth: 1)
+                        )
+                }
+            }
+        }
+        .padding(.top, RawDog.Spacing.sm)
     }
 
     // MARK: - Message Bubbles
@@ -276,7 +310,7 @@ struct MentorChatView: View {
                 .foregroundStyle(.black)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 10)
-                .background(RawDog.Colors.accent, in: BubbleShape(isUser: true))
+                .background(RawDog.Colors.accentIce, in: BubbleShape(isUser: true))
         }
     }
 
@@ -287,7 +321,11 @@ struct MentorChatView: View {
                 .foregroundStyle(RawDog.Colors.textPrimary)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 10)
-                .background(RawDog.Colors.surfaceElevated, in: BubbleShape(isUser: false))
+                .background(RawDog.Colors.cardBackground, in: BubbleShape(isUser: false))
+                .overlay(
+                    BubbleShape(isUser: false)
+                        .strokeBorder(RawDog.Colors.borderSubtle, lineWidth: 1)
+                )
             Spacer()
         }
     }
@@ -295,7 +333,7 @@ struct MentorChatView: View {
     private var typingIndicator: some View {
         HStack {
             HStack(spacing: 4) {
-                ForEach(0..<3, id: \.self) { i in
+                ForEach(0..<3, id: \.self) { _ in
                     Circle()
                         .fill(RawDog.Colors.textSecondary)
                         .frame(width: 6, height: 6)
@@ -304,7 +342,11 @@ struct MentorChatView: View {
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
-            .background(RawDog.Colors.surfaceElevated, in: BubbleShape(isUser: false))
+            .background(RawDog.Colors.cardBackground, in: BubbleShape(isUser: false))
+            .overlay(
+                BubbleShape(isUser: false)
+                    .strokeBorder(RawDog.Colors.borderSubtle, lineWidth: 1)
+            )
             Spacer()
         }
     }
@@ -328,24 +370,20 @@ struct MentorChatView: View {
                     .foregroundStyle(
                         viewModel.inputText.trimmingCharacters(in: .whitespaces).isEmpty
                             ? RawDog.Colors.textSecondary
-                            : RawDog.Colors.accent
+                            : RawDog.Colors.accentIce
                     )
             }
             .disabled(viewModel.inputText.trimmingCharacters(in: .whitespaces).isEmpty || viewModel.isLoading)
         }
         .padding(.horizontal, RawDog.Spacing.md)
         .padding(.vertical, RawDog.Spacing.sm)
-        .background(RawDog.Colors.surface)
-    }
-
-    private var messages: [MentorMessage] {
-        viewModel.messages
+        .background(RawDog.Colors.cardBackground)
     }
 }
 
 // MARK: - Bubble Shape
 
-private struct BubbleShape: Shape {
+private struct BubbleShape: InsettableShape {
     let isUser: Bool
 
     func path(in rect: CGRect) -> Path {
@@ -360,6 +398,10 @@ private struct BubbleShape: Shape {
                 .path(in: CGRect(x: tailSize, y: 0, width: rect.width - tailSize, height: rect.height))
         }
     }
+
+    func inset(by amount: CGFloat) -> some InsettableShape {
+        self
+    }
 }
 
 // MARK: - Floating Mentor Button
@@ -373,10 +415,10 @@ struct FloatingMentorButton: View {
         } label: {
             Image(systemName: "bubble.left.fill")
                 .font(.title3)
-                .foregroundStyle(RawDog.Colors.background)
+                .foregroundStyle(.black)
                 .frame(width: 52, height: 52)
-                .background(RawDog.Colors.accent, in: Circle())
-                .shadow(color: RawDog.Colors.accent.opacity(0.3), radius: 8, y: 4)
+                .background(RawDog.Colors.accentIce, in: Circle())
+                .shadow(color: RawDog.Colors.accentIce.opacity(0.3), radius: 8, y: 4)
         }
         .fullScreenCover(isPresented: $showChat) {
             MentorChatView()

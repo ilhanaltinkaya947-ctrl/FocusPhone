@@ -145,20 +145,14 @@
 		EE00000000000002A0000001 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00000000000001A0000001 /* ScheduleView.swift */; };
 		FF00000000000002A0000001 /* ResponsiveGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000001 /* ResponsiveGeometry.swift */; };
 		FF00000000000002A0000002 /* RawDogLiveAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000002 /* RawDogLiveAnimations.swift */; };
-		FF00000000000002A0000003 /* SuggestionChipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000003 /* SuggestionChipsView.swift */; };
-		FF00000000000002A0000004 /* VoiceChatOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000004 /* VoiceChatOverlay.swift */; };
 		FF00000000000002A0000005 /* DataShockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000005 /* DataShockView.swift */; };
 		FF00000000000002A0000006 /* GoalSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000006 /* GoalSelectionView.swift */; };
-		FF00000000000002A0000007 /* CommitmentPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000007 /* CommitmentPickerView.swift */; };
-		FF00000000000002A0000008 /* StrictnessPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00000000000001A0000008 /* StrictnessPickerView.swift */; };
 		AB00000000000002A0000001 /* AlarmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000001 /* AlarmService.swift */; };
 		AB00000000000002A0000002 /* SleepScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000002 /* SleepScheduleService.swift */; };
 		AB00000000000002A0000003 /* HourlyTimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000003 /* HourlyTimerService.swift */; };
 		AB00000000000002A0000004 /* BrowserContentFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000004 /* BrowserContentFilter.swift */; };
 		AB00000000000002A0000005 /* PrebuiltProfiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000005 /* PrebuiltProfiles.swift */; };
 		AB00000000000002A0000006 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000006 /* CalendarService.swift */; };
-		AB00000000000002A0000007 /* ProfileSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000007 /* ProfileSelectionView.swift */; };
-		AB00000000000002A0000008 /* SleepSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000000000001A0000008 /* SleepSetupView.swift */; };
 		AC00000000000002A0000001 /* SleepModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00000000000001A0000001 /* SleepModels.swift */; };
 		AC00000000000002A0000002 /* SleepModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00000000000001A0000001 /* SleepModels.swift */; };
 		AC00000000000002A0000003 /* SleepModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC00000000000001A0000001 /* SleepModels.swift */; };
@@ -172,6 +166,15 @@
 		AE00000000000002A0000005 /* WeeklyReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00000000000001A0000005 /* WeeklyReceiptView.swift */; };
 		AE00000000000002A0000006 /* MonthlyReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00000000000001A0000006 /* MonthlyReportView.swift */; };
 		AE00000000000002A0000007 /* MentorChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE00000000000001A0000007 /* MentorChatView.swift */; };
+		BF00000000000002A0000001 /* ParticleBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00000000000001A0000001 /* ParticleBackgroundView.swift */; };
+		BF00000000000002A0000002 /* OnboardingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00000000000001A0000002 /* OnboardingData.swift */; };
+		BF00000000000002A0000003 /* WhatRawDogDoesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00000000000001A0000003 /* WhatRawDogDoesView.swift */; };
+		BF00000000000002A0000004 /* AgeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00000000000001A0000004 /* AgeSelectionView.swift */; };
+		BF00000000000002A0000005 /* OccupationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00000000000001A0000005 /* OccupationView.swift */; };
+		BF00000000000002A0000006 /* ProblemSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00000000000001A0000006 /* ProblemSelectionView.swift */; };
+		BF00000000000002A0000007 /* CinematicLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00000000000001A0000007 /* CinematicLoadingView.swift */; };
+		BF00000000000002A0000008 /* GoalsRevealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00000000000001A0000008 /* GoalsRevealView.swift */; };
+		BF00000000000002A0000009 /* FirstWinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00000000000001A0000009 /* FirstWinView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -300,20 +303,14 @@
 		EE00000000000001A0000001 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		FF00000000000001A0000001 /* ResponsiveGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveGeometry.swift; sourceTree = "<group>"; };
 		FF00000000000001A0000002 /* RawDogLiveAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawDogLiveAnimations.swift; sourceTree = "<group>"; };
-		FF00000000000001A0000003 /* SuggestionChipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionChipsView.swift; sourceTree = "<group>"; };
-		FF00000000000001A0000004 /* VoiceChatOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceChatOverlay.swift; sourceTree = "<group>"; };
 		FF00000000000001A0000005 /* DataShockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataShockView.swift; sourceTree = "<group>"; };
 		FF00000000000001A0000006 /* GoalSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSelectionView.swift; sourceTree = "<group>"; };
-		FF00000000000001A0000007 /* CommitmentPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitmentPickerView.swift; sourceTree = "<group>"; };
-		FF00000000000001A0000008 /* StrictnessPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrictnessPickerView.swift; sourceTree = "<group>"; };
 		AB00000000000001A0000001 /* AlarmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmService.swift; sourceTree = "<group>"; };
 		AB00000000000001A0000002 /* SleepScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepScheduleService.swift; sourceTree = "<group>"; };
 		AB00000000000001A0000003 /* HourlyTimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyTimerService.swift; sourceTree = "<group>"; };
 		AB00000000000001A0000004 /* BrowserContentFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserContentFilter.swift; sourceTree = "<group>"; };
 		AB00000000000001A0000005 /* PrebuiltProfiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrebuiltProfiles.swift; sourceTree = "<group>"; };
 		AB00000000000001A0000006 /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
-		AB00000000000001A0000007 /* ProfileSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSelectionView.swift; sourceTree = "<group>"; };
-		AB00000000000001A0000008 /* SleepSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepSetupView.swift; sourceTree = "<group>"; };
 		AC00000000000001A0000001 /* SleepModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepModels.swift; sourceTree = "<group>"; };
 		AD00000000000001A0000001 /* RetentionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionService.swift; sourceTree = "<group>"; };
 		AE00000000000001A0000001 /* StreakService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakService.swift; sourceTree = "<group>"; };
@@ -323,6 +320,15 @@
 		AE00000000000001A0000005 /* WeeklyReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReceiptView.swift; sourceTree = "<group>"; };
 		AE00000000000001A0000006 /* MonthlyReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyReportView.swift; sourceTree = "<group>"; };
 		AE00000000000001A0000007 /* MentorChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MentorChatView.swift; sourceTree = "<group>"; };
+		BF00000000000001A0000001 /* ParticleBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleBackgroundView.swift; sourceTree = "<group>"; };
+		BF00000000000001A0000002 /* OnboardingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingData.swift; sourceTree = "<group>"; };
+		BF00000000000001A0000003 /* WhatRawDogDoesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatRawDogDoesView.swift; sourceTree = "<group>"; };
+		BF00000000000001A0000004 /* AgeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeSelectionView.swift; sourceTree = "<group>"; };
+		BF00000000000001A0000005 /* OccupationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccupationView.swift; sourceTree = "<group>"; };
+		BF00000000000001A0000006 /* ProblemSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSelectionView.swift; sourceTree = "<group>"; };
+		BF00000000000001A0000007 /* CinematicLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CinematicLoadingView.swift; sourceTree = "<group>"; };
+		BF00000000000001A0000008 /* GoalsRevealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsRevealView.swift; sourceTree = "<group>"; };
+		BF00000000000001A0000009 /* FirstWinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstWinView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -403,14 +409,16 @@
 				EE00000000000001A0000001 /* ScheduleView.swift */,
 				FF00000000000001A0000001 /* ResponsiveGeometry.swift */,
 				FF00000000000001A0000002 /* RawDogLiveAnimations.swift */,
-				FF00000000000001A0000003 /* SuggestionChipsView.swift */,
-				FF00000000000001A0000004 /* VoiceChatOverlay.swift */,
 				FF00000000000001A0000005 /* DataShockView.swift */,
 				FF00000000000001A0000006 /* GoalSelectionView.swift */,
-				FF00000000000001A0000007 /* CommitmentPickerView.swift */,
-				FF00000000000001A0000008 /* StrictnessPickerView.swift */,
-				AB00000000000001A0000007 /* ProfileSelectionView.swift */,
-				AB00000000000001A0000008 /* SleepSetupView.swift */,
+				BF00000000000001A0000001 /* ParticleBackgroundView.swift */,
+				BF00000000000001A0000003 /* WhatRawDogDoesView.swift */,
+				BF00000000000001A0000004 /* AgeSelectionView.swift */,
+				BF00000000000001A0000005 /* OccupationView.swift */,
+				BF00000000000001A0000006 /* ProblemSelectionView.swift */,
+				BF00000000000001A0000007 /* CinematicLoadingView.swift */,
+				BF00000000000001A0000008 /* GoalsRevealView.swift */,
+				BF00000000000001A0000009 /* FirstWinView.swift */,
 				AE00000000000001A0000005 /* WeeklyReceiptView.swift */,
 				AE00000000000001A0000006 /* MonthlyReportView.swift */,
 				AE00000000000001A0000007 /* MentorChatView.swift */,
@@ -482,6 +490,7 @@
 			children = (
 				BB00000000000001A0000001 /* CommitmentModels.swift */,
 				CC00000000000001A0000001 /* UserMemory.swift */,
+				BF00000000000001A0000002 /* OnboardingData.swift */,
 				CC00000000000001A0000002 /* JourneyModels.swift */,
 			);
 			path = Models;
@@ -908,20 +917,23 @@
 				EE00000000000002A0000001 /* ScheduleView.swift in Sources */,
 				FF00000000000002A0000001 /* ResponsiveGeometry.swift in Sources */,
 				FF00000000000002A0000002 /* RawDogLiveAnimations.swift in Sources */,
-				FF00000000000002A0000003 /* SuggestionChipsView.swift in Sources */,
-				FF00000000000002A0000004 /* VoiceChatOverlay.swift in Sources */,
 				FF00000000000002A0000005 /* DataShockView.swift in Sources */,
 				FF00000000000002A0000006 /* GoalSelectionView.swift in Sources */,
-				FF00000000000002A0000007 /* CommitmentPickerView.swift in Sources */,
-				FF00000000000002A0000008 /* StrictnessPickerView.swift in Sources */,
+				BF00000000000002A0000001 /* ParticleBackgroundView.swift in Sources */,
+				BF00000000000002A0000002 /* OnboardingData.swift in Sources */,
+				BF00000000000002A0000003 /* WhatRawDogDoesView.swift in Sources */,
+				BF00000000000002A0000004 /* AgeSelectionView.swift in Sources */,
+				BF00000000000002A0000005 /* OccupationView.swift in Sources */,
+				BF00000000000002A0000006 /* ProblemSelectionView.swift in Sources */,
+				BF00000000000002A0000007 /* CinematicLoadingView.swift in Sources */,
+				BF00000000000002A0000008 /* GoalsRevealView.swift in Sources */,
+				BF00000000000002A0000009 /* FirstWinView.swift in Sources */,
 				AB00000000000002A0000001 /* AlarmService.swift in Sources */,
 				AB00000000000002A0000002 /* SleepScheduleService.swift in Sources */,
 				AB00000000000002A0000003 /* HourlyTimerService.swift in Sources */,
 				AB00000000000002A0000004 /* BrowserContentFilter.swift in Sources */,
 				AB00000000000002A0000005 /* PrebuiltProfiles.swift in Sources */,
 				AB00000000000002A0000006 /* CalendarService.swift in Sources */,
-				AB00000000000002A0000007 /* ProfileSelectionView.swift in Sources */,
-				AB00000000000002A0000008 /* SleepSetupView.swift in Sources */,
 				AC00000000000002A0000005 /* SleepModels.swift in Sources */,
 				AD00000000000002A0000001 /* RetentionService.swift in Sources */,
 				AE00000000000002A0000001 /* StreakService.swift in Sources */,
